@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
 const {signup,login,verifyToken} = require('../controllers/auth.controller')
+const clientController = require('../controllers/client.controller');
 
 
 router.use("/:ressource?", (req, res, next) => {
   const excludedRoutes = ['signup', 'login'];
-  // Check if req.params.ressource is undefined or not in excludedRoutes
   if (!excludedRoutes.includes(req.params.ressource || '')) {
     return verifyToken("client")(req, res, next);
   }
@@ -18,8 +18,15 @@ router.get('/', async (req, res, next) => {
   }
 );
 
+router.get('/service/:id',clientController.getService);
+
+router.get('/employes',clientController.getEmployes);
+
+router.post('/appointment',clientController.appointment);
+
 router.post('/signup',async(req, res, next)=>{
   req.body.role = "client";
+
   signup(res, req, next);
 })
 

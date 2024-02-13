@@ -19,8 +19,11 @@ const rendezVous = new Schema({
   },
   completion: {
     type: Boolean
+  },
+  paiement:{
+    type: Boolean
   }
 });
 
 
-module.exports = mongoose.model("rendez_vous",rendezVous)
+module.exports = mongoose.model("rendez_vous",rendezVous,"rendez_vous")

@@ -5,6 +5,9 @@ const service = new Schema({
   nom: {
     type: String
   },
+  description: {
+    type : String
+  },
   prix: {
     type: Number
   },
@@ -35,4 +38,4 @@ const offre_speciale = new Schema({
   }
 });
 
-module.exports = mongoose.model("offre_speciale",offre_speciale)
+module.exports = mongoose.model("offre_speciale",offre_speciale,"offre_sepciale")

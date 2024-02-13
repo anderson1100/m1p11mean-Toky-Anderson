@@ -10,42 +10,42 @@ let Schema = mongoose.Schema
 // })
 
 const account = new Schema({
-    nom: {
-      type: String
-    },
-    prenom: {
-      type: String
-    },
-    email: {
-      type: String
-    },
-    username: {
-      type: String
-    },
-    password: {
-      type: String
-    },
-    employe_fav: [],
-    service_fav: [],
-    heure_debut: {
-      type: Date
-    },
-    heure_fin: {
-      type: Date
-    },
-    role: {
-      type: String
-    }
+  nom: {
+    type: String
+  },
+  prenom: {
+    type: String
+  },
+  email: {
+    type: String
+  },
+  username: {
+    type: String
+  },
+  password: {
+    type: String
+  },
+  employe_fav: [],
+  service_fav: [],
+  heure_debut: {
+    type: Date
+  },
+  heure_fin: {
+    type: Date
+  },
+  role: {
+    type: String
+  }
 });
 
-account.pre('save', async function (next){
-  try{
+account.pre('save', async function (next) {
+  try {
     const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash(this.password, salt)
     this.password = hashedPassword
     next()
     console.log(this.email, this.password)
-  } catch (error){
+  } catch (error) {
     next(error)
   }
 })
@@ -58,4 +58,33 @@ account.methods.isValidPassword = async function (password) {
   }
 }
 
-module.exports = mongoose.model("account",account,"account")
+account.methods.isInWorkTime = function (dateToCheck, duration) {
+  if (isNaN(dateToCheck)) {
+    throw new Error("Invalid date format");
+  }
+  console.log('dateToCheck',dateToCheck);
+
+  if (!this.heure_debut || !this.heure_fin) {
+    throw new Error("Working hours are not defined");
+  }
+  
+  const hourToCheck = dateToCheck.getHours();
+  const minuteToCheck = dateToCheck.getMinutes();
+
+  const heureDebutHour = this.heure_debut.getHours();
+  const heureDebutMinute = this.heure_debut.getMinutes();
+  const heureFinHour = this.heure_fin.getHours();
+  const heureFinMinute = this.heure_fin.getMinutes();
+
+  const heureDebutTotalMinutes = heureDebutHour * 60 + heureDebutMinute;
+  const heureFinTotalMinutes = heureFinHour * 60 + heureFinMinute;
+
+  const timeToCheckTotalMinutes = hourToCheck * 60 + minuteToCheck;
+
+  return timeToCheckTotalMinutes >= heureDebutTotalMinutes &&
+    timeToCheckTotalMinutes + duration <= heureFinTotalMinutes;
+
+
+};
+
+module.exports = mongoose.model("account", account, "account")

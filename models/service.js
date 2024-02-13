@@ -5,6 +5,9 @@ const service = new Schema({
   nom: {
     type: String
   },
+  description: {
+    type : String
+  },
   prix: {
     type: Number
   },
@@ -16,4 +19,4 @@ const service = new Schema({
   }
 });
 
-module.exports = mongoose.model("service",service)
+module.exports = mongoose.model("service",service,"service")

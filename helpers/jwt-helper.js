@@ -16,7 +16,7 @@ module.exports = {
       //verify reserved jwt claims (role maybe : solution if true solution userInfo : {wawa : "fdf", role : "fjdkf"})
       const secret = process.env.ACCESS_TOKEN_SECRET
       const options = {
-        expiresIn: '1m',
+        expiresIn: '10s',
         issuer: 'm1p10project.com',
         audience: user.id,
       }

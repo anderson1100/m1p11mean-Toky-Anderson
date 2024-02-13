@@ -19,7 +19,7 @@ router.get('/', async (req, res, next) => {
 
 router.post('/signup',async(req, res, next)=>{
   req.body.role = "employe";
-  signup(res, req, next);
+  signup(req, res, next);
 })
 
 router.post('/login',async(req, res, next)=>{

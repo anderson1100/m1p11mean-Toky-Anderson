@@ -38,17 +38,28 @@ const account = new Schema({
   }
 });
 
-account.pre('save', async function (next) {
+// account.pre('save', async function (next) {
+//   try {
+//     const salt = await bcrypt.genSalt(10)
+//     const hashedPassword = await bcrypt.hash(this.password, salt)
+//     this.password = hashedPassword
+//     next()
+//     console.log(this.email, this.password)
+//   } catch (error) {
+//     next(error)
+//   }
+// })
+
+account.methods.bcryptPassword = async function() {
   try {
     const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash(this.password, salt)
     this.password = hashedPassword
-    next()
-    console.log(this.email, this.password)
+    //console.log(this.email, this.password)
   } catch (error) {
-    next(error)
+    throw error
   }
-})
+}
 
 account.methods.isValidPassword = async function (password) {
   try {

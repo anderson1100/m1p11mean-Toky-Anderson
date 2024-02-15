@@ -4,11 +4,13 @@ const serviceModel = require('../models/service');
 
 module.exports = {
 
-    payment : async (rdvId) =>{
-        const rdv = await rendezVous.findById(rdvId);
+    payment : async (paymentObject) =>{
+        const{id} = paymentObject;
+        const rdv = await rendezVous.findById(id);
         const service = await serviceModel.findById(rdv.service_id);
+        //verify price offre speciale
         let datenow = Date.now();
-        let payment = new transaction({rendez_vous_id : rdvId,montant : service.montant, date : datenow, status : true})
+        let payment = new transaction({rendez_vous_id : id,montant : service.montant, date : datenow, status : true})
         await payment.save();
     },
 

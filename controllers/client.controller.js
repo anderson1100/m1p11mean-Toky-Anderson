@@ -1,12 +1,33 @@
 const createError = require('http-errors')
 const serviceModel = require('../models/service')
 const account = require('../models/account')
-const { getNearestRdvBefore, getNearestRdvAfter,payment } = require('../services/client.service')
+const { getNearestRdvBefore, getNearestRdvAfter, payment } = require('../services/client.service')
 const { userCredentialsSchema } = require('../helpers/validation')
 const JWT = require('jsonwebtoken')
 const rdvModel = require('../models/rendez-vous')
 
 module.exports = {
+
+    serviceSimpleSearch: async (req, res, next) => {
+        try {
+            if (req.query.search === undefined) {
+                throw createError.BadRequest();
+            }
+            const { search } = req.query;
+            const searchTerms = search.split(" ");
+
+            const conditions = searchTerms.map(term => ({
+                nom: { $regex: new RegExp(term, "i") }
+            }));
+
+            let result = await serviceModel.find({ $or: conditions });
+            res.json(result);
+        } catch (error) {
+            next(error);
+        }
+    },
+
+
     getService: async (req, res, next) => {
         console.log("calling getService()")
         try {
@@ -28,11 +49,11 @@ module.exports = {
         }
     },
 
-    payment: async (req, res, next) =>{
+    payment: async (req, res, next) => {
         //req.body contains : idRdv
-        try{
-            await payment(req.body.idRdv)
-        }catch(error){
+        try {
+            await payment(req.body)
+        } catch (error) {
             next(error)
         }
 

@@ -30,20 +30,19 @@ const JWT = require('jsonwebtoken')
         ]
       })
 
-      console.log(doesExist)
+      //console.log(doesExist)
 
       if (doesExist)
         throw createError.Conflict('email/username already been registered')
 
       user.role = role;
 
-      if ('heure_debut' in user) { //and heure_fin
-        user.heure_debut = new Date(user.heure_debut);
-        user.heure_fin = new Date(user.heure_fin);
-      }
-
+      // if ('heure_debut' in user) { //and heure_fin
+      //   user.heure_debut = new Date(user.heure_debut);
+      //   user.heure_fin = new Date(user.heure_fin);
+      // }
+      await user.bcryptPassword();
       const savedUser = await user.save()
-      console.log(savedUser);
       const accessToken = await signAccessToken(savedUser)
       const refreshToken = await signRefreshToken(savedUser.id)
       res.status(201);
@@ -59,7 +58,7 @@ const JWT = require('jsonwebtoken')
   const login = async (req, res, next) => {
     console.log("calling login")
     try {
-      console.log(req.body.userInfo.login,req.body.role)
+      //console.log(req.body.userInfo.login,req.body.role)
       const user = await account.findOne({
         $or: [
           { $and: [{ email: req.body.userInfo.login }, { role: req.body.role }] },
@@ -73,6 +72,9 @@ const JWT = require('jsonwebtoken')
 
       if (!isMatch)
         throw createError.Unauthorized('Username/password not valid')
+
+      //delete last refreshToken
+      await refreshTokenModel.deleteOne({user_id : user.id});
 
       const accessToken = await signAccessToken(user)
       const refreshToken = await signRefreshToken(user.id)
@@ -96,7 +98,7 @@ const JWT = require('jsonwebtoken')
       //const bearerToken = authHeader.split(' ')
       //const token = bearerToken[1]
       if(!cookies?.jwtAccess) return next(createError.Forbidden())
-      console.log("AccessToken",cookies.jwtAccess);
+      //console.log("AccessToken",cookies.jwtAccess);
       const token = cookies.jwtAccess;
       JWT.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, payload) => {
         if (err) {
@@ -141,10 +143,10 @@ const JWT = require('jsonwebtoken')
       res.clearCookie('jwt', {httpOnly: true,sameSite: 'None', secure : true});
       res.clearCookie('jwtAccess', {httpOnly: false,sameSite: 'None', secure : true});
       const userId = await verifyRefreshToken(refreshToken)
-      console.log("userId",userId);
+      //console.log("userId",userId);
       //refreshTokenModel.deleteOne({user_id : userId});
       const result = await refreshTokenModel.deleteOne({ user_id: userId });
-      console.log(result); 
+      //console.log(result); 
       res.sendStatus(204);
     } catch (error) {
       next(error)

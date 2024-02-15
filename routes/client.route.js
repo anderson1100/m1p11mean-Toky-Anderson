@@ -24,6 +24,8 @@ router.get('/employes',clientController.getEmployes);
 
 router.post('/appointment',clientController.appointment);
 
+router.get('/service_simple_search',clientController.serviceSimpleSearch);
+
 router.post('/signup',async(req, res, next)=>{
   req.body.role = "client";
 

@@ -17,6 +17,9 @@ const service = new Schema({
   description: {
     type : String
   },
+  image : {
+    type: String
+  },
   categorie: categorie,
   prix: {
     type: Number

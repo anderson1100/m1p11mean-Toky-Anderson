@@ -1,0 +1,385 @@
+<link rel="stylesheet" href="css.css">
+
+   <!-- SERVICE -->
+ 
+    <div class="container">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-6">
+						<h2>Gestion <b>Services</b></h2>
+					</div>
+					<div class="col-sm-6">
+
+						<a href="#addEmployeeModal" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addModal"><i class="material-icons">&#xE147;</i> <span>Ajouter un Service</span></a>
+					</div>
+                </div>
+            </div>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+						
+                        <th>Nom</th>
+                        <th>Description</th>
+						<th>Catégorie</th>
+                        <th>Prix</th>
+                        <th>Commission</th>
+                        <th>Image</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+						
+                        <td>Manicure</td>
+                        <td>Mikarakara tanana e&#64;</td>
+						<td>Onglerie</td>
+                        <td>30.000</td>
+                        <td>20</td>
+                        <td>
+                            <!-- Image ronde -->
+                            <img src="votre-chemin-vers-l-image.jpg"  class="rounded-image">
+                          </td>
+                        <td>
+                            <a href="#editEmployeeModal" class="edit" data-bs-toggle="modal" data-bs-target="#editModal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                            <a href="#deleteEmployeeModal" class="delete" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+			<div class="clearfix">
+                <div class="hint-text"> <b>5</b> sur <b>25</b> services</div>
+                <ul class="pagination">
+                    <li class="page-item disabled"><a href="#">Previous</a></li>
+                    <li class="page-item"><a href="#" class="page-link">1</a></li>
+                    <li class="page-item"><a href="#" class="page-link">2</a></li>
+                    <li class="page-item active"><a href="#" class="page-link">3</a></li>
+                    <li class="page-item"><a href="#" class="page-link">4</a></li>
+                    <li class="page-item"><a href="#" class="page-link">5</a></li>
+                    <li class="page-item"><a href="#" class="page-link">Next</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+	<!-- Add Modal HTML -->
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">						
+						<h4 class="modal-title">Nouveau Service</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">					
+						<div class="form-group">
+							<label>Nom</label>
+							<input type="text" class="form-control" required>
+						</div>
+                        <br>
+						<div class="form-group">
+							<label>Description</label>
+							<input type="text" class="form-control" required>
+						</div>
+                        <br>
+						<div class="form-group">
+                            <label for="categorie">Catégorie</label>
+                            <select class="form-control" id="categorie" required>
+                              <option value="" disabled selected>Choisissez une catégorie</option>
+                              <option value="categorie1">Catégorie 1</option>
+                              <!-- Ajoutez autant d'options que nécessaire -->
+                            </select>
+                          </div>
+                          <br>
+						<div class="form-group">
+							<label>Prix</label>
+							<input type="number" class="form-control" min="0" required>
+						</div>
+                        <br>
+                        <div class="form-group">
+							<label>Commission</label>
+							<input type="number" class="form-control" min="0" required>
+						</div>	
+                        <br>
+                        <div class="form-group">
+							<label>Joindre une photo </label>
+							<input type="file" name="image" accept="image/*" required>
+						</div>							
+					</div>
+					<div class="modal-footer">
+						<input type="button" class="btn btn-default" data-bs-dismiss="modal" value="Annuler">
+						<input type="submit" class="btn btn-success" value="Ajouter Service">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- Edit Modal HTML -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">						
+						<h4 class="modal-title">Modifier Service</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">					
+						<div class="form-group">
+							<label>Nom</label>
+							<input type="text" placeholder="nom" class="form-control" required>
+						</div>
+                        <br>
+						<div class="form-group">
+							<label>Description</label>
+							<input type="text" placeholder="Description" class="form-control" required>
+						</div>
+                        <br>
+						<div class="form-group">
+                            <label for="categorie">Catégorie</label>
+                            <select class="form-control" id="categorie" required>
+                              <option value="" disabled selected>Choisissez une catégorie</option>
+                              <option value="categorie1">Catégorie 1</option>
+                              <!-- Ajoutez autant d'options que nécessaire -->
+                            </select>
+                          </div>
+                          <br>
+						<div class="form-group">
+							<label>Prix</label>
+							<input type="number" class="form-control" min="0" required>
+						</div>
+                        <br>
+                        <div class="form-group">
+							<label>Commission</label>
+							<input type="number" class="form-control" min="0" required>
+						</div>	
+                        <br>
+                        <div class="form-group">
+							<label>Joindre une photo </label>
+							<input type="file" name="image" accept="image/*" required>
+						</div>							
+					</div>
+					<div class="modal-footer">
+						<input type="button" class="btn btn-default" data-bs-dismiss="modal" value="Annuler">
+						<input type="submit" class="btn btn-success" value="Enregister modifications">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- Delete Modal HTML -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">						
+						<h4 class="modal-title">Supprimer Service</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">					
+						<p>Etes-vous sure de vouloir supprimer ce Service ?</p>
+						<p class="text-warning"><small>Cette action est irréversible.</small></p>
+					</div>
+					<div class="modal-footer">
+						<input type="button" class="btn btn-default" data-bs-dismiss="modal" value="Annuler">
+						<input type="submit" class="btn btn-danger" value="Supprimer">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+<br>
+
+     <!-- OFFRE SPECIALE -->
+
+
+
+     <div class="container">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-6">
+						<h2>Gestion <b>Offres Spécieales</b></h2>
+					</div>
+					<div class="col-sm-6">
+
+						<a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addOffreModal"><i class="material-icons">&#xE147;</i> <span>Ajouter une Offre</span></a>
+					</div>
+                </div>
+            </div>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+						
+                        <th>Nom</th>
+                        <th>Description</th>
+						<th>Services concernés</th>
+                        <th>Réduction</th>
+                        <th>Date début</th>
+                        <th>Date Fin</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+						
+                        <td>Offre Saint Valentin</td>
+                        <td>Réduction goavana be tanana e&#64;</td>
+						<td>Onglerie, Massage</td>
+                        <td>
+                            <span class="percentage-value">50</span>
+                        </td>
+                       
+                        <td>
+                            <time datetime="2024-02-13">February 13, 2024</time>
+                            
+                        </td>
+                  
+                        <td>
+                            <time datetime="2024-02-13">February 13, 2024</time>
+                        </td>
+                     
+                        <td>
+                            <a href="#" class="edit" data-bs-toggle="modal" data-bs-target="#editOffreModal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                            <a href="#" class="delete" data-bs-toggle="modal" data-bs-target="#deleteOffreModal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+			<div class="clearfix">
+                <div class="hint-text"> <b>5</b> sur <b>25</b> services</div>
+                <ul class="pagination">
+                    <li class="page-item disabled"><a href="#">Previous</a></li>
+                    <li class="page-item"><a href="#" class="page-link">1</a></li>
+                    <li class="page-item"><a href="#" class="page-link">2</a></li>
+                    <li class="page-item active"><a href="#" class="page-link">3</a></li>
+                    <li class="page-item"><a href="#" class="page-link">4</a></li>
+                    <li class="page-item"><a href="#" class="page-link">5</a></li>
+                    <li class="page-item"><a href="#" class="page-link">Next</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+	<!-- Add Modal HTML -->
+    <div class="modal fade" id="addOffreModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">						
+						<h4 class="modal-title">Modifier Offre</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">					
+						<div class="form-group">
+							<label>Nom</label>
+							<input type="text" class="form-control" required>
+						</div>
+                        <br>
+						<div class="form-group">
+							<label>Description</label>
+							<input type="text" class="form-control" required>
+						</div>
+                        <br>
+						<div class="form-group">
+                            <label for="categorie">Catégorie</label>
+                            <select class="form-control" id="categorie" required>
+                              <option value="" disabled selected>Choisissez une catégorie</option>
+                              <option value="categorie1">Catégorie 1</option>
+                              <!-- Ajoutez autant d'options que nécessaire -->
+                            </select>
+                          </div>
+                          <br>
+						<div class="form-group">
+							<label>Prix</label>
+							<input type="number" class="form-control" min="0" required>
+						</div>
+                        <br>
+                        <div class="form-group">
+							<label>Commission</label>
+							<input type="number" class="form-control" min="0" required>
+						</div>	
+                        <br>
+                        <div class="form-group">
+							<label>Joindre une photo </label>
+							<input type="file" name="image" accept="image/*" required>
+						</div>							
+					</div>
+					<div class="modal-footer">
+						<input type="button" class="btn btn-default" data-bs-dismiss="modal" value="Annuler">
+						<input type="submit" class="btn btn-success" value="Ajouter Service">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- Edit Modal HTML -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">						
+						<h4 class="modal-title">Modifier Service</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">					
+						<div class="form-group">
+							<label>Nom</label>
+							<input type="text" placeholder="nom" class="form-control" required>
+						</div>
+                        <br>
+						<div class="form-group">
+							<label>Description</label>
+							<input type="email" placeholder="Description" class="form-control" required>
+						</div>
+                        <br>
+						<div class="form-group">
+                            <label for="categorie">Catégorie</label>
+                            <select class="form-control" id="categorie" required>
+                              <option value="" disabled selected>Choisissez une catégorie</option>
+                              <option value="categorie1">Catégorie 1</option>
+                              <!-- Ajoutez autant d'options que nécessaire -->
+                            </select>
+                          </div>
+                          <br>
+						<div class="form-group">
+							<label>Prix</label>
+							<input type="number" class="form-control" min="0" required>
+						</div>
+                        <br>
+                        <div class="form-group">
+							<label>Commission</label>
+							<input type="number" class="form-control" min="0" required>
+						</div>	
+                        <br>
+                        <div class="form-group">
+							<label>Joindre une photo </label>
+							<input type="file" name="image" accept="image/*" required>
+						</div>							
+					</div>
+					<div class="modal-footer">
+						<input type="button" class="btn btn-default" data-bs-dismiss="modal" value="Annuler">
+						<input type="submit" class="btn btn-success" value="Enregister modifications">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- Delete Modal HTML -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">						
+						<h4 class="modal-title">Supprimer Service</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">					
+						<p>Etes-vous sure de vouloir supprimer ce Service ?</p>
+						<p class="text-warning"><small>Cette action est irréversible.</small></p>
+					</div>
+					<div class="modal-footer">
+						<input type="button" class="btn btn-default" data-bs-dismiss="modal" value="Annuler">
+						<input type="submit" class="btn btn-danger" value="Supprimer">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+

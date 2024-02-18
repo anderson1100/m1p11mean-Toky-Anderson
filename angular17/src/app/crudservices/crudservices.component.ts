@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewContainerRef } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
@@ -10,7 +10,10 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 })
 export class CrudservicesComponent {
   @Input() additionalCt: any;
-  constructor() {}
+  constructor(private viewRef: ViewContainerRef) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.viewRef.clear();
+    this.viewRef.createComponent(this.additionalCt.childComponent);
+  }
 }

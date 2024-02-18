@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-gestionemploye',
@@ -7,8 +9,13 @@ import { Component } from '@angular/core';
   templateUrl: './gestionemploye.component.html',
   styleUrl: './gestionemploye.component.css'
 })
-export class GestionemployeComponent {
-  constructor() {}
 
-  ngOnInit() {}
+export class GestionemployeComponent {
+  constructor(){
+
+  }
+
+  ngOnInit(){
+    
+  }
 }

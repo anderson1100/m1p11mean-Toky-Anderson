@@ -4,6 +4,7 @@ import { TabComponent } from './const';
 import { CommonModule } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
 import { GestionemployeComponent } from '../gestionemploye/gestionemploye.component';
+import { GestionserviceComponent } from '../gestionservice/gestionservice.component';
 
 
 @Component({
@@ -28,6 +29,7 @@ export class BackComponent {
         component : TabComponent.TabServices,
         additionalCt : {
           bodyTitle : 'Titre',
+          childComponent : GestionserviceComponent,
         },
       },
       {

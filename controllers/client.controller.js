@@ -1,5 +1,6 @@
 const createError = require('http-errors')
 const serviceModel = require('../models/service')
+const categorieModel = require('../models/categorie')
 const account = require('../models/account')
 const { getNearestRdvBefore, getNearestRdvAfter, payment } = require('../services/client.service')
 const { userCredentialsSchema } = require('../helpers/validation')
@@ -27,6 +28,26 @@ module.exports = {
         }
     },
 
+    getAllCategorie: async (req,res,next) => {
+        try{
+            const list = await categorieModel.find();
+             res.json(list);
+        }
+        catch(error){
+            next(error)
+        }
+    },
+
+
+    getAllService: async(req, res, next) => {
+        try{
+            const list = await serviceModel.find();
+            res.json(list);
+        }
+        catch(error){
+            next(error)
+        }
+    },
 
     getService: async (req, res, next) => {
         console.log("calling getService()")

@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common'; 
 import { RouterLink } from '@angular/router';
+import { FrontComponent } from './front/front.component';
 //import { BrowserModule } from '@angular/platform-browser';
 //import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-//import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -16,9 +17,10 @@ import { RouterLink } from '@angular/router';
     RouterOutlet,
     CommonModule,
     RouterLink,
+    FrontComponent,
     //BrowserAnimationsModule,
     //BrowserModule,
-    //HttpClientModule,
+    HttpClientModule
     
     
    ],

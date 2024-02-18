@@ -18,6 +18,10 @@ router.get('/', async (req, res, next) => {
   }
 );
 
+router.get('/categories',clientController.getAllCategorie);
+
+router.get('/services',clientController.getAllService);
+
 router.get('/service/:id',clientController.getService);
 
 router.get('/employes',clientController.getEmployes);

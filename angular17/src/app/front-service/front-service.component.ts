@@ -17,7 +17,7 @@ import { HttpClientModule } from '@angular/common/http';
 })
 export class FrontServiceComponent implements OnInit{
   categories!: any[];
-  isConnected : boolean = false;
+  isConnected : boolean = true;
 
   constructor(private service: ServiceService){}
 

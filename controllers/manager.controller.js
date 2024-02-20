@@ -1,6 +1,7 @@
 const createError = require('http-errors')
 const serviceModel = require('../models/service')
 const account = require('../models/account')
+const categorieModel = require('../models/categorie')
 const { userCredentialsSchema } = require('../helpers/validation')
 const managerService = require('../services/manager.service')
 const categorieModel = require('../models/categorie')
@@ -96,6 +97,64 @@ module.exports = {
             next(error)
         }
     },
+
+
+    //CRUD CATEGORIE
+
+    getAll: async (req,res,next) => {
+        try{
+            const list = await categorieModel.find();
+            return res.json(list);
+        }
+        catch(error){
+            next(error)
+        }
+    },
+
+    addCategorie: async (req, res, next) => {
+        try{
+            let categorieInfo = req.body;
+            let categorie = new categorieModel(categorieInfo);
+            const doesExist = await account.exists({nom : categorie.nom})
+
+            if(doesExist)
+                throw createError.Conflict("Categorie name already exist!");
+
+            const saved = await categorie.save();
+            res.sendStatus(201);
+        }
+        catch(error){
+            next(error)
+        }
+    },
+
+    deleteCategorie: async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            await categorieModel.deleteOne({ _id: id });
+            res.sendStatus(200);
+        } catch (error) {
+            next(error)
+        }
+    },
+
+    updateCategorie : async (req, res, next) => {
+     
+        try {
+            const { id } = req.params;
+            const {nom, description} = req.body;
+            let categorie = await categorieModel.findById(id);
+            categorie.nom = nom;
+            categorie.description = description;
+            await categorie.save();
+            res.sendStatus(200);
+        } catch (error) {
+            next(error)
+        }
+    },
+
+
+
 
 
 

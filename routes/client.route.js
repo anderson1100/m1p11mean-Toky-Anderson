@@ -18,6 +18,14 @@ router.get('/', async (req, res, next) => {
   }
 );
 
+//toky
+
+router.get('/categories',clientController.getAllCategorie);
+
+router.get('/services',clientController.getAllService);
+
+router.get('/service/:id',clientController.getService);
+
 //fav 
 
 router.get('/employes_fav',clientController.getListEmployeFav);

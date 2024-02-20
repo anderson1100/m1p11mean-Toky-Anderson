@@ -1,5 +1,6 @@
 const createError = require('http-errors')
 const serviceModel = require('../models/service')
+const categorieModel = require('../models/categorie')
 const account = require('../models/account')
 const { userCredentialsSchema } = require('../helpers/validation')
 const jwt = require('jsonwebtoken')
@@ -43,6 +44,27 @@ module.exports = {
             let list = await rdvModel.find({ client_id: userPayload.aud}).populate(["employe_id","service_id"]).sort({ date_heure: -1 }).skip(skip).limit(limit);
             return res.json(list);
         } catch (error) {
+            next(error)
+        }
+    },
+
+    getAllCategorie: async (req,res,next) => {
+        try{
+            const list = await categorieModel.find();
+             res.json(list);
+        }
+        catch(error){
+            next(error)
+        }
+    },
+
+
+    getAllService: async(req, res, next) => {
+        try{
+            const list = await serviceModel.find();
+            res.json(list);
+        }
+        catch(error){
             next(error)
         }
     },

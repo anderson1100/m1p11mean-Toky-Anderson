@@ -68,5 +68,13 @@ router.delete('/employes/:id',managerController.deleteEmploye);
 
 router.put('/employes/:id',managerController.updateEmploye)
 
+//CRUD CATEGORIE
+router.get('/categories',managerController.getAll);
+router.post('/categories',managerController.addCategorie);
+
+router.post('/categories',managerController.deleteCategorie);
+
+router.put('/categories',managerController.updateCategorie);
+
 
 module.exports = router;

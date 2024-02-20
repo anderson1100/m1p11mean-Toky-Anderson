@@ -4,7 +4,6 @@ const account = require('../models/account')
 const categorieModel = require('../models/categorie')
 const { userCredentialsSchema } = require('../helpers/validation')
 const managerService = require('../services/manager.service')
-const categorieModel = require('../models/categorie')
 
 module.exports = {
 

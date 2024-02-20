@@ -5,7 +5,6 @@ const account = require('../models/account')
 const { userCredentialsSchema } = require('../helpers/validation')
 const jwt = require('jsonwebtoken')
 const rdvModel = require('../models/rendez-vous')
-const categorieModel = require('../models/categorie')
 const clientService = require('../services/client.service')
 
 module.exports = {

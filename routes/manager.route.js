@@ -2,7 +2,19 @@ var express = require('express');
 var router = express.Router();
 const {signup,login,verifyToken} = require('../controllers/auth.controller');
 const managerController = require('../controllers/manager.controller');
+const multer = require('multer');
 
+//add conflict verification (file already exists)
+const storage = multer.diskStorage({
+  destination : function (req, file, cb) {
+    cb(null,'public/images')
+  },
+  filename : function (req, file, cb) {
+    cb(null,file.originalname)
+  }
+})
+
+const upload = multer({storage : storage})
 
 router.use("/:ressource?", (req, res, next) => {
   const excludedRoutes = ['signup', 'login'];
@@ -29,10 +41,19 @@ router.post('/login',async(req, res, next)=>{
   login(req, res, next);
 })
 
+//STATS 
+router.get('/total_benef_month',managerController.getBeneficeMonth);
+
+router.get('/temps_travail_moyen_by_employe',managerController.tempsTravailMoyenByEmploye);
+
+router.get('/count_rdv_by_day_for_month',managerController.countRdvByDayForMonth);
+
+router.get('/chiffre_affaire_by_day_for_month',managerController.chiffreAffaireByDayForMonth);
+
 //CRUD SERVICES
 router.get('/services',managerController.getServicesByPage)
 
-router.post('/services',managerController.addService)
+router.post('/services',upload.single('image'),managerController.addService)
 
 router.delete('/services/:id',managerController.deleteService)
 
@@ -41,7 +62,7 @@ router.put('/services/:id',managerController.updateService)
 //CRUD EMPLOYES
 router.get('/employes',managerController.getEmployesByPage)
 
-router.post('/employes',managerController.addEmploye)
+router.post('/employes',upload.single('photo'),managerController.addEmploye)
 
 router.delete('/employes/:id',managerController.deleteEmploye);
 

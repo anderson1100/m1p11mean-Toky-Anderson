@@ -25,6 +25,9 @@ const account = new Schema({
   password: {
     type: String
   },
+  photo : {
+    type : String
+  },
   employe_fav: [],
   service_fav: [],
   heure_debut: {

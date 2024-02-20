@@ -30,4 +30,12 @@ router.post('/login',async(req, res, next)=>{
 
 router.get('/profil',employeController.getEmploye);
 
+router.get('/list_rdv_finished_today',employeController.getListRdvFinishedToday);
+
+router.get('/rdv_history',employeController.getListRdvByPage);
+
+router.post('/complete_rdv/:id',employeController.completeRdv);
+
+router.get('/total_commission_today',employeController.getTotalCommissionToday);
+
 module.exports = router;

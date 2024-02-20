@@ -1,41 +1,94 @@
 const createError = require('http-errors')
 const serviceModel = require('../models/service')
+const rdvModel = require('../models/rendez-vous')
 const account = require('../models/account')
 const { userCredentialsSchema } = require('../helpers/validation')
 const bcrypt = require("bcrypt")
+const jwt = require('jsonwebtoken')
+const { updateEmploye } = require('./manager.controller')
+const employeService = require('../services/employe.service')
+
 
 module.exports = {
 
     getEmploye: async (req, res, next) => {
         try {
-            const { id } = req.params;
-            const employe = await account.findById(id);
+            const accessToken = req.cookies.jwtAccess
+            let userPayload = jwt.decode(accessToken);
+            const employe = await account.findById(userPayload.aud);
             return res.json(employe);
         } catch (error) {
             next(error)
         }
     },
 
-    updateEmploye: async (req, res, next) => {
-        //req.body contains user : whole employe object, additional : {password : true/false}
+    getListRdvByPage: async (req, res, next) => {
         try {
-            const { id } = req.params;
-            const { nom, prenom, email, password, heure_debut, heure_fin } = req.body.employe;
-            const { changePassword } = req.body.additional.password;
-            let employe = account.findById(id);
-            let debut = new Date(heure_debut);
-            let fin = new Date(heure_fin);
-            employe.nom = nom;
-            employe.prenom = prenom;
-            if (changePassword) {
-                const salt = await bcrypt.genSalt(10)
-                const hashedPassword = await bcrypt.hash(password, salt)
-            }
-            employe.heure_debut = debut;
-            employe.heure_fin = fin;
-            await employe.save();
+            const accessToken = req.cookies.jwtAccess
+            let userPayload = jwt.decode(accessToken);
+            const page = req.query.page ? parseInt(req.query.page) : 1;
+            const limit = req.query.limit ? parseInt(req.query.limit) : 5;
+            const skip = (page - 1) * limit;
+            let list = await rdvModel.find({ employe_id: userPayload.aud, completion: true }).populate(["client_id","service_id"]).sort({date_heure : -1}).skip(skip).limit(limit);
+            return res.json(list);
         } catch (error) {
             next(error)
         }
-    }
+    },
+
+    getListRdvFinishedToday: async (req, res, next) => {
+        try {
+            const accessToken = req.cookies.jwtAccess
+            let userPayload = jwt.decode(accessToken);
+            const startDate = new Date();
+            startDate.setHours(0, 0, 0, 0);
+            const endDate = new Date();
+            endDate.setHours(23, 59, 59, 999);
+            let list = await rdvModel.find({
+                $and: [
+                    { employe_id: userPayload.aud, completion: true },
+                    {
+                        date_heure: {
+                            $gte: startDate,
+                            $lte: endDate
+                        }
+                    },
+                ]
+            }).sort({date_heure : -1})
+            return res.json(list);
+        } catch (error) {
+            next(error)
+        }
+    },
+
+    completeRdv: async (req, res, next) => {
+        let {id} = req.params;
+        let rdv = await rdvModel.findById(id);
+        rdv.completion = true;
+        await rdv.save();
+        return res.sendStatus(201);
+    },
+
+    getTotalCommissionToday: async (req, res, next) => {
+        const accessToken = req.cookies.jwtAccess
+            let userPayload = jwt.decode(accessToken);
+            const startDate = new Date();
+            startDate.setHours(0, 0, 0, 0);
+            const endDate = new Date();
+            endDate.setHours(23, 59, 59, 999);
+            let list = await rdvModel.find({
+                $and: [
+                    { employe_id: userPayload.aud, completion: true },
+                    {
+                        date_heure: {
+                            $gte: startDate,
+                            $lte: endDate
+                        }
+                    },
+                ]
+            }).populate("service_id").sort({date_heure : -1});
+            return res.json(await employeService.computeTotalCommission(list,true));
+    },
+
+    updateEmploye
 }

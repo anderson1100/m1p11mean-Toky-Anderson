@@ -1,3 +1,4 @@
+const { number } = require("joi");
 const mongoose = require("mongoose")
 let Schema = mongoose.Schema
 
@@ -28,7 +29,7 @@ const offre_speciale = new Schema({
   },
   liste_service: [service],
   reduction: {
-    type: Number
+    type: [Number]
   },
   date_debut: {
     type: Date
@@ -38,4 +39,4 @@ const offre_speciale = new Schema({
   }
 });
 
-module.exports = mongoose.model("offre_speciale",offre_speciale,"offre_sepciale")
+module.exports = mongoose.model("offre_speciale",offre_speciale,"offre_speciale")

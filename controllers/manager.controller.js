@@ -2,7 +2,8 @@ const createError = require('http-errors')
 const serviceModel = require('../models/service')
 const account = require('../models/account')
 const { userCredentialsSchema } = require('../helpers/validation')
-const bcrypt = require("bcrypt")
+const managerService = require('../services/manager.service')
+const categorieModel = require('../models/categorie')
 
 module.exports = {
 
@@ -22,10 +23,15 @@ module.exports = {
     addEmploye: async (req, res, next) => {
         try {
             let role = "employe";
-            let userInfo = req.body;
+            let {nom,prenom,email,username,password,heure_debut,heure_fin} = req.body;
+            let userInfo = {nom : nom,prenom : prenom, email: email, username : username, password : password, heure_debut : heure_debut, heure_fin: heure_fin};
+            userInfo.photo = req.file.originalname;
             const validationResult = await userCredentialsSchema.validateAsync(userInfo);
 
             let user = new account(validationResult)
+
+            user.heure_debut = new Date(userInfo.heure_debut);
+            user.heure_fin = new Date(userInfo.heure_fin);
 
             const doesExist = await account.exists({
                 $or: [
@@ -34,20 +40,17 @@ module.exports = {
                 ]
             })
 
-            console.log("does exist with exists method test", doesExist)
+            //console.log("does exist with exists method test", doesExist)
 
             if (doesExist)
                 throw createError.Conflict('email/username already been registered')
 
             user.role = role;
 
-            user.heure_debut = new Date(user.heure_debut);
-            user.heure_fin = new Date(user.heure_fin);
-
             await user.bcryptPassword();
             const savedUser = await user.save()
             //console.log(savedUser);
-            res.sendStatus(201);
+            return res.sendStatus(201);
         } catch (error) {
             if (error.isJoi === true) error.status = 422
             next(error)
@@ -58,7 +61,7 @@ module.exports = {
         try {
             const { id } = req.params;
             await account.deleteOne({ _id: id });
-            res.sendStatus(200);
+            return res.sendStatus(200);
         } catch (error) {
             next(error)
         }
@@ -77,14 +80,18 @@ module.exports = {
             employe.email = email;
             employe.username = username;
             if (req.query.chpass !== undefined) {
-                console.log("changing employe password");
+                console.log("changing an employe's password");
                 employe.password = password;
                 await employe.bcryptPassword();
             }
             employe.heure_debut = debut;
             employe.heure_fin = fin;
+            //to verify
+            if(req.file !== undefined){
+                employe.photo = req.file.originalname;
+            }
             await employe.save();
-            res.sendStatus(200)
+            return res.sendStatus(200)
         } catch (error) {
             next(error)
         }
@@ -107,15 +114,17 @@ module.exports = {
 
     addService: async (req, res, next) => {
         try {
-            let serviceInfo = req.body;
-            let service = new serviceModel(serviceInfo);
-            const doesExist = await account.exists({ nom : service.nom})
+            const {nom, description, id_categorie, prix, duree_minute, commission} = req.body;
+            let categorie = await categorieModel.findById(id_categorie);
+            let service = new serviceModel({nom : nom, description : description, categorie: categorie, prix: prix, duree_minute: duree_minute, commission : commission, image : req.file.originalname});
+            const doesExist = await serviceModel.exists({ nom : service.nom})
 
             if (doesExist)
                 throw createError.Conflict('service name already used');
 
             const saved = await service.save()
-            res.sendStatus(201);
+             return res.sendStatus(201);
+            //console.log(req.body,req.file);
         } catch (error) {
             next(error)
         }
@@ -135,8 +144,9 @@ module.exports = {
         //req.body contains user : whole employe object, additional : {password : true/false}
         try {
             const { id } = req.params;
-            const {nom, description, categorie, prix, duree_minute, commission} = req.body;
+            const {nom, description, id_categorie, prix, duree_minute, commission} = req.body;
             //categorie
+            let categorie = await categorieModel.findById(id_categorie);
             let service = await serviceModel.findById(id);
             service.nom = nom;
             service.description = description;
@@ -144,10 +154,77 @@ module.exports = {
             service.prix = prix;
             service.duree_minute = duree_minute;
             service.commission = commission;
+            service.categorie = categorie;
+            //to verify
+            if(req.file !== undefined){
+                service.image = req.file.originalname;
+            }
             await service.save();
-            res.sendStatus(200);
+            return res.sendStatus(200);
+        } catch (error) {
+            next(error)
+        }
+    },
+
+    //stats
+
+    getBeneficeMonth : async(req, res, next) => {
+        try{
+            const now = new Date();
+            const year = req.query.year ? parseInt(req.query.year) : now.getFullYear();
+            const month = req.query.month ? (parseInt(req.query.month) - 1) : now.getMonth();
+            //console.log("body",req.body);
+            let result = await managerService.getBeneficeMonth(month, year, req.body)
+            return res.json(result);
+        }catch(error){
+            next(error)
+        }
+    },
+
+
+    tempsTravailMoyenByEmploye : async(req, res,next ) => {
+        try{
+            let result = await managerService.tempsTravailMoyenByEmploye();
+            return res.json(result);
+        }catch(error){
+            next(error)
+        }
+    },
+
+    countRdvByDayForMonth : async (req, res, next) => {
+        try {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth();
+            if (req.query.month !== undefined) {
+                month = parseInt(req.query.month) - 1
+            }
+            if (req.query.year !== undefined) {
+                year = parseInt(req.query.year)
+            }
+            result = await managerService.countRdvByDayForMonth(month,year);
+            return res.json(result);
+        } catch (error) {
+            next(error)
+        }
+    },
+
+    chiffreAffaireByDayForMonth : async (req, res, next) => {
+        try {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth();
+            if (req.query.month !== undefined) {
+                month = parseInt(req.query.month) - 1
+            }
+            if (req.query.year !== undefined) {
+                year = parseInt(req.query.year)
+            }
+            result = await managerService.chiffreAffaireByDayForMonth(month,year);
+            return res.json(result);
         } catch (error) {
             next(error)
         }
     }
+
 }

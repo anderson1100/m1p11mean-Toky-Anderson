@@ -1,0 +1,84 @@
+<div class="slider-banner-area">
+    <div class="container">
+        <div class="row flex-row-reverse">
+            <div class="col-lg-8 col-md-12">
+                <div class="slider-area res-mrg-md-mb">
+                           <h1>Historique des tâches</h1>
+                           <div class="tab-content">
+                            <table class="table w-80 mx-auto table-secondary table-striped">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Service</th>
+                                    <th scope="col">Date & Heure</th>
+                                    <th scope="col">Paiement</th>
+
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <th scope="row">1</th>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td><i class="fa fa-check"></i></td>
+                                    <!-- <td><i class="fa fa-times"></i></td> -->
+                                   
+                                  </tr>
+                                </tbody>
+                              </table>
+                        </div>
+                        
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-12">
+                <div class="row">
+                    <div class="col-lg-12 col-md-6 col-sm-6">
+                        <div class="single-banner mb-30">
+                           <h1>Mes Rendez-vous du jour</h1>
+                           <input type="date" id="dateInput" value="dateInput">
+                            
+                          <br>
+                          <ol class="list-group list-group-numbered">
+                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                              <div class="ms-2 me-auto">
+                                <div class="fw-bold">Nom    Service</div>
+                                Horaire : 
+                                <p>Commission : 2.000Ar</p>
+                              </div>
+                              <span class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#ModalComplete"><i class="fa fa-check"></i></span>
+                            </li>
+                           
+                          </ol>
+                          <br>
+                           <h3>Commission de la journée : <mark>10.000ar </mark></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+
+  <!-- Modal complétion -->
+ <div class="modal fade" id="ModalComplete" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">						
+                    <h4 class="modal-title">TERMINER TACHE</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">					
+                    <p>Définir cette tâche comme terminée ?</p>
+                    <p class="text-warning"><small>Cette action est irréversible.</small></p>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-bs-dismiss="modal" value="Annuler">
+                    <input type="submit" class="btn btn-danger" data-bs-dismiss="modal" value="Valider">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

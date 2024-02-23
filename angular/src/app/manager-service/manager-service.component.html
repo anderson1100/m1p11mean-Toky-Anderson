@@ -1,0 +1,448 @@
+  <!-- reto le select multiple -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.css">
+  <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/js/multi-select-tag.js"></script>
+
+
+
+<div class="slider-banner-area">
+    <div class="container">
+        <div class="row flex-row-reverse">
+            <div class="col-lg-12 col-md-15">
+                <div class="slider-area res-mrg-md-mb">
+                           <h1>Gestion Services : </h1>
+                           <span class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalNewServ">Ajouter un service <i class="fa fa-plus"></i></span>
+                           <div class="tab-content">
+                            <br>
+
+                 <table class="table w-100 mx-auto table-secondary table-striped ">
+        <thead>
+          <tr>
+            <th scope="col" width="10px"></th>
+            <th scope="col">Service</th>
+            <th scope="col">Description</th>
+            <th scope="col">Prix</th>
+            <th scope="col">Durée</th>
+            <th scope="col">Commission</th>
+            <th scope="col">Action</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row" width="10px">1</th>
+            <td>Epilation</td>
+            <td>Manala volon tongotra azjkjbkfaj akjbzkjfbazn janefkjbazjkbfua bkjbakfjbazkjb kjbajkzbfuiabziyfvbay njab ubziudbau aub ujfba</td>
+            <td>15.000</td>
+            <td>30min</td>
+            <td>10</td>
+            <td>
+                <span class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalModifServ"><i class="fa fa-pencil"></i></span>
+                <span class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalDelServ"><i class="fa fa-trash"></i></span>
+
+            </td>
+          
+          </tr>      
+          
+        </tbody>
+      </table>
+    </div>
+
+    </div>
+</div>
+<div class="col-lg-12 col-md-15">
+    <div class="slider-area res-mrg-md-mb">
+        <br><br>
+
+               <h1>Offres Spéciales : </h1>
+               <span class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalNewOffre">Ajouter une offre <i class="fa fa-plus"></i></span>
+               <div class="tab-content">
+                <br>
+
+     <table class="table w-100 mx-auto table-secondary table-striped ">
+<thead>
+<tr>
+<th scope="col" width="10px"></th>
+<th scope="col">Nom</th>
+<th scope="col">Description</th>
+<th scope="col">Services concernés</th>
+<th scope="col">Réduction</th>
+<th scope="col">Début</th>
+<th scope="col">Fin</th>
+<th scope="col">Action</th>
+
+</tr>
+</thead>
+<tbody>
+<tr>
+<th scope="row" width="10px">1</th>
+<td>Epilation</td>
+<td>Manala volon tongotra azjkjbkfaj akjbzkjfbazn janefkjbazjkbfua bkjbakfjbazkjb kjbajkzbfuiabziyfvbay njab ubziudbau aub ujfba</td>
+<td>Massage, Corps, Mains</td>
+<td>20%</td>
+<td>10-09-2024</td>
+<td>10-09-2024</td>
+
+<td>
+    <span class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalModifOffre"><i class="fa fa-pencil"></i></span>
+    <span class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalDelOffre"><i class="fa fa-trash"></i></span>
+
+</td>
+
+</tr>      
+
+</tbody>
+</table>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Modal New Offre -->
+<div class="modal fade" id="modalNewOffre" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-5 col-sm-12 col-xs-12">
+                        <div class="tab-content quickview-big-img">
+                            <div id="pro-1" class="tab-pane fade show active">
+                                <img src="assets/img/profil.jpg" alt="">
+                            </div>
+                            
+                        </div>
+                        <!-- Thumbnail Large Image End -->
+                        <!-- Thumbnail Image End -->
+                       
+                    </div>
+                    <div class="col-md-7 col-sm-12 col-xs-12">
+                        <div class="product-details-content quickview-content">
+                            <h2>Créer Offre Spéciale </h2>
+                                     <br>
+                                     <div class="form-group ">
+                                        <label for="nom">Nom</label>
+                                        <input type="text" class="form-control" id="nom" placeholder="Nom">
+                                      </div>
+                                      <div class="form-group ">
+                                         <label for="desc">Description</label>
+                                         <input type="text" class="form-control" id="desc" placeholder="Description">
+                                       </div>  
+
+                                       <div class="form-group ">
+                                        <label for="serv">Services</label>
+                                        <select name="services" id="services" multiple>
+                                            <option value="1">Epilation</option>
+                                            <option value="2">Coiffure</option>
+                                         
+                                        </select>
+                                      </div>   
+                                      
+                                      <script>
+                                        new MultiSelectTag('services') 
+                                    </script>
+
+                                      <br>
+                                      <div class="form-group col-md-6">
+                                         <label for="reductions">Réduction</label>
+                                         <input type="number" class="form-control" id="number" placeholder="10%">
+                                       </div>
+                                       <div class="form-group col-md-6">
+                                         <label for="duuree">Début</label>
+                                         <input type="date" class="form-control" id="number" placeholder="">
+                                       </div>
+                                       <div class="form-group col-md-6">
+                                         <label for="commission">Fin</label>
+                                         <input type="date" class="form-control" id="number" placeholder="0">
+                                       </div>
+                                      <br>
+                                
+                                      <br><br>
+                                   
+                                      <a class="btn btn-danger" data-bs-dismiss="modal">Modifier </a>
+
+                            
+
+                              
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- Modal end -->
+
+
+
+<!-- Modal New Service -->
+<div class="modal fade" id="modalNewServ" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-5 col-sm-12 col-xs-12">
+                        <div class="tab-content quickview-big-img">
+                            <div id="pro-1" class="tab-pane fade show active">
+                                <img src="assets/img/profil.jpg" alt="">
+                            </div>
+                            
+                        </div>
+                        <!-- Thumbnail Large Image End -->
+                        <!-- Thumbnail Image End -->
+                       
+                    </div>
+                    <div class="col-md-7 col-sm-12 col-xs-12">
+                        <div class="product-details-content quickview-content">
+                            <h2>Créer un nouveau Service</h2>
+                                     <br>
+                                     <div class="form-group ">
+                                       <label for="nom">Nom</label>
+                                       <input type="text" class="form-control" id="nom" placeholder="Nom">
+                                     </div>
+                                     <div class="form-group ">
+                                        <label for="desc">Description</label>
+                                        <input type="text" class="form-control" id="desc" placeholder="Description">
+                                      </div>
+                                     <br>
+                                     <div class="form-group col-md-6">
+                                        <label for="prix">Prix</label>
+                                        <input type="number" class="form-control" id="number" placeholder="10.000">
+                                      </div>
+                                      <div class="form-group col-md-6">
+                                        <label for="duuree">Durée</label>
+                                        <input type="number" class="form-control" id="number" placeholder="10 min">
+                                      </div>
+                                      <div class="form-group col-md-6">
+                                        <label for="commission">Commission</label>
+                                        <input type="number" class="form-control" id="number" placeholder="20">
+                                      </div>
+                                      <br>
+                                
+                                      <br><br>
+                                   
+                                      <a class="btn btn-danger" data-bs-dismiss="modal">Créer </a>
+
+                            
+
+                              
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- Modal end -->
+
+
+<!-- Modal Modif Service -->
+<div class="modal fade" id="modalModifServ" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-5 col-sm-12 col-xs-12">
+                        <div class="tab-content quickview-big-img">
+                            <div id="pro-1" class="tab-pane fade show active">
+                                <img src="assets/img/profil.jpg" alt="">
+                            </div>
+                            
+                        </div>
+                        <!-- Thumbnail Large Image End -->
+                        <!-- Thumbnail Image End -->
+                       
+                    </div>
+                    <div class="col-md-7 col-sm-12 col-xs-12">
+                        <div class="product-details-content quickview-content">
+                            <h2>Service Détails</h2>
+                                     <br>
+                                     <div class="form-group ">
+                                       <label for="nom">Nom</label>
+                                       <input type="text" class="form-control" id="nom" placeholder="Nom">
+                                     </div>
+                                     <div class="form-group ">
+                                        <label for="desc">Description</label>
+                                        <input type="text" class="form-control" id="desc" placeholder="Description">
+                                      </div>
+                                     <br>
+                                     <div class="form-group col-md-6">
+                                        <label for="prix">Prix</label>
+                                        <input type="number" class="form-control" id="number" placeholder="10.000">
+                                      </div>
+                                      <div class="form-group col-md-6">
+                                        <label for="duuree">Durée</label>
+                                        <input type="number" class="form-control" id="number" placeholder="10 min">
+                                      </div>
+                                      <div class="form-group col-md-6">
+                                        <label for="commission">Commission</label>
+                                        <input type="number" class="form-control" id="number" placeholder="20">
+                                      </div>
+                                      <br>
+                                
+                                      <br><br>
+                                   
+                                      <a class="btn btn-danger" data-bs-dismiss="modal">Modifier </a>
+
+                            
+
+                              
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- Modal end -->
+<!-- Modal Modif Offre -->
+<div class="modal fade" id="modalModifOffre" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-5 col-sm-12 col-xs-12">
+                        <div class="tab-content quickview-big-img">
+                            <div id="pro-1" class="tab-pane fade show active">
+                                <img src="assets/img/profil.jpg" alt="">
+                            </div>
+                            
+                        </div>
+                        <!-- Thumbnail Large Image End -->
+                        <!-- Thumbnail Image End -->
+                       
+                    </div>
+                    <div class="col-md-7 col-sm-12 col-xs-12">
+                        <div class="product-details-content quickview-content">
+                            <h2>Offre Spéciale Détails</h2>
+                                     <br>
+                                     <div class="form-group ">
+                                        <label for="nom">Nom</label>
+                                        <input type="text" class="form-control" id="nom" placeholder="Nom">
+                                      </div>
+                                      <div class="form-group ">
+                                         <label for="desc">Description</label>
+                                         <input type="text" class="form-control" id="desc" placeholder="Description">
+                                       </div>  
+
+                                       <div class="form-group ">
+                                        <label for="serv">Services</label>
+                                        <select name="services" id="services" multiple>
+                                            <option value="1">Epilation</option>
+                                            <option value="2">Coiffure</option>
+                                         
+                                        </select>
+                                      </div>   
+                                      
+                                      <script>
+                                        new MultiSelectTag('services') 
+                                    </script>
+
+                                      <br>
+                                      <div class="form-group col-md-6">
+                                         <label for="reductions">Réduction</label>
+                                         <input type="number" class="form-control" id="number" placeholder="10%">
+                                       </div>
+                                       <div class="form-group col-md-6">
+                                         <label for="duuree">Début</label>
+                                         <input type="date" class="form-control" id="number" placeholder="">
+                                       </div>
+                                       <div class="form-group col-md-6">
+                                         <label for="commission">Fin</label>
+                                         <input type="date" class="form-control" id="number" placeholder="0">
+                                       </div>
+                                      <br>
+                                
+                                      <br><br>
+                                   
+                                      <a class="btn btn-danger" data-bs-dismiss="modal">Modifier </a>
+
+                            
+
+                              
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- Modal end -->
+
+
+
+<!-- Supprimer Service -->
+<div class="modal fade" id="modalDelServ" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">						
+                    <h4 class="modal-title">Supprimer Service </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">					
+                    <p>Etes-vous sure de vouloir retirer ce Service ?</p>
+                    <p class="text-warning"><small>Cette action est irréversible.</small></p>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-bs-dismiss="modal" value="Annuler">
+                    <input type="submit" class="btn btn-danger" value="Supprimer">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Supprimer Offre -->
+<div class="modal fade" id="modalDelOffre" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">						
+                    <h4 class="modal-title">Supprimer Offre </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">					
+                    <p>Etes-vous sure de vouloir de supprimer cet Offre Spéciale ?</p>
+                    <p class="text-warning"><small>Cette action est irréversible.</small></p>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-bs-dismiss="modal" value="Annuler">
+                    <input type="submit" class="btn btn-danger" value="Supprimer">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<style>
+    tbody {
+    display:block;
+    max-height:500px;
+    overflow-y:auto;
+}
+thead, tbody tr {
+    display:table;
+    width:100%;
+    table-layout:fixed;
+}
+thead {
+    width: calc( 100% - 1em )
+} 
+</style>

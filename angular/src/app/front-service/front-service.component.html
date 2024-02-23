@@ -1,0 +1,178 @@
+<div class="product-area">
+    <div class="container">
+        <br>
+        <div class="section-title text-center mb-55">
+            <h2>NOS SERVICES</h2>
+        </div>
+        @if(loading()){
+            <div class="col-md-6 offset-md-6 spinner-border text-info" role="status"></div>
+        }@else{
+            <div class="tab-content jump">
+                @for(categorie of listCategorie; track categorie._id){
+                    <!-- can add an empty section with @empty -->
+                    <div class="product-tab-list nav pt-35 pb-60 product-tab-pink2 text-center">
+    
+                        <!-- <a *ngFor="let categorie of categories" data-bs-toggle="tab" >
+                            <h4>{{ categorie.nom}}  </h4>
+                        </a> -->
+                        <a class="active" href="#product-2" data-bs-toggle="tab">
+                            <h4>{{categorie.nom}}</h4>
+                        </a>
+        
+                    </div>
+                    <div class="tab-pane active" id="product-1">
+                        <div class="row item-wrapper3">
+
+                            <!-- individual service -->
+                            @for(service of listService[$index]; track service._id){
+                                <!-- {{service.nom}} -->
+                                <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6 toggle-item-active3" style="margin-left: 70px;">
+                                    <div class="product-wrap-2 mb-25">
+                                        <div class="product-img">
+                                            <a href="product-details.html">
+                                                <img class="default-img" [src]="baseUrl+'images/'+service.image" alt="" width="60" height="300">
+                                                <img class="hover-img" [src]="baseUrl+'images/'+service.image" alt="" width="60" height="300">
+                                            </a>
+                                            <span class="pink">-20%</span>
+                                            <div class="product-action-2">
+            
+                                                <a title="Add to cart" href="#" data-bs-toggle="modal"
+                                                    data-bs-target="#detailModal" (click)="getService(service._id)"><i class="fa fa-shopping-cart"></i></a>
+            
+                                            </div>
+                                        </div>
+                                        <div class="product-content-2">
+                                            <div class="title-price-wrap-2">
+                                                <h3><a href="product-details.html">{{service.nom}}</a></h3>
+                                                <div class="price-2">
+                                                    <span>{{service.prix}} Ariary</span>
+                                                    <span class="old">{{service.prix}} Ariary</span>
+                                                </div>
+                                            </div>
+                                            <div class="pro-wishlist-2">
+                                                <a title="Wishlist" href="wishlist.html"><i class="fa fa-heart-o"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            
+                        </div>
+                        <div class="col-md-6 offset-md-5">
+                            <nav aria-label="...">
+                                <ul class="pagination">
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item active">
+                                        <a class="page-link" href="#">2 <span class="sr-only"></span></a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                }
+                
+            </div>
+        }
+        
+
+    </div>
+</div>
+
+<!-- Modal détails service -->
+<div class="modal fade" id="detailModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    @if(modalLoading()){
+                        <div class="col-md-6 offset-md-6 spinner-border text-info" role="status"></div>
+                    }@else{
+                    <div class="col-md-5 col-sm-12 col-xs-12">
+                        <div class="tab-content quickview-big-img">
+                            <div id="pro-1" class="tab-pane fade show active">
+                                <img [src]="baseUrl+'images/'+service.image" alt="">
+                            </div>
+                            <div id="pro-2" class="tab-pane fade">
+                                <img [src]="baseUrl+'images/'+service.image" alt="">
+                            </div>
+                            <div id="pro-3" class="tab-pane fade">
+                                <img [src]="baseUrl+'images/'+service.image" alt="">
+                            </div>
+                            <div id="pro-4" class="tab-pane fade">
+                                <img [src]="baseUrl+'images/'+service.image" alt="">
+                            </div>
+                        </div>
+                        <!-- Thumbnail Large Image End -->
+                        <!-- Thumbnail Image End -->
+                        <div class="quickview-wrap mt-15">
+                            <div class="quickview-slide-active owl-carousel nav nav-style-1" role="tablist">
+                                <a class="active" data-bs-toggle="tab" href="#pro-1"><img
+                                    [src]="baseUrl+'images/'+service.image" alt=""></a>
+                                <a data-bs-toggle="tab" href="#pro-2"><img [src]="baseUrl+'images/'+service.image"
+                                        alt=""></a>
+                                <a data-bs-toggle="tab" href="#pro-3"><img [src]="baseUrl+'images/'+service.image"
+                                        alt=""></a>
+                                <a data-bs-toggle="tab" href="#pro-4"><img [src]="baseUrl+'images/'+service.image"
+                                        alt=""></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7 col-sm-12 col-xs-12">
+                        <div class="product-details-content quickview-content">
+                            <h2>{{service.nom}}</h2>
+                            <div class="product-details-price">
+                                <span>{{service.prix}} ariary</span>
+                                <span class="old">{{service.prix}} ariary</span>
+                            </div>
+                            <div class="pro-details-rating-wrap">
+                                <div class="pro-details-rating">
+                                    <i class="fa fa-star-o yellow"></i>
+                                    <i class="fa fa-star-o yellow"></i>
+                                    <i class="fa fa-star-o yellow"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                </div>
+                                <span>Durée : {{service.duree_minute}} min</span>
+                            </div>
+                            <p>{{service.description}}</p>
+
+
+
+                            <div class="pro-details-quality">
+
+                                <div class="pro-details-cart btn-hover">
+                                    <a href="#" data-bs-dismiss="modal">Ajouter à mon panier</a>
+                                </div>
+                                <div class="pro-details-wishlist">
+                                    <a href="#"><i class="fa fa-heart-o"></i></a>
+                                </div>
+
+                            </div>
+
+                            <!-- <div class="col-md-6 offset-md-3 spinner-border text-info" role="status"></div> -->
+
+                            <div class="alert alert-success" role="alert">
+                                Ce service a bien été ajouté à votre panier ! 
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal end -->

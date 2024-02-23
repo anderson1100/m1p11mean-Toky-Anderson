@@ -32,28 +32,17 @@ const service = new Schema({
   }
 });
 
-const rendezVous = new Schema({
+const basket = new Schema({
   client_id: {
     type: Schema.Types.ObjectId,
     ref: "account",
     required: true
   },
-  employe_id: {
-    type: Schema.Types.ObjectId,
-    ref: "account",
-    required: true
-  },
-  services: [service],
-  date_heure: {
-    type: Date
-  },
-  completion: {
-    type: Boolean
-  },
-  paiement:{
-    type: Boolean
+  services: {
+    type : [service],
+    default: []
   }
 });
 
 
-module.exports = mongoose.model("rendez_vous",rendezVous,"rendez_vous")
+module.exports = mongoose.model("basket",basket,"basket")

@@ -6,8 +6,60 @@ const { userCredentialsSchema } = require('../helpers/validation')
 const jwt = require('jsonwebtoken')
 const rdvModel = require('../models/rendez-vous')
 const clientService = require('../services/client.service')
+const basketModel = require('../models/basket')
 
 module.exports = {
+
+    getBasket: async (req, res, next) => { //no route yet
+        try {
+            const accessToken = req.cookies.jwtAccess
+            let userPayload = jwt.decode(accessToken);
+            const client_id = userPayload.aud;
+            const basket = await basketModel.find({ client_id: client_id });
+            return res.json(basket[0]);
+        } catch (error) {
+            next(error)
+        }
+    },
+
+    deleteFromBasket: async (req, res, next) => { //no route yet
+        try {
+            const { id } = req.params;
+            const service = await serviceModel.findById(id);
+            const accessToken = req.cookies.jwtAccess
+            let userPayload = jwt.decode(accessToken);
+            const client_id = userPayload.aud;
+            let basket_array = await basketModel.find({ client_id: client_id });
+            let basket = basket_array[0]
+            let newListService = basket.services.filter((elem) => {
+                return (elem._id.toString() !== id)
+            })
+            basket.services = newListService;
+            await basket.save();
+            return res.sendStatus(200);
+        } catch (error) {
+            next(error)
+        }
+    },
+
+    addToBasket: async (req, res, next) => { //no route yet
+        try {
+            //verify if already in basket
+            const { id } = req.params;
+            const service = await serviceModel.findById(id);
+            const accessToken = req.cookies.jwtAccess
+            let userPayload = jwt.decode(accessToken);
+            const client_id = userPayload.aud;
+            let basket_array = await basketModel.find({ client_id: client_id });
+            let basket = basket_array[0];
+            basket.services.push(service);
+            await basket.save();
+            return res.sendStatus(201);
+        } catch (error) {
+            next(error)
+        }
+    },
+
     serviceSimpleSearch: async (req, res, next) => {
         try {
             if (req.query.search === undefined) {
@@ -40,30 +92,30 @@ module.exports = {
             const page = req.query.page ? parseInt(req.query.page) : 1;
             const limit = req.query.limit ? parseInt(req.query.limit) : 5;
             const skip = (page - 1) * limit;
-            let list = await rdvModel.find({ client_id: userPayload.aud}).populate(["employe_id","service_id"]).sort({ date_heure: -1 }).skip(skip).limit(limit);
+            let list = await rdvModel.find({ client_id: userPayload.aud }).populate(["employe_id"]).sort({ date_heure: -1 }).skip(skip).limit(limit);
             return res.json(list);
         } catch (error) {
             next(error)
         }
     },
 
-    getAllCategorie: async (req,res,next) => {
-        try{
+    getAllCategorie: async (req, res, next) => {
+        try {
             const list = await categorieModel.find();
-             res.json(list);
+            res.json(list);
         }
-        catch(error){
+        catch (error) {
             next(error)
         }
     },
 
 
-    getAllService: async(req, res, next) => {
-        try{
+    getAllService: async (req, res, next) => {
+        try {
             const list = await serviceModel.find();
             res.json(list);
         }
-        catch(error){
+        catch (error) {
             next(error)
         }
     },
@@ -90,11 +142,24 @@ module.exports = {
         }
     },
 
+    countPagesServicesCategorie: async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            const limit = req.query.limit ? parseInt(req.query.limit) : 4;
+            const totalDocuments = await serviceModel.countDocuments({ "categorie._id": id });
+            const totalPages = Math.ceil(totalDocuments / limit);
+            res.json(totalPages);
+            return res.json(list);
+        } catch (error) {
+            return next(error)
+        }
+    },
+
     getListServiceCategorie: async (req, res, next) => {
         try {
             const { id } = req.params;
             const page = req.query.page ? parseInt(req.query.page) : 1;
-            const limit = req.query.limit ? parseInt(req.query.limit) : 100;
+            const limit = req.query.limit ? parseInt(req.query.limit) : 4;
             const skip = (page - 1) * limit;
             let list = await serviceModel.find({ "categorie._id": id }).skip(skip).limit(limit);
             return res.json(list);
@@ -217,7 +282,7 @@ module.exports = {
 
     getCurrentOffreSpecialeService: async (req, res, next) => {
         try {
-            let {id} = req.params;
+            let { id } = req.params;
             let value = await clientService.getCurrentOffreSpecialeService(id);
             return res.json(value);
         } catch (error) {
@@ -248,6 +313,25 @@ module.exports = {
         }
     },
 
+    getTotalPriceRdvNotPaid: async (req, res, next) => { //no route yet
+        try {
+            let { id } = req.params
+            // const accessToken = req.cookies.jwtAccess
+            // let userPayload = jwt.decode(accessToken);
+            let total = await clientService.getTotalPriceRdvNotPaid(id);
+            return res.json(total);
+        } catch (error) {
+            next(error)
+        }
+    },
+
+    getTotalPriceBasket: async (req, res, next) => { //no route yet
+        const accessToken = req.cookies.jwtAccess
+        let userPayload = jwt.decode(accessToken);
+        let total = await clientService.getTotalPriceBasket(userPayload.aud);
+        return res.json(total);
+    },
+
     rappelRendezVous: async (req, res, next) => {       ///////////////////////////////////////////////
         try {
             const accessToken = req.cookies.jwtAccess
@@ -262,18 +346,24 @@ module.exports = {
         try {
             //req.body contains : id client, id service, id employe, dateheure
             //gestion d'erreurs
-            const { clientId, employeId, serviceId, dateHeureString } = req.body
+            const accessToken = req.cookies.jwtAccess
+            let userPayload = jwt.decode(accessToken);
+            let clientId = userPayload.aud;
+            const basket_array = await basketModel.find({ client_id: clientId });
+            const basket = basket_array[0];
+            const { employeId, dateHeureString } = req.body
             const dateHeure = new Date(dateHeureString);
             const employe = await account.findById(employeId);
-            const service = await serviceModel.findById(serviceId);
-
-            if (employe.isInWorkTime(dateHeure, service.duree_minute)) {
+            const rdvDuree = await clientService.getTotalDureeBasket(clientId);
+            //const service = await serviceModel.findById(serviceId);
+            if (employe.isInWorkTime(dateHeure, rdvDuree)) {
                 const rdvBeforeArray = await clientService.getNearestRdvBefore(employeId, dateHeure);
                 const rdvBefore = rdvBeforeArray.length > 0 ? rdvBeforeArray[0] : null;
                 //console.log("rendez-vous before : ", rdvBefore)
                 if (rdvBefore !== null) {
-                    let serviceBefore = await serviceModel.findById(rdvBefore.service_id);
-                    const HMrdvBefore = rdvBefore.date_heure.getHours() * 60 + rdvBefore.date_heure.getMinutes() + serviceBefore.duree_minute;
+                    //let serviceBefore = await serviceModel.findById(rdvBefore.service_id);
+                    let dureeRdvBefore = await clientService.getTotalDureeRdv(rdvBefore._id);
+                    const HMrdvBefore = rdvBefore.date_heure.getHours() * 60 + rdvBefore.date_heure.getMinutes() + dureeRdvBefore;
                     const HMnewRdz = dateHeure.getHours() * 60 + dateHeure.getMinutes();
                     if (HMrdvBefore > HMnewRdz) return res.json({ state: -1 });
                 }
@@ -281,22 +371,26 @@ module.exports = {
                 const rdvAfterArray = await clientService.getNearestRdvAfter(employeId, dateHeure);
                 const rdvAfter = rdvAfterArray.length > 0 ? rdvAfterArray[0] : null;
                 if (rdvAfter !== null) {
-                    let serviceNew = await serviceModel.findById(serviceId);
-                    const HMnewRdzWithDuree = dateHeure.getHours() * 60 + dateHeure.getMinutes() + serviceNew.duree_minute;
+                    //let serviceNew = await serviceModel.findById(serviceId);
+                    let dureeRdvAfter = await clientService.getTotalDureeRdv(rdvAfter._id);
+                    const HMnewRdzWithDuree = dateHeure.getHours() * 60 + dateHeure.getMinutes() + dureeRdvAfter;
                     const HMrdvAfter = rdvAfter.date_heure.getHours() * 60 + rdvAfter.date_heure.getMinutes();
                     if (HMnewRdzWithDuree > HMrdvAfter) {
                         return res.json({ state: -1 })
                     }
 
                     //save rdv
-                    const newRdv = new rdvModel({ client_id: clientId, employe_id: employeId, service_id: serviceId, date_heure: dateHeure, completion: false, paiement: false })
+                    const newRdv = new rdvModel({ client_id: clientId, employe_id: employeId, services: basket.services, date_heure: dateHeure, completion: false, paiement: false })
+
                     await newRdv.save()
                     return res.json({ state: 1 })
                 }
 
                 //save rdv
-                const newRdv = new rdvModel({ client_id: clientId, employe_id: employeId, service_id: serviceId, date_heure: dateHeure, completion: false, paiement: false })
+                const newRdv = new rdvModel({ client_id: clientId, employe_id: employeId, services: basket.services, date_heure: dateHeure, completion: false, paiement: false })
                 await newRdv.save()
+                basket.services = [];
+                await basket.save();
                 return res.json({ state: 1 })
             }
             return res.json({ state: 0 })

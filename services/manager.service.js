@@ -4,7 +4,7 @@ const offreSpecialeModel = require('../models/offre-speciale');
 //const transaction = require('../models/transaction');
 //const serviceModel = require('../models/service');
 
-getTotalChiffreAffaireMonth = async (month, year) => {
+getTotalChiffreAffaireMonth = async (month, year) => { 
     try {
         let total = 0;
         let result = await transactionModel.aggregate([
@@ -41,13 +41,13 @@ getTotalChiffreAffaireMonth = async (month, year) => {
             }
         ])
         if (result.length > 0) total += result[0].totalPayment;
-        return result[0]; ////
+        return result[0]; 
     } catch (error) {
         throw error;
     }
 }
 
-getPercentageReductionDate = async (service_id, date) => {
+getPercentageReductionDate = async (service_id, date) => { 
     try {
         let value = 0;
         let offreSpec = await offreSpecialeModel.find({
@@ -70,16 +70,25 @@ getPercentageReductionDate = async (service_id, date) => {
 }
 
 getTotalCommissionMonth = async (month, year, withOffreSpecialReduction) => {
-    let listRdv = await rendezVousModel.find({
-        date_heure: {
-            $gte: new Date(year, month, 1),
-            $lt: new Date(year, month + 1, 1)
+
+    let listRdv = await rendezVousModel.aggregate([
+        {
+            $match: {
+                date_heure: {
+                    $gte: new Date(year, month, 1),
+                    $lt: new Date(year, month + 1, 1)
+                }
+            }
+        },
+        {
+            $unwind: "$services"
         }
-    }).populate("service_id");
-    //console.log(listRdv);
+    ]);
+
     let total = 0;
     for (let rdv of listRdv) {
-        let service = rdv.service_id;
+        console.log("rdv",rdv);
+        let service = rdv.services;
         let price = service.prix;
         if (withOffreSpecialReduction) {
             let reductionPercentage = await getPercentageReductionDate(service._id, rdv.date_heure);
@@ -87,21 +96,16 @@ getTotalCommissionMonth = async (month, year, withOffreSpecialReduction) => {
         }
         let commission = (price * service.commission) / 100;
         total += commission;
-        //console.log(total);
-        return total;
     }
     return total;
 }
 
-getBeneficeMonth = async (month, year, inputObject) => { //month verified
+getBeneficeMonth = async (month, year, inputObject) => {
     let totalChiffreAffaire = await getTotalChiffreAffaireMonth(month, year);
     let totalCommission = await getTotalCommissionMonth(month, year, true /*or false*/);
-    console.log(totalCommission);
     inputObject["commissions"] = totalCommission;
-    //console.log("inputObject",inputObject);
     let benefice = totalChiffreAffaire.totalPayment;
     for (let key in inputObject) {
-        //console.log(key);
         if (typeof inputObject[key] === 'number') {
             benefice -= inputObject[key];
         }
@@ -119,19 +123,6 @@ tempsTravailMoyenByEmploye = async () => {
         const result = await rendezVousModel.aggregate([
             {
                 $lookup: {
-                    from: "service",
-                    localField: "service_id",
-                    foreignField: "_id",
-                    as: "services"
-                }
-            },
-            {
-                $addFields: {
-                    service: { $arrayElemAt: ["$services", 0] }
-                }
-            },
-            {
-                $lookup: {
                     from: "account",
                     localField: "employe_id",
                     foreignField: "_id",
@@ -143,10 +134,14 @@ tempsTravailMoyenByEmploye = async () => {
                     employe: { $arrayElemAt: ["$employe_array", 0] }
                 }
             },
+            // consider moving "$match" up if applicable for better performance 
             {
                 $match: {
                     "completion": true
                 }
+            },
+            {
+                $unwind : "$services"
             },
             {
                 $group: {
@@ -159,7 +154,7 @@ tempsTravailMoyenByEmploye = async () => {
                         day: { $dayOfMonth: "$date_heure" }
                         // hour: { $hour: "$date_heure" } //verify 
                     },
-                    totalDureeMinute: { $sum: "$service.duree_minute" }
+                    totalDureeMinute: { $sum: "$services.duree_minute" }
                 }
             },
             {
@@ -173,14 +168,13 @@ tempsTravailMoyenByEmploye = async () => {
                 }
             }
         ]);
-        //console.log("result", result);
         return result;
     } catch (error) {
         throw error
     }
 }
 
-countRdvByDayForMonth = async (month, year) => {
+countRdvByDayForMonth = async (month, year) => { 
     try {
         const result = await rendezVousModel.aggregate([
             {
@@ -208,7 +202,7 @@ countRdvByDayForMonth = async (month, year) => {
 }
 
 
-chiffreAffaireByDayForMonth = async (month, year) => {
+chiffreAffaireByDayForMonth = async (month, year) => { 
     try {
         let result = await transactionModel.aggregate([
             {

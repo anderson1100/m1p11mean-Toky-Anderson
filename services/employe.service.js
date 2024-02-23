@@ -7,8 +7,9 @@ const offreSpecialeModel = require('../models/offre-speciale')
 computeTotalCommission = async (listRdv, withOffreSpecialReduction) => {
     try {
         let total = 0;
-        for (rdv of listRdv) {
-            let service = rdv.service_id;
+        for (let rdv of listRdv) {
+            console.log(rdv.services);
+            let service = rdv.services;
             let price = service.prix;
             if (withOffreSpecialReduction) {
                 let reductionPercentage = await getPercentageReductionToday(service._id);

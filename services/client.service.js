@@ -3,10 +3,129 @@ const transaction = require('../models/transaction');
 const serviceModel = require('../models/service');
 const offreSpecialeModel = require('../models/offre-speciale')
 const { getPercentageReductionToday } = require('../services/employe.service')
+const basketModel = require('../models/basket')
+const mongoose = require("mongoose")
+
 
 module.exports = {
 
     getPercentageReductionToday,
+
+    //getTotalPrixBasket and rdv
+
+    // emptyBasket: async (id_client) => {
+    //     try {
+    //         let result = await basketModel.find({ client_id: id_client });
+    //         if (result.length > 0) {
+    //             let basket = result[0];
+    //             basket.services = [];
+    //             return await basket.save();
+    //         }
+    //     } catch (error) {
+    //         throw (error)
+    //     }
+    // },
+
+    getTotalPriceBasket: async (id_client) => {
+        try {
+            const basket_array = await basketModel.find({ client_id: id_client });
+            let basket = basket_array[0];
+            let total = 0;
+            for (let service of basket.services) {
+                let id = service._id;
+                let percentageReduction = await getPercentageReductionToday(id);
+                let actualPrice = service.prix
+                actualPrice -= (service.prix * percentageReduction) / 100;
+                total += actualPrice
+            }
+            return total;
+        } catch (error) {
+            throw (error)
+        }
+    },
+
+    getTotalPriceRdvNotPaid: async (id_rdv) => {
+        try {
+            const rdv = await rendezVous.find({ _id: id_rdv });
+            let total = 0;
+            for (let service of rdv.services) {
+                let id = service._id;
+                let percentageReduction = await clientService.getPercentageReductionToday(id);
+                let actualPrice = service.prix
+                actualPrice -= (service.prix * percentageReduction) / 100;
+                total += actualPrice
+            }
+            return total;
+        } catch (error) {
+            throw (error)
+        }
+    },
+
+    getTotalDureeRdv: async (id_rdv) => {
+        try {
+            let result = await rendezVous.aggregate([
+                {
+                    $match: {
+                        _id: new mongoose.Types.ObjectId(id_rdv)
+                    }
+                },
+                {
+                    $unwind: "$services"
+                },
+                {
+                    $group: {
+                        _id: {
+                            id: "$_id"
+                        },
+                        totalDuree: { $sum: "$services.duree_minute" }
+                    }
+                }
+
+            ])
+
+            console.log("totaldureerdv",result)
+
+            if (result.length > 0) {
+                return result[0].totalDuree;
+            } else {
+                return 0;
+            }
+        } catch (error) {
+            throw (error)
+        }
+    },
+
+    getTotalDureeBasket: async (id_client) => {
+        try {
+            let result = await basketModel.aggregate([
+                {
+                    $match: {
+                        "client_id" : new mongoose.Types.ObjectId(id_client)
+                    }
+                },
+                {
+                    $unwind: "$services"
+                },
+                {
+                    $group: {
+                        _id: "$_id",
+                        totalDuree: { $sum: "$services.duree_minute" }
+                    }
+                }
+
+            ]);
+
+            //console.log("totaldureebasketdsfds",result)
+
+            if (result.length > 0) {
+                return result[0].totalDuree;
+            } else {
+                return 0;
+            }
+        } catch (error) {
+            throw (error)
+        }
+    },
 
     payment: async (paymentObject) => {
         //verify price offre speciale
@@ -40,11 +159,11 @@ module.exports = {
     getCurrentListOffreSpecialeActive: async () => {
         let now = new Date();
         let list = await offreSpecialeModel.find({
-            date_debut : {
-                $lte : now
+            date_debut: {
+                $lte: now
             },
-            date_fin : {
-                $gte : now
+            date_fin: {
+                $gte: now
             }
         })
         return list;

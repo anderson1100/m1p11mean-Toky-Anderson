@@ -40,6 +40,19 @@ router.delete('/services_fav/:id', clientController.deleteServiceFav);
 
 router.post('/services_fav/:id',clientController.addServiceFav);
 
+//basket 
+
+router.get('/my_basket',clientController.getBasket);
+
+router.delete('/my_basket/:id', clientController.deleteFromBasket);
+
+router.post('/my_basket/:id',clientController.addToBasket);
+
+
+router.get('/basket_total_price',clientController.getTotalPriceBasket)
+
+router.get('/rdv_not_paid_total_price',clientController.getTotalPriceRdvNotPaid)
+
 
 
 router.get('/services/:id',clientController.getService);
@@ -68,9 +81,11 @@ router.get('/actual_price_service/:id',clientController.getActualPriceService);
 
 router.get('/rappel_rdv',clientController.rappelRendezVous)
 
+router.get('/count_pages_categorie/:id',clientController.countPagesServicesCategorie)
+
 router.post('/signup',async(req, res, next)=>{
   req.body.role = "client";
-  signup(res, req, next);
+  signup(req, res, next);
 })
 
 router.post('/login',async(req, res, next)=>{

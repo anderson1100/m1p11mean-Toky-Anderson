@@ -8473,15 +8473,6 @@ a.default-btn {
   }
 }
 
-.toggle-item-active,
-.toggle-item-active2,
-.toggle-item-active3,
-.toggle-item-active4,
-.toggle-item-active5,
-.toggle-item-active6 {
-  display: none;
-}
-
 .view-more {
   display: block;
   text-align: center;

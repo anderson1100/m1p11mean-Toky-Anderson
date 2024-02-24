@@ -65,6 +65,8 @@ router.get('/employes',clientController.getEmployes);
 
 router.post('/appointment',clientController.appointment);
 
+router.get('/total_duree_basket',clientController.getTotalDureeBasket);
+
 router.post('/payment',clientController.payment);
 
 router.get('/service_simple_search',clientController.serviceSimpleSearch);

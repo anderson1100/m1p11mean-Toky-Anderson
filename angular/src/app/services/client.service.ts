@@ -8,14 +8,18 @@ export class ClientService {
 
   constructor(private http: HttpClient) { }
 
-  baseUrl : string = "http://localhost:3000/"
+  baseUrl : string = "http://localhost:3000/";
 
   pageToShow(actualPage : number, nombrePage : number){
-    let rep = [];
+    let rep: [number, number[], number] = [0, [], 0];
     rep[0] = (actualPage === 1) ? 0 : 1;
-    rep[1] = (actualPage < 3) ? 1 : Math.min(actualPage-actualPage % 3,nombrePage);
-    rep[2] = Math.min(2+(rep[1]),nombrePage);
-    rep[3] = (actualPage === nombrePage) ? 0 : 1;
+    let first = (actualPage < 3) ? 1 : Math.min(actualPage-actualPage % 3,nombrePage);
+    let last = Math.min(2+(first),nombrePage);
+    rep[1] = [];
+    for(let i = first ; i<=last; i++){
+      rep[1].push(i);
+    }
+    rep[2] = (actualPage === nombrePage) ? 0 : 1;
     return rep;
   }
 
@@ -42,6 +46,23 @@ export class ClientService {
     return this.http.post('client/login', loginObject, options)
   }
 
+  addToServicesFav(id_service : string){
+    ///////////////////////////
+    let headers = new HttpHeaders({
+      'content-Type': 'application/json',
+    })
+
+    let options = {
+      headers: headers,
+    };
+
+    return this.http.post(`client/services_fav/${id_service}`,{}, options)
+  }
+
+  removeFromServicesFav(id_service : string){
+    return this.http.delete(`client/services_fav/${id_service}`)
+  } 
+
   signup(signupObject : object){
     //console.log(signupObject)
 
@@ -60,8 +81,12 @@ export class ClientService {
     return this.http.get('client/categories');
   }
 
-  getListServiceByCategorie(idCategorie : string){
-    return this.http.get(`client/services_by_categorie/${idCategorie}`)
+  getListServiceByCategorie(idCategorie : string, page: string){
+    return this.http.get(`client/services_by_categorie/${idCategorie}?page=${page}&limit=3`)
+  }
+
+  countPagesByCategorie(id : string){
+    return this.http.get(`client/count_pages_categorie/${id}?limit=3`);
   }
 
   getService(id : string){
@@ -78,6 +103,14 @@ export class ClientService {
 
   getBasket(){
     return this.http.get('client/my_basket');
+  }
+
+  getTotalPriceBasket(){
+    return this.http.get('client/basket_total_price');
+  }
+
+  getTotalDureeBasket(){
+    return this.http.get('client/total_duree_basket');
   }
 
   addToBasket(id : string){

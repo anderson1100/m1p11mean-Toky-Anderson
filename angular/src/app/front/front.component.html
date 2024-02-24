@@ -36,38 +36,51 @@
                         <div class="same-style header-wishlist">
                             <a routerLink="/favoris"><i class="pe-7s-like"></i></a>
                         </div>
+
+
+                        <!-- basket   -->
                         <div class="same-style cart-wrap">
                             <button class="icon-cart">
                                 <i class="pe-7s-shopbag"></i>
-                                <span class="count-style">02</span>
+                                <span class="count-style">{{basket? basket.length : 0 }}</span>
                             </button>
                             <div class="shopping-cart-content">
                                 <ul>
-
+                                    @for(service of basket; track service._id){
                                     <li class="single-shopping-cart">
                                         <div class="shopping-cart-img">
-                                            <a href="#"><img alt="" src="assets/img/cart/cart-2.webp"></a>
+                                            <a href="#"><img alt="" width="80" height="80"
+                                                    [src]="baseUrl+'images/'+service.image"></a>
                                         </div>
                                         <div class="shopping-cart-title">
-                                            <h4><a href="#">Service Title </a></h4>
-                                            <h6>Durée: 20min</h6>
-                                            <span>$260.00</span>
+                                            <h4><a href="#">{{service.nom}}</a></h4>
+                                            <h6>Durée: {{service.duree_minute}} min</h6>
+                                            <span>{{service.actualPrice}} ar</span>
                                         </div>
                                         <div class="shopping-cart-delete">
-                                            <a href="#"><i class="fa fa-times-circle"></i></a>
+                                            <a href="#"
+                                                (click)="$event.preventDefault();removeFromBasket(service._id)"><i
+                                                    class="fa fa-times-circle"></i></a>
                                         </div>
                                     </li>
+                                    }
                                 </ul>
                                 <div class="shopping-cart-total">
-                                    <h4>Durée totale : <span>2h</span></h4>
-                                    <h4>Total : <span class="shop-total">$260.00</span></h4>
+                                    <h4>Durée totale : <span>{{dureeTotal}}</span></h4>
+                                    <h4>Total : <span class="shop-total">{{priceTotal}} ariary</span></h4>
                                 </div>
                                 <div class="shopping-cart-btn btn-hover text-center">
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#modalRDV"
                                         data-bs-dismiss="modal">Prendre rendez-vous</a>
                                 </div>
+                                @if(loading()){
+                                <div class="col-md-6 offset-md-5 spinner-border text-info" role="status"></div>
+                                }
                             </div>
                         </div>
+                        <!-- basket   -->
+
+
                     </div>
                 </div>
             </div>
@@ -113,9 +126,9 @@
     <div class="container">
         <div class="bg-img pt-100 pb-100" style="background-image:url(assets/img/bg/bg1.jpg);">
             <div class="save-money-content">
-                <h2>Shop and save money</h2>
+                <h2>Profitez de nos offres spéciales</h2>
                 <div class="save-money-btn">
-                    <a href="#">Buy $97.09</a>
+                    <a href="#">afficher</a>
                 </div>
             </div>
         </div>
@@ -452,7 +465,21 @@
 </div>
 <!-- Modal end -->
 
-
+@if(isVisible){
+    <div class="position-fixed bottom-0 start-50 translate-middle-x p-3" style="z-index: 11">
+        <div id="liveToast" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <img src="assets/img/icon-img/smiling-face-with-heart-shaped-eyes.svg" width="24" height="17" class="rounded me-2" alt="...">
+            <strong class="me-auto">Glamour Beauty</strong>
+            <small>Il y a quelques seconde</small>
+            <button type="button" class="btn-close" aria-label="Close" (click)="hide()"></button>
+          </div>
+          <div class="toast-body">
+            {{toastMessage}}
+          </div>
+        </div>
+      </div>
+}
 
 
 <style>

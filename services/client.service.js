@@ -3,13 +3,39 @@ const transaction = require('../models/transaction');
 const serviceModel = require('../models/service');
 const offreSpecialeModel = require('../models/offre-speciale')
 const { getPercentageReductionToday } = require('../services/employe.service')
-const basketModel = require('../models/basket')
+const basketModel = require('../models/basket');
+const account = require('../models/account');
 const mongoose = require("mongoose")
 
 
 module.exports = {
 
     getPercentageReductionToday,
+
+    isServiceFav: async (client_id,service_id) => {
+        try {
+            let client = await account.findById(client_id);
+            let listServiceFav = client.service_fav;
+
+            let isIdInArray = listServiceFav.some(service => service._id.toString() === service_id);
+            return isIdInArray;
+
+        } catch (error) {
+            throw error
+        }
+    },
+
+    getActualPriceService: async (id) => {
+        try {
+            let service = await serviceModel.findById(id);
+            let percentageReduction = await getPercentageReductionToday(id);
+            let actualPrice = service.prix
+            actualPrice -= (service.prix * percentageReduction) / 100;
+            return actualPrice;
+        } catch (error) {
+            throw error;
+        }
+    },
 
     //getTotalPrixBasket and rdv
 
@@ -83,7 +109,7 @@ module.exports = {
 
             ])
 
-            console.log("totaldureerdv",result)
+            console.log("totaldureerdv", result)
 
             if (result.length > 0) {
                 return result[0].totalDuree;
@@ -100,7 +126,7 @@ module.exports = {
             let result = await basketModel.aggregate([
                 {
                     $match: {
-                        "client_id" : new mongoose.Types.ObjectId(id_client)
+                        "client_id": new mongoose.Types.ObjectId(id_client)
                     }
                 },
                 {

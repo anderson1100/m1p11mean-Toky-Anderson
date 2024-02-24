@@ -16,7 +16,23 @@ module.exports = {
             let userPayload = jwt.decode(accessToken);
             const client_id = userPayload.aud;
             const basket = await basketModel.find({ client_id: client_id });
-            return res.json(basket[0]);
+            let basketObject = basket[0].toObject();
+            for (service of basketObject.services) {
+                service.actualPrice = await clientService.getActualPriceService(service._id);
+            }
+            return res.json(basketObject.services);
+        } catch (error) {
+            next(error)
+        }
+    },
+
+    getTotalDureeBasket: async (req, res, next) => {
+        try {
+            const accessToken = req.cookies.jwtAccess
+            let userPayload = jwt.decode(accessToken);
+            const client_id = userPayload.aud;
+            let duree = await clientService.getTotalDureeBasket(client_id);
+            res.json(duree);
         } catch (error) {
             next(error)
         }
@@ -36,7 +52,7 @@ module.exports = {
             })
             basket.services = newListService;
             await basket.save();
-            return res.sendStatus(200);
+            return res.json("ok");
         } catch (error) {
             next(error)
         }
@@ -54,7 +70,7 @@ module.exports = {
             let basket = basket_array[0];
             basket.services.push(service);
             await basket.save();
-            return res.sendStatus(201);
+            return res.status(201).json("service added to basket");
         } catch (error) {
             next(error)
         }
@@ -125,7 +141,11 @@ module.exports = {
         try {
             const { id } = req.params;
             const service = await serviceModel.findById(id);
-            return res.json(service);
+            let serviceObject = service.toObject();
+            serviceObject.actualPrice = await clientService.getActualPriceService(serviceObject._id);
+            serviceObject.reduction = await clientService.getPercentageReductionToday(serviceObject._id);
+            serviceObject.offreSpeciale = await clientService.getCurrentOffreSpecialeService(serviceObject._id);
+            return res.json(serviceObject);
         } catch (error) {
             //if model error
             //return next(error)
@@ -149,20 +169,66 @@ module.exports = {
             const totalDocuments = await serviceModel.countDocuments({ "categorie._id": id });
             const totalPages = Math.ceil(totalDocuments / limit);
             res.json(totalPages);
-            return res.json(list);
         } catch (error) {
             return next(error)
         }
     },
 
+    getCurrentOffreSpecialeService: async (req, res, next) => {
+        try {
+            let { id } = req.params;
+            let value = await clientService.getCurrentOffreSpecialeService(id);
+            return res.json(value);
+        } catch (error) {
+            next(error)
+        }
+    },
+
+    getPercentageReductionService: async (req, res, next) => {
+        try {
+            let { id } = req.params;
+            let value = await clientService.getPercentageReductionToday(id);
+            return res.json(value);
+        } catch (error) {
+            next(error)
+        }
+    },
+
+    getActualPriceService: async (req, res, next) => {
+        try {
+            let { id } = req.params;
+            let actualPrice = await clientService.getActualPriceService(id);
+            return res.json(actualPrice);
+        } catch (error) {
+            next(error)
+        }
+    },
+
     getListServiceCategorie: async (req, res, next) => {
         try {
+
+            //fav
+            const accessToken = req.cookies.jwtAccess
+            let userPayload = jwt.decode(accessToken);
+            
+            
             const { id } = req.params;
             const page = req.query.page ? parseInt(req.query.page) : 1;
             const limit = req.query.limit ? parseInt(req.query.limit) : 4;
             const skip = (page - 1) * limit;
             let list = await serviceModel.find({ "categorie._id": id }).skip(skip).limit(limit);
-            return res.json(list);
+            let newList = [];
+            for (let rdv of list) {
+                let rdvObject = rdv.toObject();
+                
+                //actualPrice reduction offreSpeciale
+                rdvObject.actualPrice = await clientService.getActualPriceService(rdvObject._id);
+                rdvObject.reduction = await clientService.getPercentageReductionToday(rdvObject._id);
+                rdvObject.offreSpeciale = await clientService.getCurrentOffreSpecialeService(rdvObject._id);
+                rdvObject.isFav = await clientService.isServiceFav(userPayload.aud,rdvObject._id.toString());
+                newList.push(rdvObject);
+            }
+            return res.json(newList);
         } catch (error) {
             return next(error)
         }
@@ -193,7 +259,7 @@ module.exports = {
             let client = await account.findById(userPayload.aud);
             client.employe_fav = client.employe_fav.filter(employe => employe._id.toString() !== id);
             await client.save();
-            return res.sendStatus(200);
+            return res.json("deleted");
         } catch (error) {
             return next(error)
         }
@@ -220,7 +286,7 @@ module.exports = {
             let service = await serviceModel.findById(id);
             client.service_fav.push(service);
             await client.save();
-            return res.sendStatus(201);
+            return res.status(201).json("service ajouté parmi vos favoris");
         } catch (error) {
             return next(error)
         }
@@ -234,7 +300,7 @@ module.exports = {
             let client = await account.findById(userPayload.aud);
             client.service_fav = client.service_fav.filter(service => service._id.toString() !== id);
             await client.save();
-            return res.sendStatus(200);
+            return res.json("deleted");
         } catch (error) {
             return next(error)
         }
@@ -275,39 +341,6 @@ module.exports = {
         try {
             let list = await clientService.getCurrentListOffreSpecialeActive();
             return res.json(list);
-        } catch (error) {
-            next(error)
-        }
-    },
-
-    getCurrentOffreSpecialeService: async (req, res, next) => {
-        try {
-            let { id } = req.params;
-            let value = await clientService.getCurrentOffreSpecialeService(id);
-            return res.json(value);
-        } catch (error) {
-            next(error)
-        }
-    },
-
-    getPercentageReductionService: async (req, res, next) => {
-        try {
-            let { id } = req.params;
-            let value = await clientService.getPercentageReductionToday(id);
-            return res.json(value);
-        } catch (error) {
-            next(error)
-        }
-    },
-
-    getActualPriceService: async (req, res, next) => {
-        try {
-            let { id } = req.params;
-            let service = await serviceModel.findById(id);
-            let percentageReduction = await clientService.getPercentageReductionToday(id);
-            let actualPrice = service.prix
-            actualPrice -= (service.prix * percentageReduction) / 100;
-            return res.json(actualPrice);
         } catch (error) {
             next(error)
         }

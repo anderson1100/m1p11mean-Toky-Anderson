@@ -13,6 +13,7 @@ import { ManagerComponent } from './manager/manager.component';
 import { ManagerPersonnelComponent } from './manager-personnel/manager-personnel.component';
 import { ManagerServiceComponent } from './manager-service/manager-service.component';
 import { ManagerDashboardComponent } from './manager-dashboard/manager-dashboard.component';
+import { FrontRechercheComponent } from './front-recherche/front-recherche.component';
 
 export const routes: Routes = [
    { 
@@ -69,5 +70,7 @@ export const routes: Routes = [
 
 
     { path: 'login', component: LoginComponent},
-    { path:'employe', component: EmployeComponent}
+    { path:'employe', component: EmployeComponent},
+    {  path:'recherches', component: FrontRechercheComponent}
+
 ];

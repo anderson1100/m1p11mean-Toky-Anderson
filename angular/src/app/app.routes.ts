@@ -14,6 +14,7 @@ import { ManagerPersonnelComponent } from './manager-personnel/manager-personnel
 import { ManagerServiceComponent } from './manager-service/manager-service.component';
 import { ManagerDashboardComponent } from './manager-dashboard/manager-dashboard.component';
 import { FrontRechercheComponent } from './front-recherche/front-recherche.component';
+import { LoginEmployeComponent } from './login-employe/login-employe.component';
 
 export const routes: Routes = [
    { 
@@ -34,7 +35,11 @@ export const routes: Routes = [
             },
             {
                 path:'offresSpeciales', component: FrontWrapper2Component
+            },
+            { 
+                path:'recherches', component: FrontRechercheComponent
             }
+
            
         ]
     },
@@ -43,6 +48,7 @@ export const routes: Routes = [
         path:'employe',
         component : EmployeComponent,
         children : [
+         
             {
                 path:'calendar', component: EmployeCalendarComponent
             },
@@ -71,6 +77,7 @@ export const routes: Routes = [
 
     { path: 'login', component: LoginComponent},
     { path:'employe', component: EmployeComponent},
-    {  path:'recherches', component: FrontRechercheComponent}
+    { path:'employe/login', component: LoginEmployeComponent}
+    
 
 ];

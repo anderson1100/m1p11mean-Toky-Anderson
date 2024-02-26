@@ -38,4 +38,6 @@ router.post('/complete_rdv/:id',employeController.completeRdv);
 
 router.get('/total_commission_today',employeController.getTotalCommissionToday);
 
+router.get('/list_rdv_today', employeController.getListRdvToday);
+
 module.exports = router;

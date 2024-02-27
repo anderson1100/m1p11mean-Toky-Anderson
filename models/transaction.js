@@ -11,7 +11,7 @@ const transaction = new Schema({
     type: Number
   },
   num_carte_credit : {
-    type : Number
+    type : String
   },
   nom : {
     type : String

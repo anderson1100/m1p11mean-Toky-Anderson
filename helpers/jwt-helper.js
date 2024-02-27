@@ -63,6 +63,7 @@ module.exports = {
         async (err, payload) => {
           if (err){
             if(err.name === 'TokenExpiredError'){
+              console.log("refresh token expired")
               const result = await refreshTokenModel.deleteOne({value : refreshToken})
             }
             return reject(createError.Forbidden())
@@ -73,6 +74,7 @@ module.exports = {
           const rf = await refreshTokenModel.findOne({ user_id: userId })
           if (!rf) reject(createError.InternalServerError())
           if(refreshToken === rf.value) return resolve(userId)
+          console.log("not the same refreshToken");
           reject(createError.Forbidden())
         }
       )

@@ -25,6 +25,19 @@ module.exports = {
         }
     },
 
+    isEmployeFav: async (client_id,id) => {
+        try {
+            let client = await account.findById(client_id);
+            let listEmployeFav = client.employe_fav;
+
+            let isIdInArray = listEmployeFav.some(employe => employe._id.toString() === id);
+            return isIdInArray;
+
+        } catch (error) {
+            throw error
+        }
+    },
+
     getActualPriceService: async (id) => {
         try {
             let service = await serviceModel.findById(id);
@@ -72,11 +85,12 @@ module.exports = {
 
     getTotalPriceRdvNotPaid: async (id_rdv) => {
         try {
-            const rdv = await rendezVous.find({ _id: id_rdv });
+            const rdv_array = await rendezVous.find({ _id: id_rdv });
+            let rdv = rdv_array[0];
             let total = 0;
             for (let service of rdv.services) {
                 let id = service._id;
-                let percentageReduction = await clientService.getPercentageReductionToday(id);
+                let percentageReduction = await getPercentageReductionToday(id);
                 let actualPrice = service.prix
                 actualPrice -= (service.prix * percentageReduction) / 100;
                 total += actualPrice

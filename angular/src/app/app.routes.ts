@@ -13,61 +13,68 @@ import { ManagerComponent } from './manager/manager.component';
 import { ManagerPersonnelComponent } from './manager-personnel/manager-personnel.component';
 import { ManagerServiceComponent } from './manager-service/manager-service.component';
 import { ManagerDashboardComponent } from './manager-dashboard/manager-dashboard.component';
+import { SimpleSearchClientComponent } from './simple-search-client/simple-search-client.component';
 
 export const routes: Routes = [
-   { 
-        path:'',
+    {
+        path: '',
         component: FrontComponent,
-        children : [
+        children: [
             {
-               path:'services', component: FrontWrapper1Component,
+                path: '', component: FrontWrapper1Component
             },
             {
-                path:'employes', component: FrontEmployeComponent,
+                path: 'services', component: FrontWrapper1Component,
             },
             {
-                path:'favoris', component: FrontFavorisComponent
+                path: 'employes', component: FrontEmployeComponent,
             },
             {
-                path:'historique' , component: FrontHistoriqueComponent
+                path: 'favoris', component: FrontFavorisComponent
             },
             {
-                path:'offresSpeciales', component: FrontWrapper2Component
+                path: 'simple_search', component: SimpleSearchClientComponent
+            },
+            {
+                path: 'historique', component: FrontHistoriqueComponent
+            },
+            {
+                path: 'offresSpeciales', component: FrontWrapper2Component
             }
-           
+
         ]
     },
 
     {
-        path:'employe',
-        component : EmployeComponent,
-        children : [
+        path: 'employe',
+        component: EmployeComponent,
+        children: [
             {
-                path:'calendar', component: EmployeCalendarComponent
+                path: 'calendar', component: EmployeCalendarComponent
             },
             {
-                path:'profil', component: EmployeProfilComponent
+                path: 'profil', component: EmployeProfilComponent
             }
         ]
     },
 
     {
-        path:'manager',
+        path: 'manager',
         component: ManagerComponent,
-        children : [
+        children: [
             {
-                path:'personnel', component: ManagerPersonnelComponent
+                path: 'personnel', component: ManagerPersonnelComponent
             },
             {
-                path:'service', component: ManagerServiceComponent
+                path: 'service', component: ManagerServiceComponent
             },
             {
-                path:'dashboard', component: ManagerDashboardComponent
+                path: 'dashboard', component: ManagerDashboardComponent
             }
         ]
     },
 
 
-    { path: 'login', component: LoginComponent},
-    { path:'employe', component: EmployeComponent}
+    { path: 'login', component: LoginComponent },
+    { path: 'employe', component: EmployeComponent }
 ];

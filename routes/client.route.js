@@ -7,6 +7,7 @@ const clientController = require('../controllers/client.controller');
 router.use("/:ressource?", (req, res, next) => {
   const excludedRoutes = ['signup', 'login'];
   if (!excludedRoutes.includes(req.params.ressource || '')) {
+    console.log("inside");
     return verifyToken("client")(req, res, next);
   }
   next();
@@ -84,6 +85,10 @@ router.get('/actual_price_service/:id',clientController.getActualPriceService);
 router.get('/rappel_rdv',clientController.rappelRendezVous)
 
 router.get('/count_pages_categorie/:id',clientController.countPagesServicesCategorie)
+
+router.get('/count_pages_rdv',clientController.countHistoryRdv)
+
+router.get('/count_pages_simple_search',clientController.countPagesServiceSimpleSearch)
 
 router.post('/signup',async(req, res, next)=>{
   req.body.role = "client";

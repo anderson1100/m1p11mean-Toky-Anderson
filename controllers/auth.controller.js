@@ -109,9 +109,11 @@ const verifyToken = (role) => {
     const token = cookies.jwtAccess;
     JWT.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, payload) => {
       if (err) {
+        console.log("access token error . Now refresh token")
         return refreshToken(req, res, next); //invalid token
       }
       if (role !== payload.role) {
+        console.log("route not for this role")
         return res.sendStatus(403); //unauthorized access
       }
       //req.user = payload.username
@@ -125,11 +127,17 @@ const refreshToken = async (req, res, next) => {
   console.log("calling refreshToken")
   try {
     const cookies = req.cookies
+    console.log("1")
     if (!cookies?.jwt) return res.sendStatus(403);
+    console.log("2")
     const refreshToken = cookies.jwt
+    console.log("3")
     const userId = await verifyRefreshToken(refreshToken)
+    console.log("4")
     const user = await account.findOne({ _id: userId })
+    console.log("5")
     const accessToken = await signAccessToken(user)
+    console.log("6")
     res.cookie('jwt', refreshToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 })
     res.cookie('jwtAccess', accessToken, { httpOnly: false, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 })
     next()

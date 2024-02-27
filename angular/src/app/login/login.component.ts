@@ -59,6 +59,7 @@ export class LoginComponent implements OnInit {
     //console.log(loginObject);
     this.clientService.login(loginObject).subscribe({
       next: (data: any) => {
+        console.log(data);
         this.loading.set(false);
         this.router.navigate(['/services'])
       },

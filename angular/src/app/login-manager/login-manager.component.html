@@ -1,0 +1,88 @@
+<header class="header-area clearfix header-hm9 transparent-bar">
+    <div class="container">
+        <div class="header-top-area header-top-border17">
+            <div class="row">
+                <div class="col-lg-5 col-md-8 col-12">
+
+                </div>
+                <div class="col-lg-2 d-none d-lg-block">
+                    <div class="logo-hm9 text-center">
+                        <a href="index.html">
+                            <img alt="" src="assets/img/logo/logo.webp">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-4 col-12">
+                    <div class="header-right-wrap">
+                        <div class="same-style header-wishlist">
+                            <a routerLink="/favoris"><i class="pe-7s-back"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="header-bottom sticky-bar header-res-padding header-padding-2">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 d-block d-lg-none">
+                    <div class="logo">
+                        <a routerLink="/services">
+                            <img alt="" src="assets/img/logo/logo.webp">
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="product-details-content quickview-content">
+        <div class="container">
+            <br>
+            <div class="section-title text-center mb-55">
+                <h2>SE CONNECTER EN TANT QUE MANAGER</h2>
+                <br>
+                <br>
+                <div class="pro-details-size-color">
+                    <div class="pro-details-color-wrap">
+                        <div class="pro-details-color-content">
+
+                            <form [formGroup]="loginForm" (ngSubmit)="$event.preventDefault();login()">
+                                <div class="form-row">
+                                    <label for="utilisateur">Nom d'utilisateur ou email</label>
+                                    <input type="text" class="form-control" formControlName="login">
+                                </div>
+                                <br>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="expiryDate">Mot de passe</label>
+                                        <input type="password" class="form-control" formControlName="password">
+                                    </div>
+                                </div>
+                                <div class="pro-details-quality">
+
+                                    <div class="pro-details-cart btn-hover">
+                                        <button type="submit" style="border : 0; background-color: white;"><a
+                                                href="javascript:void(0);"><i>Se connecter</i></a></button>
+                                    </div>
+                                </div>
+                            </form>
+                            @if(loading()){
+                            <div class="spinner-border text-info" role="status"></div>
+                            }
+                            @if(error()){
+                            <div class="alert alert-danger" role="alert">
+                                Nom d'utilisateur ou mot de passe invalide
+                            </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

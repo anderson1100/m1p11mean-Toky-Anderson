@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken')
 const rdvModel = require('../models/rendez-vous')
 const clientService = require('../services/client.service')
 const basketModel = require('../models/basket')
+const transaction = require('../models/transaction')
 
 module.exports = {
 
@@ -82,8 +83,11 @@ module.exports = {
                 throw createError.BadRequest();
             }
 
+            const accessToken = req.cookies.jwtAccess
+            let userPayload = jwt.decode(accessToken);
+
             const page = req.query.page ? parseInt(req.query.page) : 1;
-            const limit = req.query.limit ? parseInt(req.query.limit) : 5;
+            const limit = req.query.limit ? parseInt(req.query.limit) : 6;
             const skip = (page - 1) * limit;
 
 
@@ -95,7 +99,43 @@ module.exports = {
             }));
 
             let result = await serviceModel.find({ $or: conditions }).skip(skip).limit(limit);
-            res.json(result);
+
+            let newList = [];
+            for (let service of result) {
+                let serviceObject = service.toObject();
+                //actualPrice reduction offreSpeciale
+                serviceObject.actualPrice = await clientService.getActualPriceService(serviceObject._id);
+                serviceObject.reduction = await clientService.getPercentageReductionToday(serviceObject._id);
+                serviceObject.offreSpeciale = await clientService.getCurrentOffreSpecialeService(serviceObject._id);
+                serviceObject.isFav = await clientService.isServiceFav(userPayload.aud,serviceObject._id.toString());
+                newList.push(serviceObject);
+            }
+
+            res.json(newList);
+        } catch (error) {
+            next(error);
+        }
+    },
+
+    countPagesServiceSimpleSearch: async (req, res, next) => {
+        try {
+            if (req.query.search === undefined) {
+                throw createError.BadRequest();
+            }
+            
+            const limit = req.query.limit ? parseInt(req.query.limit) : 6;
+
+            const { search } = req.query;
+            const searchTerms = search.split(" ");
+
+            const conditions = searchTerms.map(term => ({
+                nom: { $regex: new RegExp(term, "i") }
+            }));
+
+            const totalDocuments = await serviceModel.countDocuments({ $or: conditions });
+            const totalPages = totalDocuments === 0 ? 1 : Math.ceil(totalDocuments / limit);
+            
+            return res.json(totalPages);
         } catch (error) {
             next(error);
         }
@@ -105,11 +145,38 @@ module.exports = {
         try {
             const accessToken = req.cookies.jwtAccess
             let userPayload = jwt.decode(accessToken);
-            const page = req.query.page ? parseInt(req.query.page) : 1;
-            const limit = req.query.limit ? parseInt(req.query.limit) : 5;
-            const skip = (page - 1) * limit;
-            let list = await rdvModel.find({ client_id: userPayload.aud }).populate(["employe_id"]).sort({ date_heure: -1 }).skip(skip).limit(limit);
-            return res.json(list);
+            // const page = req.query.page ? parseInt(req.query.page) : 1;
+            // const limit = req.query.limit ? parseInt(req.query.limit) : 5;
+            //const skip = (page - 1) * limit;
+            let list = await rdvModel.find({ client_id: userPayload.aud }).populate(["employe_id"]).sort({ date_heure: -1 })/*.skip(skip).limit(limit)*/;
+            let newList = [];
+            for (let rdv of list) {
+                let rdvObject = rdv.toObject();
+                //actualPrice reduction offreSpeciale
+                if(rdvObject.paiement){
+                    let transaction_array = await transaction.find({rendez_vous_id : rdvObject._id})
+                    rdvObject.totalPrice = transaction_array[0].montant;
+                }else{
+                    rdvObject.totalPrice = await clientService.getTotalPriceRdvNotPaid(rdvObject._id);
+                }
+                rdvObject.totalDuree = await clientService.getTotalDureeRdv(rdvObject._id);
+                newList.push(rdvObject);
+            }
+            return res.json(newList);
+        } catch (error) {
+            next(error)
+        }
+    },
+
+    countHistoryRdv: async (req, res, next) => {
+        try {
+            const accessToken = req.cookies.jwtAccess
+            let userPayload = jwt.decode(accessToken);
+            const limit = req.query.limit ? parseInt(req.query.limit) : 3;
+            const totalDocuments = await rdvModel.countDocuments({ client_id: userPayload.aud });
+            //const totalPages = Math.ceil(totalDocuments / limit);
+            const totalPages = totalDocuments === 0 ? 1 : Math.ceil(totalDocuments / limit);
+            return res.json(totalPages);
         } catch (error) {
             next(error)
         }
@@ -165,9 +232,10 @@ module.exports = {
     countPagesServicesCategorie: async (req, res, next) => {
         try {
             const { id } = req.params;
-            const limit = req.query.limit ? parseInt(req.query.limit) : 4;
+            const limit = req.query.limit ? parseInt(req.query.limit) : 3;
             const totalDocuments = await serviceModel.countDocuments({ "categorie._id": id });
-            const totalPages = Math.ceil(totalDocuments / limit);
+            //const totalPages = Math.ceil(totalDocuments / limit);
+            const totalPages = totalDocuments === 0 ? 1 : Math.ceil(totalDocuments / limit);
             res.json(totalPages);
         } catch (error) {
             return next(error)
@@ -218,15 +286,15 @@ module.exports = {
             const skip = (page - 1) * limit;
             let list = await serviceModel.find({ "categorie._id": id }).skip(skip).limit(limit);
             let newList = [];
-            for (let rdv of list) {
-                let rdvObject = rdv.toObject();
+            for (let service of list) {
+                let serviceObject = service.toObject();
                 
                 //actualPrice reduction offreSpeciale
-                rdvObject.actualPrice = await clientService.getActualPriceService(rdvObject._id);
-                rdvObject.reduction = await clientService.getPercentageReductionToday(rdvObject._id);
-                rdvObject.offreSpeciale = await clientService.getCurrentOffreSpecialeService(rdvObject._id);
-                rdvObject.isFav = await clientService.isServiceFav(userPayload.aud,rdvObject._id.toString());
-                newList.push(rdvObject);
+                serviceObject.actualPrice = await clientService.getActualPriceService(serviceObject._id);
+                serviceObject.reduction = await clientService.getPercentageReductionToday(serviceObject._id);
+                serviceObject.offreSpeciale = await clientService.getCurrentOffreSpecialeService(serviceObject._id);
+                serviceObject.isFav = await clientService.isServiceFav(userPayload.aud,serviceObject._id.toString());
+                newList.push(serviceObject);
             }
             return res.json(newList);
         } catch (error) {
@@ -245,7 +313,7 @@ module.exports = {
             //console.log(arrayEmploye);
             client.employe_fav.push(arrayEmploye[0]);
             await client.save();
-            return res.sendStatus(201);
+            return res.status(201).json("employé ajouté parmi vos favoris");
         } catch (error) {
             return next(error)
         }
@@ -311,7 +379,17 @@ module.exports = {
             const accessToken = req.cookies.jwtAccess
             let userPayload = jwt.decode(accessToken);
             let client = await account.findById(userPayload.aud);
-            return res.json(client.service_fav);
+            let clientObject = client.toObject();
+            let newList = [];
+            for (let serviceObject of clientObject.service_fav) {
+                //actualPrice reduction offreSpeciale
+                serviceObject.actualPrice = await clientService.getActualPriceService(serviceObject._id);
+                serviceObject.reduction = await clientService.getPercentageReductionToday(serviceObject._id);
+                serviceObject.offreSpeciale = await clientService.getCurrentOffreSpecialeService(serviceObject._id);
+                serviceObject.isFav = await clientService.isServiceFav(userPayload.aud,serviceObject._id.toString());
+                newList.push(serviceObject)
+            }
+            return res.json(newList);
         } catch (error) {
             return next(error)
         }
@@ -319,8 +397,17 @@ module.exports = {
 
     getEmployes: async (req, res, next) => {
         try {
+            const accessToken = req.cookies.jwtAccess
+            let userPayload = jwt.decode(accessToken);
             const list = await account.find({ role: "employe" });
-            return res.json(list);
+            
+            let newList = [];
+            for(employe of list){
+                let employeObject = employe.toObject();
+                employeObject.isFav = await clientService.isEmployeFav(userPayload.aud,employeObject._id.toString());
+                newList.push(employeObject);
+            }
+            return res.json(newList);
         } catch (error) {
             next(error)
         }
@@ -330,17 +417,30 @@ module.exports = {
         //req.body contains : idRdv
         try {
             await clientService.payment(req.body)
-            return res.sendStatus(200);
+            return res.status(201).json("Paiement effectué avec succès");
         } catch (error) {
             next(error)
         }
-
     },
 
     getCurrentListOffreSpeciale: async (req, res, next) => {
         try {
+            const accessToken = req.cookies.jwtAccess
+            let userPayload = jwt.decode(accessToken);
             let list = await clientService.getCurrentListOffreSpecialeActive();
-            return res.json(list);
+            let newList = [];
+            for(offre of list){
+                let offreObject = offre.toObject();
+                for (let serviceObject of offreObject.liste_service) {
+                    //actualPrice reduction offreSpeciale
+                    serviceObject.actualPrice = await clientService.getActualPriceService(serviceObject._id);
+                    serviceObject.reduction = await clientService.getPercentageReductionToday(serviceObject._id);
+                    serviceObject.offreSpeciale = await clientService.getCurrentOffreSpecialeService(serviceObject._id);
+                    serviceObject.isFav = await clientService.isServiceFav(userPayload.aud,serviceObject._id.toString());
+                }
+                newList.push(offreObject);
+            }
+            return res.json(newList);
         } catch (error) {
             next(error)
         }
@@ -415,16 +515,16 @@ module.exports = {
                     //save rdv
                     const newRdv = new rdvModel({ client_id: clientId, employe_id: employeId, services: basket.services, date_heure: dateHeure, completion: false, paiement: false })
 
-                    await newRdv.save()
-                    return res.json({ state: 1 })
+                    let saved = await newRdv.save()
+                    return res.json({ state: 1, rdv : saved })
                 }
 
                 //save rdv
                 const newRdv = new rdvModel({ client_id: clientId, employe_id: employeId, services: basket.services, date_heure: dateHeure, completion: false, paiement: false })
-                await newRdv.save()
+                let saved = await newRdv.save()
                 basket.services = [];
                 await basket.save();
-                return res.json({ state: 1 })
+                return res.json({ state: 1, rdv : saved })
             }
             return res.json({ state: 0 })
 

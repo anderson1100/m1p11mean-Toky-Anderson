@@ -25,6 +25,7 @@
     "jwt-decode": "^4.0.0",
     "ng2-charts": "^5.0.4",
     "ngx-cookie-service": "^17.1.0",
+    "ngx-dropzone": "^3.1.0",
     "primeicons": "^6.0.1",
     "primeng": "^17.8.0",
     "rxjs": "~7.8.0",

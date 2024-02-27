@@ -111,9 +111,9 @@ getBeneficeMonth = async (month, year, inputObject) => {
         }
     }
     let responseObject = {
-        "chiffre d'affaire": totalChiffreAffaire,
+        "chiffreAffaire": totalChiffreAffaire,
         "charges": inputObject,
-        "bénéfice": benefice
+        "benefice": benefice
     }
     return responseObject;
 }

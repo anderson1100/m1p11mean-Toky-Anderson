@@ -31,15 +31,18 @@ export class RequestInterceptor implements HttpInterceptor {
             catchError((error: HttpErrorResponse) => {
                 if (error.status === 403) {
                     console.log("Unauthorized access. Redirecting to login based on role...");
+                    console.log(role);
                     if (role === 'client') {
-                        console.log("Navigate to client login");
+                        //console.log("Navigate to client login");
                         this.router.navigate(['/login']);
                     } else if (role === 'employe') {
-                        console.log("Navigate to employee login");
-                        this.router.navigate(['/login_employe']);
-                    } else if (role === 'maanger') {
-                        console.log("Navigate to employee login");
-                        this.router.navigate(['/manager/employe']);
+                        //console.log("Navigate to employee login");
+                        this.router.navigate(['employe','login']);
+
+                    } else if (role === 'manager') {
+                        //console.log("Navigate to employee login");
+                        console.log("here");
+                        this.router.navigate(['manager','login']);
                     } else {
                         console.log("Unknown role in JWT token");
                         this.router.navigate(['/login']);

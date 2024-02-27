@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { ManagerPersonnelComponent } from '../manager-personnel/manager-personnel.component';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { ManagerServiceComponent } from '../manager-service/manager-service.component';
 import { ManagerDashboardComponent } from '../manager-dashboard/manager-dashboard.component';
+import { ManagerService } from '../services/manager.service';
 
 @Component({
   selector: 'app-manager',
@@ -18,5 +19,21 @@ import { ManagerDashboardComponent } from '../manager-dashboard/manager-dashboar
   styleUrl: './manager.component.css'
 })
 export class ManagerComponent {
+
+  constructor(private router : Router, private managerService : ManagerService){
+
+  }
+
+  logout() {
+    this.router.navigate(['/manager/login'])
+    this.managerService.logout().subscribe({
+      next: (data: any) => {
+        console.log("logout");
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    });
+  }
 
 }

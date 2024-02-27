@@ -42,7 +42,7 @@ router.post('/login',async(req, res, next)=>{
 })
 
 //STATS 
-router.get('/total_benef_month',managerController.getBeneficeMonth);
+router.post('/total_benef_month',managerController.getBeneficeMonth);
 
 router.get('/temps_travail_moyen_by_employe',managerController.tempsTravailMoyenByEmploye);
 
@@ -51,7 +51,7 @@ router.get('/count_rdv_by_day_for_month',managerController.countRdvByDayForMonth
 router.get('/chiffre_affaire_by_day_for_month',managerController.chiffreAffaireByDayForMonth);
 
 //CRUD SERVICES
-router.get('/services',managerController.getServicesByPage)
+router.get('/services',managerController.getServices)
 
 router.post('/services',upload.single('image'),managerController.addService)
 
@@ -60,7 +60,7 @@ router.delete('/services/:id',managerController.deleteService)
 router.put('/services/:id',managerController.updateService)
 
 //CRUD EMPLOYES
-router.get('/employes',managerController.getEmployesByPage)
+router.get('/employes',managerController.getEmployes)
 
 router.post('/employes',upload.single('photo'),managerController.addEmploye)
 

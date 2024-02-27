@@ -20,6 +20,15 @@ module.exports = {
         }
     },
 
+    getEmployes: async (req, res, next) => {
+        try {
+            const list = await account.find({ role: "employe" });
+            return res.json(list);
+        } catch (error) {
+            next(error)
+        }
+    },
+
     addEmploye: async (req, res, next) => {
         try {
             let role = "employe";
@@ -170,6 +179,15 @@ module.exports = {
         }
     },
 
+    getServices: async (req, res, next) => {
+        try {
+            const list = await serviceModel.find();
+            return res.json(list);
+        } catch (error) {
+            next(error)
+        }
+    },
+
     addService: async (req, res, next) => {
         try {
             const {nom, description, id_categorie, prix, duree_minute, commission} = req.body;
@@ -228,9 +246,9 @@ module.exports = {
 
     getBeneficeMonth : async(req, res, next) => {
         try{
-            const now = new Date();
-            const year = req.query.year ? parseInt(req.query.year) : now.getFullYear();
-            const month = req.query.month ? (parseInt(req.query.month) - 1) : now.getMonth();
+            let now = new Date();
+            let year = req.query.year ? parseInt(req.query.year) : now.getFullYear();
+            let month = req.query.month ? (parseInt(req.query.month) - 1) : now.getMonth();
             //console.log("body",req.body);
             let result = await managerService.getBeneficeMonth(month, year, req.body)
             return res.json(result);
@@ -251,9 +269,9 @@ module.exports = {
 
     countRdvByDayForMonth : async (req, res, next) => {
         try {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = now.getMonth();
+            let now = new Date();
+            let year = now.getFullYear();
+            let month = now.getMonth();
             if (req.query.month !== undefined) {
                 month = parseInt(req.query.month) - 1
             }
@@ -269,9 +287,9 @@ module.exports = {
 
     chiffreAffaireByDayForMonth : async (req, res, next) => {
         try {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = now.getMonth();
+            let now = new Date();
+            let year = now.getFullYear();
+            let month = now.getMonth();
             if (req.query.month !== undefined) {
                 month = parseInt(req.query.month) - 1
             }

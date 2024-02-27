@@ -1,0 +1,198 @@
+<header class="header-area clearfix header-hm9 transparent-bar">
+    <div class="container">
+        <div class="header-top-area header-top-border17">
+            <div class="row">
+                <div class="col-lg-5 col-md-8 col-12">
+
+                </div>
+                <div class="col-lg-2 d-none d-lg-block">
+                    <div class="logo-hm9 text-center">
+                        <a href="index.html">
+                            <img alt="" src="assets/img/logo/logo.webp">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-4 col-12">
+                    <div class="header-right-wrap">
+                        <div class="same-style header-wishlist">
+                            <a routerLink="/favoris"><i class="pe-7s-back"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="header-bottom sticky-bar header-res-padding header-padding-2">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 d-block d-lg-none">
+                    <div class="logo">
+                        <a routerLink="/services">
+                            <img alt="" src="assets/img/logo/logo.webp">
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="product-details-content quickview-content">
+        <div class="container">
+            <br>
+            <div class="section-title text-center mb-55">
+                <h2>SE CONNECTER</h2>
+                <br>
+                <br>
+                <img style="float: right" src="assets/img/login.jpg" alt="">
+                <div class="pro-details-size-color">
+                    
+                    <div class="pro-details-color-wrap">
+                        
+                        <div class="pro-details-color-content">
+                            <br><br>
+
+                            <form [formGroup]="loginForm" (ngSubmit)="$event.preventDefault();login()">
+                                <div class="form-row">
+                                    <strong for="utilisateur">Nom d'utilisateur ou email</strong>
+                                    <input type="text" class="form-control" formControlName="login">
+                                </div>
+                                <br>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <strong for="expiryDate">Mot de passe</strong>
+                                        <input type="password" class="form-control" formControlName="password">
+                                    </div>
+                                </div>
+                                <div class="pro-details-quality">
+
+                                    <div class="pro-details-cart btn-hover">
+                                        <button type="submit" style="border : 0; background-color: white;"><a
+                                                href="javascript:void(0);"><i>Se connecter</i></a></button>
+                                    </div>
+                                    <div class="pro-details-cart btn-hover">
+                                        <button type="button" style="border : 0; background-color: white;"><a
+                                                data-bs-toggle="modal" data-bs-target="#modalInscription"><i>S'inscrire?</i>
+                                                </a></button>
+                                    </div>
+                                </div>
+                            </form>
+                            @if(loading()){
+                            <div class="spinner-border text-info" role="status"></div>
+                            }
+                            @if(error()){
+                            <div class="alert alert-danger" role="alert">
+                                Nom d'utilisateur ou mot de passe invalide
+                            </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+           
+        </div>
+    </div>
+</header>
+<!-- Modal Inscription -->
+<div class="modal fade" id="modalInscription" tabindex="0" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-5 col-sm-12 col-xs-12">
+                        <div class="tab-content quickview-big-img">
+                            <div id="pro-1" class="tab-pane fade show active">
+                                <img src="assets/img/bg/beau.jpg" alt="">
+                            </div>
+                            <div id="pro-2" class="tab-pane fade">
+                                <img src="assets/img/product/quickview-l2.webp" alt="">
+                            </div>
+                            <div id="pro-3" class="tab-pane fade">
+                                <img src="assets/img/product/quickview-l3.webp" alt="">
+                            </div>
+                            <div id="pro-4" class="tab-pane fade">
+                                <img src="assets/img/product/quickview-l2.webp" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7 col-sm-12 col-xs-12">
+                        <div class="product-details-content quickview-content">
+                            <h2>Création d'un compte Flone</h2>
+                            <div class="pro-details-size-color">
+                                <div class="pro-details-color-wrap">
+                                    <div class="pro-details-color-content">
+                                        <form [formGroup]="signupForm" (ngSubmit)="$event.preventDefault();signup()">
+                                            <div class="form-group">
+                                                <label for="email">Nom</label>
+                                                <input type="email" formControlName="nom" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="email">Prenom</label>
+                                                <input type="email" formControlName="prenom" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="cardHolderName">Nom d'utilisateur</label>
+                                                <input type="text" formControlName="username" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="email">Email</label>
+                                                <input type="email" formControlName="email" required>
+                                                @if( signupForm.get('email')?.invalid  && (signupForm.get('email')?.dirty || signupForm.get('email')?.touched)){
+                                                    <small class="text-danger">Email invalide</small>
+                                                }
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6">
+                                                    <label for="password">Mot de passe</label>
+                                                    <input type="password" id="password" formControlName="password"
+                                                        required>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label for="password2">Confirmer le Mot de passe</label>
+                                                    <input type="password" id="password2" formControlName="password2"
+                                                        required>
+                                                    @if( signupForm.get('password')?.dirty && (signupForm.value.password  !== signupForm.value.password2)){
+                                                        <small class="text-danger">Les deux champs de mot de passe ne correspondent pas</small>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div class="pro-details-quality">
+
+                                                <div class="pro-details-cart btn-hover">
+                                                    <button type="submit" [disabled]="signupForm.invalid"
+                                                        style="border : 0; background-color: white;"><a
+                                                            href="javascript:void(0);"><i>S'inscrire</i></a></button>
+                                                </div>
+
+                                            </div>
+                                        </form>
+                                        @if(loading()){
+                                        <div class="spinner-border text-info" role="status"></div>
+                                        }
+                                        @if(errorSignup()){
+                                        <div class="alert alert-danger" role="alert">
+                                            {{errorMessage()}}
+                                        </div>
+                                        }
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal end -->

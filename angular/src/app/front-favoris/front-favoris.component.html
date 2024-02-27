@@ -1,0 +1,179 @@
+<div class="product-area">
+    <div class="container">
+        <br>
+        <br><br><br><br><br><br><br>
+        <div class="section-title text-center mb-55">
+            <div class="product-tab-list nav pt-35 pb-60 product-tab-pink2 text-center">
+
+                <a class="active" href="#" data-bs-toggle="tab">
+                    <h4>Mes Services préférés </h4>
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="tab-content jump">
+            @if(loading()){
+            <div class="col-md-6 offset-md-6 spinner-border text-info" role="status"></div>
+            }@else{
+            <div class="tab-pane active" id="product-1">
+                <div class="row item-wrapper3">
+
+                    @for(service of listServiceFav; track service._id){
+                    <!-- {{service.nom}} -->
+                    <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6 toggle-item-active3" style="margin-left: 70px;">
+                        <div class="product-wrap-2 mb-25">
+                            <div class="product-img">
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#detailModal"
+                                    (click)="getService($index)">
+                                    <img class="default-img" [src]="baseUrl+'images/'+service.image" alt="" width="60"
+                                        height="300">
+                                    <img class="hover-img" [src]="baseUrl+'images/'+service.image" alt="" width="60"
+                                        height="300">
+                                </a>
+                                @if(service.offreSpeciale !== null){
+                                <span class="pink">{{service.offreSpeciale.nom}} -{{service.reduction}}%</span>
+                                }
+                                <div class="product-action-2">
+
+                                    <a title="Add to cart" href="#" data-bs-toggle="modal" data-bs-target="#detailModal"
+                                        (click)="getService($index)"><i class="fa fa-shopping-cart"></i></a>
+
+                                </div>
+                            </div>
+                            <div class="product-content-2">
+                                <div class="title-price-wrap-2">
+                                    <h3><a href="#">{{service.nom}}</a></h3>
+                                    <div class="price-2">
+                                        <span>{{service.actualPrice}} Ariary</span>
+                                        @if(service.prix!== service.actualPrice){
+                                        <span class="old">{{service.prix}} Ariary</span>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="pro-wishlist-2">
+                                    <a title="Wishlist" href="#"
+                                        (click)="$event.preventDefault(); removeServiceFromFav($index)"><i
+                                            class="fa fa-heart"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    } @empty {
+                    <div class="offset-md-3">
+                        <h3>Vous n'avez pas de services favoris pour l'instant</h3>
+                    </div>
+                    }
+
+
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="blog-area pt-95 pb-55">
+    <div class="container">
+        <div class="section-title text-center mb-55">
+            <div class="product-tab-list nav pt-35 pb-60 product-tab-pink2 text-center">
+
+                <a class="active" href="#" data-bs-toggle="tab">
+                    <h4>Mes Employés préférés </h4>
+                </a>
+
+            </div>
+
+        </div>
+
+        @if(loading()){
+        <div class="col-md-6 offset-md-6 spinner-border text-info" role="status"></div>
+        }@else{
+        <div class="row">
+            @for(employe of listEmployeFav; track employe._id){
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="blog-wrap mb-30 scroll-zoom">
+                    <div class="blog-img">
+                        <a href="#"><img [src]="baseUrl+'images/'+employe.photo" alt="" width="60" height="300"
+                                alt=""></a>
+                    </div>
+                    <div class="blog-content-wrap">
+                        <div class="blog-content text-center">
+                            <h3><a href="blog-details.html">{{employe.nom}} {{employe.prenom}}<br> </a></h3>
+                            <a tittle="Delete fav" href="#"
+                                (click)="$event.preventDefault(); removeEmployeFromFav($index)"><i
+                                    class="fa fa-heart"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            } @empty{
+            <div class="offset-md-3">
+                <h3>Vous n'avez pas d'employés favoris pour l'instant</h3>
+            </div>
+            }
+        </div>
+        }
+    </div>
+</div>
+
+<!-- Supprimer Favoris Service -->
+<div class="modal fade" id="ModalDeleteFavServ" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                    <h4 class="modal-title">Retirer Service de mes Favoris</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Etes-vous sure de vouloir retirer ce Service de vos favoris ?</p>
+                    <p class="text-warning"><small>Vous pourriez toujours le rajouter plus tard.</small></p>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-bs-dismiss="modal" value="Annuler">
+                    <input type="submit" class="btn btn-danger" value="Retirer Favoris">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Supprimer Employés Service -->
+<div class="modal fade" id="ModalDeleteFavEmp" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                    <h4 class="modal-title">Retirer Employé de mes Favoris</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Etes-vous sure de vouloir retirer cet Employé de vos favoris ?</p>
+                    <p class="text-warning"><small>Vous pourriez toujours le rajouter plus tard.</small></p>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-bs-dismiss="modal" value="Annuler">
+                    <input type="submit" class="btn btn-danger" value="Retirer Favoris">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<style>
+    .rounded-image {
+        width: 30px;
+        /* Ajustez la taille de l'image selon vos besoins */
+        height: 30px;
+        border-radius: 50%;
+        /* Rend l'image ronde en utilisant un border-radius de 50% */
+    }
+</style>

@@ -1,0 +1,292 @@
+<!-- Stats réservations -->
+<div class="slider-banner-area">
+  <div class="container">
+    <div class="row flex-row-reverse">
+      <div class="col-lg-8 col-md-12">
+        <div class="slider-area res-mrg-md-mb">
+          <div class="tab-content">
+            <div style="display: block;">
+              <canvas baseChart width="800" height="400" [type]="'bar'" [data]="reservationLineChartData"
+                [options]="lineChartOptions" [legend]="lineChartLegend">
+              </canvas>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-10">
+        <div class="row">
+          <div class="col-lg-12 col-md-6 col-sm-6">
+            <div class="single-banner mb-30">
+              <h2>Statistiques de réservations : </h2>
+              <label for="">Sélectionner un mois : </label>
+              <input type="month" [formControl]="monthYearReservationControl">
+              <div class="form-group">
+                <br>
+                <p>Total de réservation sur le mois : {{totalReservMonth}}</p>
+                <p>Maximum de réservation sur un jour : {{maxReservMonth}}</p>
+
+
+              </div>
+              <div class="form-group">
+                <br>
+                <button class="btn btn-lg btn-primary" type="button" (click)="getStatReservation()">Valider</button>
+              </div>
+              @if(loadingReserv()){
+              <div class="col-md-6 offset-md-1 spinner-border text-info mt-20" role="status"></div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top 3 Pie Services -->
+  <div class="slider-banner-area">
+    <div class="container">
+      <!-- <div class="row flex-row-reverse">
+        <div class="col-lg-15 col-md-15">
+          <div class="slider-area res-mrg-md-mb">
+            <div class="tab-content">
+              <div style="display: flex; align-items: flex;">
+                <div style="float: right; margin-right: 20px;">
+                  <strong>Top 3 Services du mois : </strong>
+                  <p>Catégorie 1</p>
+                  <p>Cat 3</p>
+                  <p>CAt 3</p>
+
+                </div>
+
+                <div>
+                  <canvas baseChart width="300" height="300" [data]="pieChartData" [labels]="pieChartLabels"
+                    [type]="'pie'" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+                </div>
+
+                <div style="float: left; align-items: left;">
+                  <div style="float: left; margin-left: 200px;">
+                    <strong>Top 3 Catégories du mois : </strong>
+                    <p>Catégorie 1</p>
+                    <p>Cat 3</p>
+                    <p>CAt 3</p>
+
+                  </div>
+
+                  <div style="float: right">
+                    <canvas baseChart width="300" height="300" [data]="pieChartData2" [labels]="pieChartLabels2"
+                      [type]="'pie'" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div> -->
+
+      <!-- Heure moyenne -->
+      <div class="slider-banner-area" border-top>
+        <div class="container">
+          <div class="row flex-row-reverse">
+            <div class="col-lg-8 col-md-12">
+
+            </div>
+            <div class="col-lg-15 col-md-15">
+              <div class="row">
+                <div class="col-lg-15 col-md-15 col-s16">
+                  <div class="single-banner mb-30">
+                    <h2>Heure de travail : </h2>
+                    <!-- <label for="">Sélectionner un mois : </label>
+                    <input type="month"> -->
+                    <div class="form-group">
+                      <br>
+                      <table class="table w-80 mx-auto table-striped overflow-y:auto">
+                        <thead>
+                          <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Nom</th>
+                            <th scope="col">Prenom</th>
+                            <th scope="col">Heure moyenne de travail par jour </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          @for(data of tempsTravailData; track $index){
+                          <tr>
+                            <th scope="row">{{$index+1}}</th>
+                            <td>{{data._id.nom_employe}}</td>
+                            <td>{{data._id.prenom_employe}}</td>
+                            <td>{{(data.avgTempsTravailPer24h)/60}}</td>
+                          </tr>
+                          }@empty{
+                          <tr>
+                            <th scope="row">...chargement</th>
+                            <td>...chargement</td>
+                            <td>...chargement</td>
+                            <td>...chargement</td>
+                          </tr>
+                          }
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+        <!-- Chiffre d'affaire -->
+        <div class="slider-banner-area">
+          <div class="container">
+            <div class="row flex-row-reverse">
+              <div class="col-lg-8 col-md-12">
+                <div class="slider-area res-mrg-md-mb">
+                  <div class="tab-content">
+                    <div style="display: block;">
+                      <canvas baseChart width="800" height="400" [type]="'bar'" [data]="cafLineChartData"
+                        [options]="lineChartOptions2" [legend]="lineChartLegend">
+                      </canvas>
+
+                    </div>
+                  </div>
+                  <br>
+                  <br>
+                  <div class="m-10">
+                    <h3>Bénéfice du mois : <mark>@if(beneficeData){{{beneficeData.benefice}}}@else{0} ariary</mark>
+                    </h3>
+                    <table class="table w-80 mx-auto table-striped overflow-y:auto" style="border: 1px solid black; td {
+                        border: 1px solid black;
+                        padding: 8px;
+                        text-align: left;
+                      }">
+                      <caption>Bénéfice du mois</caption>
+                      <tbody>
+                        @if(beneficeData){
+                        @for(data of beneficeData.chargesFields; track $index){
+                          <tr>
+                            <td scope="col">{{beneficeData.chargesFields[$index]}} (en ariary)</td>
+                            <td>{{beneficeData.chargesValues[$index]}}</td>
+                          </tr>
+                        }
+                        <tr>
+                          <td colspan="2">Chiffre d'affaire (en ariary)</td>
+                          <td>{{beneficeData.chiffreAffaire.totalPayment}}</td>
+                        </tr>
+                        <tr>
+                          <td colspan="2">Bénéfice (en ariary)</td>
+                          <td>{{beneficeData.benefice}}</td>
+                        </tr>
+                        }@else{
+                        <tr>
+                          <td scope="col">En attente...</td>
+                          <td>En attente...</td>
+                        </tr>
+                        <tr>
+                          <td scope="col">En attente...</td>
+                          <td scope="col">En attente...</td>
+                        </tr>
+                        }
+                      </tbody>
+                    </table>
+                  </div>
+
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-10">
+                <div class="row">
+                  <div class="col-lg-12 col-md-6 col-sm-6">
+                    <div class="single-banner mb-30">
+                      <h2>Chiffre d'affaire : </h2>
+                      <label for="">Sélectionner un mois : </label>
+                      <input type="month" [formControl]="monthYearChiffreAffaireControl">
+                      <div class="form-group">
+                        <br>
+                        <button class="btn btn-lg btn-primary" type="button"
+                          (click)="getStatChiffreAffaire()">Valider</button>
+                      </div>
+                      @if(loadingCaf()){
+                      <div class="col-md-6 offset-md-1 spinner-border text-info mt-20" role="status"></div>
+                      }
+                      <div class="form-group">
+                        <br>
+                        <h5>Chiffre d'affaire du mois : {{totalChiffreAffaireMonth}} ariary</h5>
+                        <hr>
+                        <h4 class="mt-100">Calcul bénéfice :</h4>
+                        <form id="expenseForm" [formGroup]="myForm"
+                          (ngSubmit)="$event.preventDefault(); computeProfit()">
+                          <!-- <label for="salary">Salaire :</label>
+                          <input type="number" id="salary" name="salary" min="0" required> -->
+
+                          <label for="rent">Loyer :</label>
+                          <input type="number" id="rent" name="rent" min="0" formControlName="loyer" required>
+
+                          <label for="purchase">Achat pièce :</label>
+                          <input type="number" id="purchase" name="purchase" min="0" formControlName="achat pièces"
+                            required>
+
+                          <!-- <div id="otherExpensesContainer">
+                            <label for="otherExpenses">Autres dépenses :</label>
+                            <div id="otherExpenses">
+                              <input type="number" name="otherExpenses" min="0" required>
+                            </div>
+                            <br>
+                            <a class="btn btn-success" (click)="addExpenseField()">Ajouter Autre Dépense</a>
+                          </div><br> -->
+                          <div formArrayName="items" class="mt-10">
+                            <div *ngFor="let item of items.controls; let i = index" [formGroupName]="i" class="mt-10">
+                              <label>Autre dépense : </label>
+                              <input type="text" formControlName="label" placeholder="nom"> <input type="number"
+                                class="mt-10" placeholder="valeur" formControlName="value">
+                              <button type="button" class="btn btn-lg btn-danger mt-20"
+                                (click)="removeItem(i)">supprimer le dépense</button>
+                            </div>
+                          </div>
+                          <button type="button" class="btn btn-lg btn-primary mt-20" (click)="addItem()">ajouter un
+                            autre dépense</button>
+                          <br>
+                          <a class="btn btn-lg btn-primary mt-20"
+                            (click)="$event.preventDefault(); computeProfit()">Calculer Bénéfice</a>
+                        </form>
+                        @if(loadingBenef()){
+                        <div class="col-md-6 offset-md-1 spinner-border text-info mt-20" role="status"></div>
+                        }
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+
+          <style>
+            tbody {
+              display: block;
+              max-height: 500px;
+              overflow-y: auto;
+            }
+
+            thead,
+            tbody tr {
+              display: table;
+              width: 100%;
+              table-layout: fixed;
+            }
+
+            thead {
+              width: calc(100% - 1em)
+            }
+
+            h1 {
+              color: #8d16c9;
+              /* Set your preferred color, this is a blue color example */
+            }
+          </style>

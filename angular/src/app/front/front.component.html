@@ -1,0 +1,562 @@
+<header class="header-area clearfix header-hm9 transparent-bar">
+    <div class="container">
+        <div class="header-top-area header-top-border">
+            <div class="row">
+                <div class="col-lg-5 col-md-8 col-12">
+
+                </div>
+                <div class="col-lg-2 d-none d-lg-block">
+                    <div class="logo-hm9 text-center">
+                        <a href="index.html">
+                            <img alt="" src="assets/img/logo/logo.webp">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-4 col-12">
+                    <div class="header-right-wrap">
+                        <div class="same-style header-search">
+                            <a class="search-active" (click)="$event.preventDefault()" ><i class="pe-7s-search"></i></a>
+                            <div class="search-content">
+                                <form action="#" >
+                                    <input type="text" placeholder="Rechercher un service" [formControl]="searchControl"/>
+                                    <button class="button-search" (click)="$event.preventDefault();search()"><i class="pe-7s-search"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="same-style account-satting">
+                            <a class="account-satting-active" (click)="$event.preventDefault()"><i class="pe-7s-user-female"></i></a>
+                            <div class="account-dropdown">
+                                <ul>
+                                    <li><a href="#" (click)="$event.preventDefault();logout()">Logout</a></li>
+                                    <!-- <li><a href="wishlist.html">Wishlist  </a></li> -->
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="same-style header-wishlist">
+                            <a routerLink="/favoris"><i class="pe-7s-like"></i></a>
+                        </div>
+
+
+                        <!-- basket   -->
+                        <div class="same-style cart-wrap">
+                            <button class="icon-cart">
+                                <i class="pe-7s-shopbag"></i>
+                                <span class="count-style">{{basket? basket.length : 0 }}</span>
+                            </button>
+                            <div class="shopping-cart-content">
+                                <ul>
+                                    @for(service of basket; track service._id){
+                                    <li class="single-shopping-cart">
+                                        <div class="shopping-cart-img">
+                                            <a href="#"><img alt="" width="80" height="80"
+                                                    [src]="baseUrl+'images/'+service.image"></a>
+                                        </div>
+                                        <div class="shopping-cart-title">
+                                            <h4><a href="#">{{service.nom}}</a></h4>
+                                            <h6>Durée: {{service.duree_minute}} min</h6>
+                                            <span>{{service.actualPrice}} ar</span>
+                                        </div>
+                                        <div class="shopping-cart-delete">
+                                            <a href="#"
+                                                (click)="$event.preventDefault();removeFromBasket(service._id)"><i
+                                                    class="fa fa-times-circle"></i></a>
+                                        </div>
+                                    </li>
+                                    }
+                                </ul>
+                                <div class="shopping-cart-total">
+                                    <h4>Durée totale : <span>{{dureeTotal}} min</span></h4>
+                                    <h4>Total : <span class="shop-total">{{priceTotal}} ariary</span></h4>
+                                </div>
+                                <div class="shopping-cart-btn btn-hover text-center">
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalRDV"
+                                        data-bs-dismiss="modal">Prendre rendez-vous</a>
+                                </div>
+                                @if(loading()){
+                                <div class="col-md-6 offset-md-5 spinner-border text-info" role="status"></div>
+                                }
+                            </div>
+                        </div>
+                        <!-- basket   -->
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="header-bottom sticky-bar header-res-padding header-padding-2">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 d-block d-lg-none">
+                    <div class="logo">
+                        <a href="index.html">
+                            <img alt="" src="assets/img/logo/logo.webp">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xl-12 col-lg-12 d-none d-lg-block">
+                    <div class="main-menu">
+                        <nav>
+                            <ul>
+
+                                <li><a routerLink="/services"> Services </a>
+                                </li>
+                                <li><a routerLink="/offresSpeciales">Offres spéciales</a></li>
+                                <li><a routerLink="/employes"> Nos employés </a>
+                                </li>
+                                <li><a routerLink="/historique"> Mes Rendez-vous </a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<router-outlet></router-outlet>
+
+
+<div class="save-money-area pt-100">
+    <div class="container">
+        <div class="bg-img pt-100 pb-100" style="background-image:url(assets/img/bg/bg2.jpg);">
+            <div class="save-money-content">
+                <h2>Profitez de nos offres spéciales</h2>
+                <div class="save-money-btn">
+                    <a routerLink="/offresSpeciales">afficher</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer-area pt-100 pb-70">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2 col-md-4 col-sm-4">
+                <div class="copyright mb-30">
+                    <div class="footer-logo">
+                        <a href="index.html">
+                            <img alt="" src="assets/img/logo/logo.webp">
+                        </a>
+                    </div>
+                    <p>© 2024 <a href="#">M1</a>.<br> All Rights Reserved</p>
+                </div>
+            </div>
+           
+           
+
+        </div>
+    </div>
+</footer>
+
+<!-- Modal détails service -->
+<div class="modal fade" id="detailModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    @if(modalLoading()){
+                    <div class="col-md-6 offset-md-6 spinner-border text-info" role="status"></div>
+                    }@else{
+                    <div class="col-md-5 col-sm-12 col-xs-12">
+                        <div class="tab-content quickview-big-img">
+                            <div id="pro-1" class="tab-pane fade show active">
+                                <img [src]="baseUrl+'images/'+service.image" alt="">
+                            </div>
+                            <div id="pro-2" class="tab-pane fade">
+                                <img [src]="baseUrl+'images/'+service.image" alt="">
+                            </div>
+                            <div id="pro-3" class="tab-pane fade">
+                                <img [src]="baseUrl+'images/'+service.image" alt="">
+                            </div>
+                            <div id="pro-4" class="tab-pane fade">
+                                <img [src]="baseUrl+'images/'+service.image" alt="">
+                            </div>
+                        </div>
+                        <!-- Thumbnail Large Image End -->
+                        <!-- Thumbnail Image End -->
+                        <div class="quickview-wrap mt-15">
+                            <div class="quickview-slide-active owl-carousel nav nav-style-1" role="tablist">
+                                <a class="active" data-bs-toggle="tab" href="#"><img
+                                        [src]="baseUrl+'images/'+service.image" alt=""></a>
+                                <a data-bs-toggle="tab" href="#"><img [src]="baseUrl+'images/'+service.image"
+                                        alt=""></a>
+                                <a data-bs-toggle="tab" href="#"><img [src]="baseUrl+'images/'+service.image"
+                                        alt=""></a>
+                                <a data-bs-toggle="tab" href="#"><img [src]="baseUrl+'images/'+service.image"
+                                        alt=""></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7 col-sm-12 col-xs-12">
+                        <div class="product-details-content quickview-content">
+                            <h2>{{service.nom}}</h2>
+                            <div class="product-details-price">
+                                <span>{{service.actualPrice}} ariary</span>
+                                @if(service.prix !== service.actualPrice){
+                                <span class="old">{{service.prix}} Ariary</span>
+                                }
+                            </div>
+                            <div class="pro-details-rating-wrap">
+                                <div class="pro-details-rating">
+                                    <i class="fa fa-star-o yellow"></i>
+                                    <i class="fa fa-star-o yellow"></i>
+                                    <i class="fa fa-star-o yellow"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                </div>
+                                <span>Durée : {{service.duree_minute}} min</span>
+                            </div>
+                            <p>{{service.description}}</p>
+
+
+
+                            <div class="pro-details-quality">
+
+                                <div class="pro-details-cart btn-hover">
+                                    <a href="#" (click)="$event.preventDefault();addToBasket(service._id)">Ajouter à mon
+                                        panier</a>
+                                </div>
+                                <!-- <div class="pro-details-wishlist">
+                                    <a href="#"><i class="fa fa-heart-o"></i></a>
+                                </div> -->
+
+                            </div>
+
+                            <!-- <div class="col-md-6 offset-md-3 spinner-border text-info" role="status"></div> -->
+                            @if(basketLoading()){
+                            <div class="col-md-6 offset-md-6 spinner-border text-info" role="status"></div>
+                            }
+                            @if(addedBasket()){
+                            <div class="alert alert-success" role="alert">
+                                Ce service a bien été ajouté à votre panier !
+                            </div>
+                            }
+
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal end -->
+
+<!-- Modal RDV -->
+<div #modalRDV class="modal fade" id="modalRDV" tabindex="0" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-5 col-sm-12 col-xs-12">
+                        <div class="tab-content quickview-big-img">
+                            @for(service of basket; track service._id){
+                                @if($first){
+                                <div [id]="'pro-'+$index.toString()" class="tab-pane fade show active">
+                                    <img [src]="baseUrl+'/images/'+service.image" alt="" width="200" height="400">
+                                </div>
+                                }@else{
+                                    <div [id]="'pro-'+$index.toString()" class="tab-pane fade">
+                                        <img [src]="baseUrl+'/images/'+service.image" alt="" width="200" height="400">
+                                    </div>
+                                }
+                            }
+                        </div>
+                        <!-- Thumbnail Large Image End -->
+                        <!-- Thumbnail Image End -->
+                        <div class="quickview-wrap mt-15">
+                            <div class="quickview-slide-active owl-carousel nav nav-style-1" role="tablist" style="padding : 10px">
+                                @for(service of basket; track service._id){
+                                    @if($first){
+                                        <a class="active" data-bs-toggle="tab" [href]="'#pro-'+$index.toString()" style="margin: 10px"><img
+                                            [src]="baseUrl+'/images/'+service.image" alt="" width="80" height="80"></a>
+                                    }@else{
+                                        <a data-bs-toggle="tab" [href]="'#pro-'+$index.toString()" style="margin: 10px"><img [src]="baseUrl+'/images/'+service.image"
+                                            alt="" width="80" height="80"></a>      
+                                   }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7 col-sm-12 col-xs-12">
+                        <div class="product-details-content quickview-content">
+                            <h2>Mon Panier</h2>
+                            <div class="tab-content">
+                                <table class="table  w-100 mx-auto  table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col"></th>
+                                            <th scope="col">Service</th>
+                                            <th scope="col">Durée</th>
+                                            <th scope="col">Prix</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for(service of basket; track service._id){
+                                            <tr>
+                                                <th scope="row">{{$index+1}}</th>
+                                                <td>{{service.nom}}</td>
+                                                <td>{{service.duree_minute}} min</td>
+                                                <td>{{service.actualPrice}} ar</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="product-details-price">
+                                <p>Total : {{priceTotal}} ar | Durée : {{dureeTotal}}  min</p><br>
+
+                            </div>
+                            <div class="pro-details-size-color">
+                                <div class="pro-details-color-wrap">
+                                    <div class="pro-details-color-content">
+                                        <form [formGroup]="rdvForm" (ngSubmit)="$event.preventDefault();takeRdv()">
+
+                                            <div class="form-group">
+                                                <label for="dateRdv">Date et heure du rendez-vous :</label>
+                                                <input type="datetime-local" formControlName="dateHeureString">
+                                            </div>
+
+
+                                            <br>
+
+                                            <div class="form-group">
+                                                <label for="employeeSelect" class="form-label">Sélectionner un
+                                                    employe</label>
+                                                <select class="form-select" id="employeeSelect"
+                                                    formControlName="employeId" required>
+                                                    @for(employe of listEmploye; track employe.id){
+                                                        @if($first){
+                                                            <option [ngValue]="employe._id"><img [src]="baseUrl+'/images/'+employe.photo" width="50" height="50" selected> {{employe.nom+" "+employe.prenom}}
+                                                            </option>
+                                                        }@else{
+                                                            <option [ngValue]="employe._id"><img [src]="baseUrl+'/images/'+employe.photo" width="50" height="50"> {{employe.nom+" "+employe.prenom}}
+                                                            </option>
+                                                        }
+                                                    }
+                                                    <!-- <option><img src="path-to-image-1.jpg" class="rounded-image" width="50" height="50"> Nom
+                                                        Employe
+                                                    </option> -->
+                                                </select>
+
+                                            </div>
+
+
+                                            <div class="pro-details-quality">
+
+                                                <div class="pro-details-cart btn-hover">
+                                                    <button type="submit" style="border : 0; background-color: white;">
+                                                        <a href="javascript:void(0);"><i>Confirmer rendez-vous </i></a>
+                                                    </button>
+                                                </div>
+
+                                            </div>
+
+                                            @if(rdvLoading()){
+                                                <div class="col-md-6 offset-md-6 spinner-border text-info" role="status"></div>
+                                            }
+
+                                            @if(rdvTakenSuccess()){
+
+                                                <div class="alert alert-success" role="alert">
+                                                    Votre rendez-vous a bien été pris !
+                                                </div>
+
+                                                <div class="pro-details-quality">
+
+                                                    <div class="pro-details-cart btn-hover">
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#modalPaiement"
+                                                            data-bs-dismiss="modal">Payer maintenant</a>
+                                                    </div>
+                                                    <div class="pro-details-cart btn-hover">
+                                                        <a href="#" data-bs-toggle="modal" data-bs-dismiss="modal">Payer plus tard</a>
+                                                    </div>
+    
+                                                </div>
+                                            }
+                                            @if(rdvTakenError()){
+
+                                                <div class="alert alert-danger" role="alert">
+                                                    {{rdvErrorMessage}}
+                                                </div>
+                                            }
+                                        </form>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal end -->
+
+<!-- Modal Paiement -->
+<div class="modal fade" id="modalPaiement" tabindex="0" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    @if(payModalLoading()){
+                        <div class="col-md-6 offset-md-6 spinner-border text-info" role="status"></div>
+                    }@else{
+                    <div class="col-md-5 col-sm-12 col-xs-12">
+                        <div class="tab-content quickview-big-img">
+                            @for(service of payRdv.services; track service._id){
+                                @if($first){
+                                <div [id]="'pro-'+$index.toString()" class="tab-pane fade show active">
+                                    <img [src]="baseUrl+'/images/'+service.image" alt="" width="200" height="350">
+                                </div>
+                                }@else{
+                                    <div [id]="'pro-'+$index.toString()" class="tab-pane fade">
+                                        <img [src]="baseUrl+'/images/'+service.image" alt="" width="200" height="400">
+                                    </div>
+                                }
+                            }
+                        </div>
+                        <!-- Thumbnail Large Image End -->
+                        <!-- Thumbnail Image End -->
+                        <div class="quickview-wrap mt-15">
+                            <div class="quickview-slide-active owl-carousel nav nav-style-1" role="tablist" style="padding : 10px">
+                                @for(service of payRdv.services; track service._id){
+                                    @if($first){
+                                        <a class="active" data-bs-toggle="tab" [href]="'#pro-'+$index.toString()" style="margin: 10px"><img
+                                            [src]="baseUrl+'/images/'+service.image" alt="" width="70" height="70"></a>
+                                    }@else{
+                                        <a data-bs-toggle="tab" [href]="'#pro-'+$index.toString()" style="margin: 10px"><img [src]="baseUrl+'/images/'+service.image"
+                                            alt="" width="70" height="70"></a>      
+                                   }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7 col-sm-12 col-xs-12">
+                        <div class="product-details-content quickview-content">
+                            <h2>Paiement</h2>
+
+                            <div class="product-details-price">
+                                <p>Total : {{payTotalPrice}} ar | Durée : {{payTotalDuree}} minutes | Date du rendez-vous : {{payRdv.date_heure}}</p><br>
+
+                            </div>
+                            <div class="pro-details-size-color">
+                                <div class="pro-details-color-wrap">
+                                    <div class="pro-details-color-content">
+                                        <form [formGroup]="payForm" (ngSubmit)="$event.preventDefault();pay()">
+                                            <div class="form-group">
+
+                                                <label for="cardNumber">Numéro de Carte</label>
+                                                <input type="text" class="form-control" id="cardNumber" formControlName="carte"
+                                                    placeholder="1234 5678 9012 3456">
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6">
+                                                    <label for="expiryDate">Date d'expiration</label>
+                                                    <input type="text" class="form-control" id="expiryDate" formControlName="expiration"
+                                                        placeholder="MM/YY">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label for="cvv">CVV</label>
+                                                    <input type="text" formControlName="cvv"  class="form-control" id="cvv" placeholder="123">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="cardHolderName">Nom du Titulaire de la Carte</label>
+                                                <input type="text" formControlName="nom" class="form-control" id="cardHolderName"
+                                                    placeholder="John Doe">
+                                            </div>
+
+
+
+                                            <div class="pro-details-quality">
+
+                                                <div class="pro-details-cart btn-hover">
+                                                    <a href="#" (click)="$event.preventDefault();pay()">Payer
+                                                </a>
+                                                </div>
+                                                <div class="pro-details-cart btn-hover">
+                                                    <a href="#" data-bs-toggle="modal" data-bs-dismiss="modal">Annuler</a>
+                                                </div>
+
+                                            </div>
+
+                                            @if(payLoading()){
+                                                <div class="col-md-6 offset-md-6 spinner-border text-info" role="status"></div>
+                                            }
+
+                                            @if(paySuccess()){
+
+                                                <div class="alert alert-success" role="alert">
+                                                    Paiement effectué avec succès !! 
+                                                </div>
+                                            }
+                                            @if(payError()){
+
+                                                <div class="alert alert-danger" role="alert">
+                                                    Une erreur s'est produite
+                                                </div>
+                                            }
+                                        </form>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal end -->
+
+@if(isVisible){
+<div class="position-fixed bottom-0 start-50 translate-middle-x p-3" style="z-index: 11">
+    <div id="liveToast" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <img src="assets/img/icon-img/smiling-face-with-heart-shaped-eyes.svg" width="24" height="17"
+                class="rounded me-2" alt="...">
+            <strong class="me-auto">Glamour Beauty</strong>
+            <small>Il y a quelques seconde</small>
+            <button type="button" class="btn-close" aria-label="Close" (click)="hide()"></button>
+        </div>
+        <div class="toast-body">
+            {{toastMessage}}
+        </div>
+    </div>
+</div>
+}
+
+
+<style>
+    .rounded-image {
+        width: 20px;
+        /* Ajustez la taille de l'image selon vos besoins */
+        height: 20px;
+        border-radius: 50%;
+        /* Rend l'image ronde en utilisant un border-radius de 50% */
+    }
+</style>

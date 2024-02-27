@@ -1,0 +1,89 @@
+<header class="header-area clearfix header-hm9 transparent-bar">
+    <div class="container">
+        <div class="header-top-area header-top-border17">
+            <div class="row">
+                <div class="col-lg-5 col-md-8 col-12">
+                
+                </div>
+                <div class="col-lg-2 d-none d-lg-block">
+                    <div class="logo-hm9 text-center">
+                        <a href="index.html">
+                            <img alt="" src="assets/img/logo/logo.webp">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-4 col-12">
+                    <div class="header-right-wrap">
+                        
+                        <div class="same-style account-satting">
+                            <a class="account-satting-active" href="#"><i class="pe-7s-user-female"></i></a>
+                            <div class="account-dropdown">
+                                <ul>
+                                    <li><a href="#" (click)="$event.preventDefault();logout()">Logout</a></li>
+                                    <!-- <li><a href="wishlist.html">Wishlist  </a></li>
+                                    <li><a href="my-account.html">my account</a></li> -->
+                                </ul>
+                            </div>
+                        </div>
+                       
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="header-bottom sticky-bar header-res-padding header-padding-2">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 d-block d-lg-none">
+                    <div class="logo">
+                        <a href="index.html">
+                            <img alt="" src="assets/img/logo/logo.webp">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xl-12 col-lg-12 d-none d-lg-block">
+                    <div class="main-menu">
+                        <nav>
+                            <ul>
+                               
+                                <li><a routerLink="/manager/personnel"> Gestion Personnel  </a>
+                                </li>
+                                <li><a routerLink="/manager/service">Gestion Services</a></li>
+                                <li><a routerLink="/manager/dashboard">Dashboard</a></li>
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </header>
+
+  <router-outlet></router-outlet>
+  
+  <br><br><br>
+
+
+  <footer  class="footer-area bg-gray pt-100 pb-70">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2 col-md-4 col-sm-4">
+                <div class="copyright mb-30">
+                    <div class="footer-logo">
+                        <a href="index.html">
+                            <img alt="" src="assets/img/logo/logo.webp">
+                        </a>
+                    </div>
+                    <p>© 2024 <a href="#">M1</a>.<br> All Rights Reserved</p>
+                </div>
+            </div>
+        </div>
+    </div>
+  </footer>
+  
+  
+  

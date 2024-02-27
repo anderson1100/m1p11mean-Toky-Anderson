@@ -1,0 +1,120 @@
+<app-front-header></app-front-header>
+
+<div class="product-area">
+    <div class="container">
+        @if(!isReady()){
+        <div class="section-title text-center mb-55 mt-100">
+            <h2>Vous n'avez rien recherché</h2>
+        </div>
+        }@else{
+
+
+        @if(loading()){
+        <div class="col-md-6 offset-md-6 spinner-border text-info" role="status"></div>
+        }@else{
+        <br>
+        <div class="section-title text-center mb-55">
+            <h2>RESULTATS DE LA RECHERCHE POUR "{{search}}"</h2>
+            <!-- <h3>Nombre de resultat : 2</h3> -->
+        </div>
+        <div class="tab-content jump">
+            <!-- can add an empty section with @empty -->
+            <div class="product-tab-list nav pt-35 pb-60 product-tab-pink2 text-center">
+                <a class="active" href="#product-2" data-bs-toggle="tab">
+                    <h4>Liste des resultats</h4>
+                </a>
+
+            </div>
+            <div class="tab-pane active" id="product-1">
+                <div class="row item-wrapper3">
+
+                    <!-- individual service -->
+                    @for(service of listService; track service._id){
+                    <!-- {{service.nom}} -->
+                    <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6 toggle-item-active3" style="margin-left: 70px;">
+                        <div class="product-wrap-2 mb-25">
+                            <div class="product-img">
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#detailModal"
+                                    (click)="getService(service._id)">
+                                    <img class="default-img" [src]="baseUrl+'images/'+service.image" alt="" width="60"
+                                        height="300">
+                                    <img class="hover-img" [src]="baseUrl+'images/'+service.image" alt="" width="60"
+                                        height="300">
+                                </a>
+                                @if(service.offreSpeciale !== null){
+                                <span class="pink">{{service.offreSpeciale.nom}} -{{service.reduction}}%</span>
+                                }
+                                <div class="product-action-2">
+
+                                    <a title="Add to cart" href="#" data-bs-toggle="modal" data-bs-target="#detailModal"
+                                        (click)="getService($index)"><i class="fa fa-shopping-cart"></i></a>
+
+                                </div>
+                            </div>
+                            <div class="product-content-2">
+                                <div class="title-price-wrap-2">
+                                    <h3><a href="product-details.html">{{service.nom}}</a></h3>
+                                    <div class="price-2">
+                                        <span>{{service.actualPrice}} Ariary</span>
+                                        @if(service.prix!== service.actualPrice){
+                                        <span class="old">{{service.prix}} Ariary</span>
+                                        }
+                                    </div>
+                                </div>
+                                @if(service.isFav){
+                                <div class="pro-wishlist-2">
+                                    <a title="Wishlist" href="#"
+                                        (click)="$event.preventDefault(); removeServiceFromFav($index)"><i
+                                            class="fa fa-heart"></i></a>
+                                </div>
+                                }@else{
+                                <div class="pro-wishlist-2">
+                                    <a title="Wishlist" href="#"
+                                        (click)="$event.preventDefault(); addServiceToFav($index)"><i
+                                            class="fa fa-heart-o"></i></a>
+                                </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    }@empty{
+                    <div class="mt-20 mb-20 offset-md-3">
+                        <h3>Aucun service correspondant à votre recherche</h3>
+                    </div>
+                    }
+
+                </div>
+                <div class="col-md-6 offset-md-5">
+                    <nav aria-label="...">
+                        <ul class="pagination">
+                            <li [ngClass]="pagination[0]? 'page-item' : 'page-item disabled'">
+                                <a class="page-link" href="#" (click)="$event.preventDefault();changePage(page-1)"
+                                    tabindex="-1">Previous</a>
+                            </li>
+                            @for(pg of pagination[1]; track $index){
+                            @if(pg === page){
+                            <li class="page-item active">
+                                <a class="page-link disabled" href="#"
+                                    (click)="$event.preventDefault()">{{pg}}<span
+                                        class="sr-only"></span></a>
+                            </li>
+                            }@else{
+                            <li class="page-item"><a class="page-link" href="#"
+                                    (click)="$event.preventDefault();changePage(pg)">{{pg}}</a></li>
+                            }
+                            }
+                            <li [ngClass]="pagination[2]?'page-item' : 'page-item disabled'">
+                                <a class="page-link" href="#"
+                                    (click)="$event.preventDefault();changePage(page+1)">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        }
+
+
+        }
+    </div>
+</div>

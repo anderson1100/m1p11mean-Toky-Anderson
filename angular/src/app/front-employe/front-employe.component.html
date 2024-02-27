@@ -1,0 +1,38 @@
+<br>
+<br>
+<br>
+<div class="blog-area pt-95 pb-55">
+    <div class="container">
+        <div class="section-title text-center mb-55">
+            <h2>NOS EMPLOYES</h2>
+        </div>
+        <div class="row">
+            @if(loading()){
+            <div class="col-md-6 offset-md-6 spinner-border text-info" role="status"></div>
+            }@else{
+            @for(employe of listEmploye; track employe._id){
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="blog-wrap mb-30 scroll-zoom">
+                        <div class="blog-img">
+                            <a href="blog-details.html"><img [src]="baseUrl+'images/'+employe.photo" alt="" width="30"
+                                height="300" alt=""></a>
+                        </div>
+                        <div class="blog-content-wrap">
+                            <div class="blog-content text-center">
+                                <h3><a href="blog-details.html">{{employe.nom}} {{employe.prenom}}<br> </a></h3>
+                                @if(employe.isFav){
+                                    <span>Retirer de mes favoris <a href="#" (click)="$event.preventDefault(); removeEmployeFromFav($index)"><i
+                                        class="fa fa-heart"></i></a></span>
+                                }@else{
+                                    <span>Ajouter à mes favoris <a href="#" (click)="$event.preventDefault(); addEmployeToFav($index)"><i
+                                        class="fa fa-heart-o"></i></a></span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            }
+        </div>
+    </div>
+</div>

@@ -17,7 +17,7 @@ var indexRouter = require('./routes/index');
 var app = express();
 
 app.use(cors({
-  origin: 'http://localhost:4200',
+  origin: ['http://localhost:4200','https://m1p11mean-toky-anderson-angular.vercel.app'],
   credentials: true
 }));
 app.use(logger('dev'));

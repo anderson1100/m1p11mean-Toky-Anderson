@@ -25,7 +25,19 @@ export class ManagerService {
     return this.http.post('manager/login', loginObject, options)
   }
 
-  logout(){
+  getTempsTravailMoyenByEmploye() {
+    return this.http.get(`manager/temps_travail_moyen_by_employe`)
+  }
+
+  countRdvByDayForMonth(month: number, year: number) {
+    return this.http.get(`manager/temps_travail_moyen_by_employe?month=${month}&year=${year}`)
+  }
+
+  countChiffreAffaireByDayForMonth(month: number, year: number) {
+    return this.http.get(`manager//temps_travail_moyen_by_employe?month=${month}&year=${year}`)
+  }
+
+  logout() {
     return this.http.get('/logout');
   }
 }

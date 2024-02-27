@@ -43,7 +43,7 @@ export class LoginManagerComponent implements OnInit {
       next: (data: any) => {
         console.log(data);
         this.loading.set(false);
-        this.router.navigate(['/manager'])
+        this.router.navigate(['/manager/dashboard'])
       },
       error: (error) => {
         //console.log("there is an error")

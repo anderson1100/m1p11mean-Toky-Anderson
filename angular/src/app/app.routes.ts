@@ -16,6 +16,7 @@ import { ManagerDashboardComponent } from './manager-dashboard/manager-dashboard
 import { FrontRechercheComponent } from './front-recherche/front-recherche.component';
 import { LoginEmployeComponent } from './login-employe/login-employe.component';
 import { SimpleSearchClientComponent } from './simple-search-client/simple-search-client.component';
+import { LoginManagerComponent } from './login-manager/login-manager.component';
 
 export const routes: Routes = [
     {
@@ -51,9 +52,9 @@ export const routes: Routes = [
     },
 
     {
-        path:'employe',
-        component : EmployeComponent,
-        children : [
+        path: 'employe',
+        component: EmployeComponent,
+        children: [
 
             {
                 path: 'calendar', component: EmployeCalendarComponent
@@ -81,9 +82,10 @@ export const routes: Routes = [
     },
 
 
-    { path: 'login', component: LoginComponent},
-    { path:'employe', component: EmployeComponent},
-    { path:'employe/login', component: LoginEmployeComponent}
+    { path: 'login', component: LoginComponent },
+    { path: 'manager/login', component: LoginManagerComponent},
+    { path: 'employe', component: EmployeComponent },
+    { path: 'employe/login', component: LoginEmployeComponent }
 
 
 ];

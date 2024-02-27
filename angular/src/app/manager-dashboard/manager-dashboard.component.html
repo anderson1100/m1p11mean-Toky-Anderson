@@ -1,223 +1,231 @@
 <!-- Stats réservations -->
 <div class="slider-banner-area">
-    <div class="container">
-        <div class="row flex-row-reverse">
-            <div class="col-lg-8 col-md-12">
-                <div class="slider-area res-mrg-md-mb">
-                           <div class="tab-content">
-                            <div style="display: block;">
-                              <canvas baseChart width="800" height="400"
-                                [type]="'bar'"
-                                [data]="lineChartData"
-                                [options]="lineChartOptions"
-                                [legend]="lineChartLegend">
-                              </canvas>
-                                                    
-                        </div>
-                        </div>
-                   
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-10">
-                <div class="row">
-                    <div class="col-lg-12 col-md-6 col-sm-6">
-                        <div class="single-banner mb-30">
-                          <h2>Statistiques de réservations : </h2>
-                          <label for="">Sélectionner un mois : </label>
-                            <input type="month">  
-                          <div class="form-group">
-                                       <br>
-                           <p>Total de réservation sur le mois : 20</p>
-                           <p>Maximum de réservation sur un jour : 5</p>
+  <div class="container">
+    <div class="row flex-row-reverse">
+      <div class="col-lg-8 col-md-12">
+        <div class="slider-area res-mrg-md-mb">
+          <div class="tab-content">
+            <div style="display: block;">
+              <canvas baseChart width="800" height="400" [type]="'bar'" [data]="lineChartData"
+                [options]="lineChartOptions" [legend]="lineChartLegend">
+              </canvas>
 
-                                                    
-                        </div>
-                    </div>
-                </div>
             </div>
+          </div>
+
         </div>
+      </div>
+      <div class="col-lg-4 col-md-10">
+        <div class="row">
+          <div class="col-lg-12 col-md-6 col-sm-6">
+            <div class="single-banner mb-30">
+              <h2>Statistiques de réservations : </h2>
+              <label for="">Sélectionner un mois : </label>
+              <input type="month" [formControl]="monthYearReservationControl">
+              <div class="form-group">
+                <br>
+                <p>Total de réservation sur le mois : 20</p>
+                <p>Maximum de réservation sur un jour : 5</p>
+
+
+              </div>
+              <div class="form-group">
+                <br>
+                <button class="btn btn-lg btn-primary" type="button">Valider</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-<!-- Top 3 Pie Services -->
+  <!-- Top 3 Pie Services -->
   <div class="slider-banner-area">
     <div class="container">
-        <div class="row flex-row-reverse">
-            <div class="col-lg-15 col-md-15">
-                <div class="slider-area res-mrg-md-mb">
-                           <div class="tab-content">
-                            <div style="display: flex; align-items: flex;">
-                              <div style="float: right; margin-right: 20px;">
-                                <strong>Top 3 Services du mois : </strong>
-                                <p>Catégorie  1</p>
-                                <p>Cat 3</p>
-                                <p>CAt 3</p>
-                                  
-                              </div>
-                          
-                              <div>
-                                  <canvas baseChart width="300" height="300"
-                                          [data]="pieChartData"
-                                          [labels]="pieChartLabels"
-                                          [type]="'pie'"
-                                          (chartHover)="chartHovered($event)"
-                                          (chartClick)="chartClicked($event)"></canvas>
-                              </div>
-                         
-                          <div style="float: left; align-items: left;">
-                            <div style="float: left; margin-left: 200px;">
-                              <strong>Top 3 Catégories du mois : </strong>
-                              <p>Catégorie  1</p>
-                                <p>Cat 3</p>
-                                <p>CAt 3</p>
+      <!-- <div class="row flex-row-reverse">
+        <div class="col-lg-15 col-md-15">
+          <div class="slider-area res-mrg-md-mb">
+            <div class="tab-content">
+              <div style="display: flex; align-items: flex;">
+                <div style="float: right; margin-right: 20px;">
+                  <strong>Top 3 Services du mois : </strong>
+                  <p>Catégorie 1</p>
+                  <p>Cat 3</p>
+                  <p>CAt 3</p>
 
+                </div>
+
+                <div>
+                  <canvas baseChart width="300" height="300" [data]="pieChartData" [labels]="pieChartLabels"
+                    [type]="'pie'" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+                </div>
+
+                <div style="float: left; align-items: left;">
+                  <div style="float: left; margin-left: 200px;">
+                    <strong>Top 3 Catégories du mois : </strong>
+                    <p>Catégorie 1</p>
+                    <p>Cat 3</p>
+                    <p>CAt 3</p>
+
+                  </div>
+
+                  <div style="float: right">
+                    <canvas baseChart width="300" height="300" [data]="pieChartData2" [labels]="pieChartLabels2"
+                      [type]="'pie'" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div> -->
+
+      <!-- Heure moyenne -->
+      <div class="slider-banner-area" border-top>
+        <div class="container">
+          <div class="row flex-row-reverse">
+            <div class="col-lg-8 col-md-12">
+
+            </div>
+            <div class="col-lg-15 col-md-15">
+              <div class="row">
+                <div class="col-lg-15 col-md-15 col-s16">
+                  <div class="single-banner mb-30">
+                    <h2>Heure de travail : </h2>
+                    <!-- <label for="">Sélectionner un mois : </label>
+                    <input type="month"> -->
+                    <div class="form-group">
+                      <br>
+                      <table class="table w-80 mx-auto table-striped overflow-y:auto">
+                        <thead>
+                          <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Nom</th>
+                            <th scope="col">Prenom</th>
+                            <th scope="col">Heure moyenne de travail sur le mois</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            @for(data of tempsTravailData; track $index){
+                              <tr>
+                                <th scope="row">{{$index+1}}</th>
+                                <td>{{data._id.nom_employe}}</td>
+                                <td>{{data._id.prenom_employe}}</td>
+                                <td>{{(data.avgTempsTravailPer24h)/60}}</td>
+                              </tr>
+                            }@empty{
+                              <tr>
+                                <th scope="row">...chargement</th>
+                                <td>...chargement</td>
+                                <td>...chargement</td>
+                                <td>...chargement</td>
+                              </tr>
+                            }
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+        <!-- Chiffre d'affaire -->
+        <div class="slider-banner-area">
+          <div class="container">
+            <div class="row flex-row-reverse">
+              <div class="col-lg-8 col-md-12">
+                <div class="slider-area res-mrg-md-mb">
+                  <div class="tab-content">
+                    <div style="display: block;">
+                      <canvas baseChart width="800" height="400" [type]="'bar'" [data]="lineChartData2"
+                        [options]="lineChartOptions2" [legend]="lineChartLegend">
+                      </canvas>
+
+                    </div>
+                  </div>
+                  <br>
+                  <br>
+                  <h3>Bénéfice du mois : <mark>500.000 ar </mark>
+                  </h3>
+
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-10">
+                <div class="row">
+                  <div class="col-lg-12 col-md-6 col-sm-6">
+                    <div class="single-banner mb-30">
+                      <h2>Chiffre d'affaire : </h2>
+                      <label for="">Sélectionner un mois : </label>
+                      <input type="month" [formControl]="monthYearChiffreAffaireControl">
+                      <div class="form-group">
+                        <br>
+                        <button class="btn btn-lg btn-primary" type="button">Valider</button>
+                      </div>
+                      <div class="form-group">
+                        <br>
+                        <p>Chiffre d'affaire du mois : 1.400.000ar</p>
+                        <h4>Calcul bénéfice :</h4>
+                        <form id="expenseForm">
+                          <label for="salary">Salaire :</label>
+                          <input type="number" id="salary" name="salary" min="0" required>
+
+                          <label for="rent">Loyer :</label>
+                          <input type="number" id="rent" name="rent" min="0" required>
+
+                          <label for="purchase">Achat pièce :</label>
+                          <input type="number" id="purchase" name="purchase" min="0">
+
+                          <div id="otherExpensesContainer">
+                            <label for="otherExpenses">Autres dépenses :</label>
+                            <div id="otherExpenses">
+                              <input type="number" name="otherExpenses" min="0" required>
                             </div>
-                        
-                            <div style="float: right">
-                              <canvas baseChart width="300" height="300"
-                                      [data]="pieChartData2"
-                                      [labels]="pieChartLabels2"
-                                      [type]="'pie'"
-                                      (chartHover)="chartHovered($event)"
-                                      (chartClick)="chartClicked($event)"></canvas>
-                            
-                           
-                          </div>
-                        </div>
-                   
-                </div>
-            </div>
-        
-        </div>
-    </div>
-  </div>
-
-  <!-- Heure moyenne -->
-  <div class="slider-banner-area" border-top >
-    <div class="container">
-        <div class="row flex-row-reverse">
-            <div class="col-lg-8 col-md-12">
-                
-            </div>
-            <div class="col-lg-15 col-md-15">
-                <div class="row">
-                    <div class="col-lg-15 col-md-15 col-s16">
-                        <div class="single-banner mb-30">
-                          <h2>Heure de travail : </h2>
-                          <label for="">Sélectionner un mois : </label>
-                            <input type="month">  
-                          <div class="form-group">
-                                       <br>
-                                       <table class="table w-80 mx-auto table-striped overflow-y:auto">
-                                        <thead>
-                                          <tr>
-                                            <th scope="col"></th>
-                                            <th scope="col">Nom</th>
-                                            <th scope="col">Nom d'utilisateur</th>
-                                            <th scope="col">Heure moyenne de travail sur le mois</th>
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                          <tr>
-                                            <th scope="row">1</th>
-                                            <td>Mark</td>
-                                            <td>DarkZukenberg</td>
-                                            <td> 30h</td>
-                                          </tr>
-                                        </tbody>
-                                      </table>
-                                </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-  </div>
-
-
-
-  <!-- Chiffre d'affaire -->
-  <div class="slider-banner-area">
-    <div class="container">
-        <div class="row flex-row-reverse">
-            <div class="col-lg-8 col-md-12">
-                <div class="slider-area res-mrg-md-mb">
-                           <div class="tab-content">
-                            <div style="display: block;">
-                              <canvas baseChart width="800" height="400"
-                                [type]="'bar'"
-                                [data]="lineChartData2"
-                                [options]="lineChartOptions2"
-                                [legend]="lineChartLegend">
-                              </canvas>
-                                                    
-                        </div>
-                        </div>
-                        <br>
-                        <br>
-                        <h3>Bénéfice du mois : <mark>500.000 ar </mark>
-                        </h3>
-                   
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-10">
-                <div class="row">
-                    <div class="col-lg-12 col-md-6 col-sm-6">
-                        <div class="single-banner mb-30">
-                          <h2>Chiffre d'affaire : </h2>
-                          <label for="">Sélectionner un mois : </label>
-                            <input type="month">  
-                          <div class="form-group">
-                                       <br>
-                           <p>Chiffre d'affaire du mois : 1.400.000ar</p>
-                          <h4>Calcul bénéfice :</h4>
-                          <form id="expenseForm">
-                            <label for="salary">Salaire :</label>
-                            <input type="number" id="salary" name="salary" min="0" required>
-                    
-                            <label for="rent">Loyer :</label>
-                            <input type="number" id="rent" name="rent" min="0" required>
-                    
-                            <label for="purchase">Achat pièce :</label>
-                            <input type="number" id="purchase" name="purchase"  min="0" >
-                    
-                            <div id="otherExpensesContainer">
-                              <label for="otherExpenses">Autres dépenses :</label>
-                              <div id="otherExpenses">
-                                  <input type="number" name="otherExpenses" min="0" required>
-                              </div>
-                              <br>
-                              <a class="btn btn-success" (click)="addExpenseField()">Ajouter Autre Dépense</a>
+                            <br>
+                            <a class="btn btn-success" (click)="addExpenseField()">Ajouter Autre Dépense</a>
                           </div><br>
-                    
-                            <a class="btn btn-danger" >Calculer Bénéfice</a>
-                          </form>
-                        </div>
+
+                          <a class="btn btn-danger">Calculer Bénéfice</a>
+                        </form>
+                      </div>
                     </div>
+                  </div>
                 </div>
+              </div>
             </div>
-        </div>
-    </div>
-  </div>
+          </div>
 
 
 
 
-  <style>
-    tbody {
-    display:block;
-    max-height:500px;
-    overflow-y:auto;
-}
-thead, tbody tr {
-    display:table;
-    width:100%;
-    table-layout:fixed;
-}
-thead {
-    width: calc( 100% - 1em )
-} 
-h1 {
-            color: #8d16c9; /* Set your preferred color, this is a blue color example */
-        }
-</style>
+          <style>
+            tbody {
+              display: block;
+              max-height: 500px;
+              overflow-y: auto;
+            }
+
+            thead,
+            tbody tr {
+              display: table;
+              width: 100%;
+              table-layout: fixed;
+            }
+
+            thead {
+              width: calc(100% - 1em)
+            }
+
+            h1 {
+              color: #8d16c9;
+              /* Set your preferred color, this is a blue color example */
+            }
+          </style>

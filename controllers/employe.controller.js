@@ -61,6 +61,32 @@ module.exports = {
             next(error)
         }
     },
+    getListRdvToday: async (req, res, next) => {
+        try {
+            const accessToken = req.cookies.jwtAccess
+            let userPayload = jwt.decode(accessToken);
+            const startDate = new Date();
+            startDate.setHours(0, 0, 0, 0);
+            const endDate = new Date();
+            endDate.setHours(23, 59, 59, 999);
+            let list = await rdvModel.find({
+                $and: [
+                    { employe_id: userPayload.aud, completion: false },
+                    {
+                        date_heure: {
+                            $gte: startDate,
+                            $lte: endDate
+                        }
+                    },
+                ]
+            }).sort({ date_heure: -1 })
+            console.log(list);
+            return res.json(list);
+        } catch (error) {
+            next(error)
+        }
+    },
+
 
     completeRdv: async (req, res, next) => {
         let { id } = req.params;
@@ -89,7 +115,7 @@ module.exports = {
                 }
             },
             { $unwind: "$services" }])
-        console.log(list);
+        // console.log(list);
         let result = await employeService.computeTotalCommission(list, true);
         return res.json(result);
     },

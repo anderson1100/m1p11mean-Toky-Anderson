@@ -13,6 +13,8 @@ import { ManagerComponent } from './manager/manager.component';
 import { ManagerPersonnelComponent } from './manager-personnel/manager-personnel.component';
 import { ManagerServiceComponent } from './manager-service/manager-service.component';
 import { ManagerDashboardComponent } from './manager-dashboard/manager-dashboard.component';
+import { FrontRechercheComponent } from './front-recherche/front-recherche.component';
+import { LoginEmployeComponent } from './login-employe/login-employe.component';
 import { SimpleSearchClientComponent } from './simple-search-client/simple-search-client.component';
 
 export const routes: Routes = [
@@ -33,22 +35,26 @@ export const routes: Routes = [
                 path: 'favoris', component: FrontFavorisComponent
             },
             {
+                path: 'offresSpeciales', component: FrontWrapper2Component
+            },
+            {
+                path: 'recherches', component: FrontRechercheComponent
+            }, {
+
                 path: 'simple_search', component: SimpleSearchClientComponent
             },
             {
                 path: 'historique', component: FrontHistoriqueComponent
-            },
-            {
-                path: 'offresSpeciales', component: FrontWrapper2Component
             }
 
         ]
     },
 
     {
-        path: 'employe',
-        component: EmployeComponent,
-        children: [
+        path:'employe',
+        component : EmployeComponent,
+        children : [
+
             {
                 path: 'calendar', component: EmployeCalendarComponent
             },
@@ -75,6 +81,9 @@ export const routes: Routes = [
     },
 
 
-    { path: 'login', component: LoginComponent },
-    { path: 'employe', component: EmployeComponent }
+    { path: 'login', component: LoginComponent},
+    { path:'employe', component: EmployeComponent},
+    { path:'employe/login', component: LoginEmployeComponent}
+
+
 ];

@@ -46,19 +46,23 @@
                 <h2>SE CONNECTER</h2>
                 <br>
                 <br>
+                <img style="float: right" src="assets/img/login.jpg" alt="">
                 <div class="pro-details-size-color">
+                    
                     <div class="pro-details-color-wrap">
+                        
                         <div class="pro-details-color-content">
+                            <br><br>
 
                             <form [formGroup]="loginForm" (ngSubmit)="$event.preventDefault();login()">
                                 <div class="form-row">
-                                    <label for="utilisateur">Nom d'utilisateur ou email</label>
+                                    <strong for="utilisateur">Nom d'utilisateur ou email</strong>
                                     <input type="text" class="form-control" formControlName="login">
                                 </div>
                                 <br>
                                 <div class="form-row">
                                     <div class="form-group">
-                                        <label for="expiryDate">Mot de passe</label>
+                                        <strong for="expiryDate">Mot de passe</strong>
                                         <input type="password" class="form-control" formControlName="password">
                                     </div>
                                 </div>
@@ -88,6 +92,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div>
+           
         </div>
     </div>
 </header>

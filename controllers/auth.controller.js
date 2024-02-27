@@ -149,6 +149,7 @@ const refreshToken = async (req, res, next) => {
 }
 
 const logout = async (req, res, next) => {
+  //could not get response when client with different cookie(not valid anymore is trying to access logout
   try {
     const cookies = req.cookies
     if (!cookies?.jwt) return res.sendStatus(204);

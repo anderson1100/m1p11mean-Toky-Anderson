@@ -3,36 +3,33 @@
         <div class="row flex-row-reverse">
             <div class="col-lg-8 col-md-12">
                 <div class="slider-area res-mrg-md-mb">
-                           <h1>Horaire de travail : <mark>8h - 17h </mark></h1>     
+                           <h1>Horaire de travail : <mark>{{heureDebut}}h - {{heureFin}}h </mark></h1>     
                            <br>                              
                                     <div class="form-group">
                                        
                                      <label for="cardNumber">Nom Complet</label>
-                                     <input type="text" class="form-control" id="nom" placeholder="Jean Laborde">
+                                     <input type="text" class="form-control" id="nom" placeholder="{{employe.nom}} {{employe.prenom}}" disabled>
                                    </div>
                                    <br>
                                    <div class="form-row">
                                      <div class="form-group col-md-6">
                                        <label for="expiryDate">Nom d'utilisateur</label>
-                                       <input type="text" class="form-control" id="username" placeholder="Laborde">
+                                       <input type="text" class="form-control" id="username" placeholder="{{employe.username}}" disabled>
                                      </div>
                                      <br>
+                                                                        
                                      <div class="form-group col-md-6">
                                        <label for="cvv">Email</label>
-                                       <input type="email" class="form-control" id="email" placeholder="email@gmail.com">
+                                       <input type="email" class="form-control" id="email" placeholder="{{employe.email}}" disabled>
                                      </div>
                                      <br>
-                                     <div class="form-group col-md-6">
-                                        <label for="cvv">Mot de passe</label>
-                                        <input type="text" class="form-control" id="email" placeholder="password">
-                                      </div>
                                    </div>
                                   <br>    <br>                
-                                   <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#ModalComplete">Modifier profil</a>
-
+                                   <button calss="button" type="btn tbn-danger" data-bs-toggle="modal" data-bs-target="#ModalComplete">Modifier profil</button>
+                                   
                                  
                                    
-                            
+                   
                         
                         
                 </div>
@@ -42,7 +39,7 @@
                     <div class="col-lg-12 col-md-6 col-sm-6">
                         <div class="single-banner mb-30">
                            <h1>Mon profil</h1>
-                           <a href="#"><img src="assets/img/profil.jpg"  alt=""></a>
+                           <a href="#"><img src="assets/img/profil/emp.jpg"  alt=""></a>
                             
                         </div>
                     </div>
@@ -65,7 +62,7 @@
                     <div class="col-md-5 col-sm-12 col-xs-12">
                         <div class="tab-content quickview-big-img">
                             <div id="pro-1" class="tab-pane fade show active">
-                                <img src="assets/img/profil.jpg" alt="">
+                                <img src="assets/img/profil/emp.jpg" alt="">
                             </div>
                             
                         </div>
@@ -76,33 +73,30 @@
                     <div class="col-md-7 col-sm-12 col-xs-12">
                         <div class="product-details-content quickview-content">
                             <h2>Modification profil</h2>
-                             <label for="cardNumber">Nom Complet</label>
-                                     <input type="text" class="form-control" id="nom" placeholder="Jean Laborde">
+                             <label for="cardNumber">Nom </label>
+                                     <input type="text" class="form-control" id="nom" placeholder={{employe.nom}} disabled>
                                    </div>
                                    <br>
                                    <div class="form-row">
                                      <div class="form-group col-md-6">
-                                       <label for="expiryDate">Nom d'utilisateur</label>
-                                       <input type="text" class="form-control" id="username" placeholder="Laborde">
+                                       <label for="expiryDate">Prénom</label>
+                                       <input type="text" class="form-control" id="username" placeholder={{employe.prenom}} disabled>
                                      </div>
                                      <br>
                                      <div class="form-group col-md-6">
                                        <label for="cvv">Email</label>
-                                       <input type="email" class="form-control" id="email" placeholder="email@gmail.com">
+                                       <input type="email" class="form-control" id="email" placeholder={{employe.email}} disabled>
                                      </div>
                                      <br>
-                                     <div class="form-group col-md-6">
-                                        <label for="cvv">Mot de passe</label>
-                                        <input type="text" class="form-control" id="email" placeholder="password">
-                                      </div>
+                                    <!-- <form [formGroup]="modifPhotoForm" (ngSubmit)="$event.preventDefaul();modifPhoto()">
                                       <br>
                                       <label for="">Changer de photo</label>
-                                      <input type="file" name="" id="">
+                                      <input type="file" formControlName="photo" id="">
                                       <br><br>
                                    
-                                      <a class="btn btn-danger" data-bs-dismiss="modal">Modifier </a>
+                                      <a href="javascript:void(0);" class="btn btn-danger" data-bs-dismiss="modal">Modifier </a>
 
-                            
+                                    </form> -->
 
                               
                         </div>

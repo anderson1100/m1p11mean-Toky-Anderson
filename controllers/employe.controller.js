@@ -89,11 +89,15 @@ module.exports = {
 
 
     completeRdv: async (req, res, next) => {
+        try{
         let { id } = req.params;
         let rdv = await rdvModel.findById(id);
         rdv.completion = true;
         await rdv.save();
-        return res.sendStatus(201);
+        return res.status(201).json("Rendez-vous complèté");
+        } catch(error){
+            next(error)
+        }
     },
 
     getTotalCommissionToday: async (req, res, next) => {
@@ -120,5 +124,20 @@ module.exports = {
         return res.json(result);
     },
 
-    updateEmploye
+    updatePhotoEmploye: async (req, res, next) => {
+        //req.body contains user : whole employe object, additional : {password : true/false}
+        try {
+            const { id } = req.params;
+            let employe = await account.findById(id);
+            //to verify
+            if(req.file !== undefined){
+                employe.photo = req.file.originalname;
+            }
+            await employe.save();
+            return res.sendStatus(200)
+        } catch (error) {
+            next(error)
+        }
+    },
+
 }

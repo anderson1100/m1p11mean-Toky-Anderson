@@ -59,8 +59,8 @@ export class ManagerService {
     return this.http.get('/manager/employes');
   }
 
-  addEmploye(id : string,formData : FormData){
-    return this.http.post(`/manager/employes/${id}`,formData);
+  addEmploye(formData : FormData){
+    return this.http.post(`/manager/employes`,formData);
   }
 
   updateEmploye(id : string,formData : FormData){
@@ -78,8 +78,8 @@ export class ManagerService {
     return this.http.get('/manager/services');
   }
 
-  addServices(id : string,formData : FormData){
-    return this.http.post(`/manager/services/${id}`,formData);
+  addServices(formData : FormData){
+    return this.http.post(`/manager/services`,formData);
   }
 
   updateServices(id : string,formData : FormData){

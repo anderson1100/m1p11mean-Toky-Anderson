@@ -48,20 +48,19 @@ module.exports = {
             const client_id = userPayload.aud;
             let basket_array = await basketModel.find({ client_id: client_id });
             let basket = basket_array[0]
-            
+            console.log(basket);
             
             let indexToDelete = basket.services.findIndex(elem => elem._id.toString() === id);
             if (indexToDelete !== -1) {
                 let newListService = [...basket.services]; // Create a copy of the array
                 newListService.splice(indexToDelete, 1); // Remove the element at the specified index
                 // Use newListService for further operations
+                basket.services = newListService;
             }
            
             // let newListService = basket.services.filter((elem) => {
             //     return (elem._id.toString() !== id)
             // })
-            
-            basket.services = newListService;
            
             await basket.save();
             return res.json("ok");

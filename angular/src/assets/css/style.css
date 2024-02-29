@@ -1869,6 +1869,7 @@ textarea:focus {
   content: "";
   right: 0;
   bottom: 0;
+  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5); /* Adjust the shadow values as needed */
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -8245,6 +8246,7 @@ a.default-btn {
 .product-wrap-2 .product-img .default-img {
   -webkit-transition: all 0.5s ease-in-out;
   transition: all 0.5s ease-in-out;
+  box-shadow: 0 0 10px 5px #8C8C8C; /* Adjust the shadow values as needed */
 }
 .product-wrap-2 .product-img .hover-img {
   position: absolute;

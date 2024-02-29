@@ -1,9 +1,13 @@
 <div class="slider-banner-area">
     <div class="container">
         <div class="row flex-row-reverse">
+            <div class="jumbotron mb-50">
+                <h1 style="font-weight: bold;
+                color: lightgreen;">Gestion des employés</h1>
+            </div>
             <div class="col-lg-8 col-md-12">
                 <div class="slider-area res-mrg-md-mb">
-                    <h1>Liste employés : </h1>
+                    <h2>Liste employés : </h2>
                     <div class="tab-content">
                         <table class="table w-80 mx-auto table-striped overflow-y:auto">
                             <thead>
@@ -20,7 +24,7 @@
                             <tbody>
                                 @for(employe of listEmploye; track employe._id){
                                 <tr>
-                                    <th scope="row">{{$index+1}}</th>
+                                    <td scope="row">{{$index+1}}</td>
                                     <td><img [src]="baseUrl+'images/'+employe.photo" alt="" width="50" height="50"></td>
                                     <td>{{employe.nom}}</td>
                                     <td>{{employe.prenom}}</td>
@@ -28,9 +32,9 @@
                                     <td>{{getTime(employe.heure_debut)}} - {{getTime(employe.heure_fin)}}</td>
                                     <td>
                                         <span class="btn btn-warning" data-bs-toggle="modal"
-                                            data-bs-target="#modalEmp"><i class="fa fa-pencil"></i></span>
+                                            data-bs-target="#modalEmp" (click)="openUpdateModal($index)"><i class="fa fa-pencil"></i></span>
                                         <span class="btn btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#modalDelEmp"><i class="fa fa-trash" (click)="openDeleteModal($index)"></i></span>
+                                            data-bs-target="#modalDelEmp" (click)="openDeleteModal($index)"><i class="fa fa-trash"></i></span>
 
                                     </td>
 
@@ -61,7 +65,7 @@
                 <div class="row">
                     <div class="col-lg-12 col-md-6 col-sm-6">
                         <div class="single-banner mb-30">
-                            <h1>Créer nouvel employé</h1>
+                            <h2>Créer nouvel employé</h2>
                             <form [formGroup]="addForm" (ngSubmit)="$event.preventDefault();addEmploye()">
                                 <div class="form-group">
                                     <label for="cardNumber">Nom</label>
@@ -75,7 +79,7 @@
                                 <div class="form-row">
                                     <div class="form-group">
                                         <label for="expiryDate">Nom d'utilisateur</label>
-                                        <input type="text" class="form-control" formControlName="username"  id="username"
+                                        <input type="text" class="form-control" formControlName="username" id="username"
                                             formControlName="username">
                                     </div>
                                     <br>
@@ -83,8 +87,9 @@
                                         <label for="email">Email</label>
                                         <input type="email" class="form-control" id="email" formControlName="email">
                                     </div>
-                                    @if( addForm.get('email')?.invalid  && (addForm.get('email')?.dirty || addForm.get('email')?.touched)){
-                                        <small class="text-danger">Email invalide</small>
+                                    @if( addForm.get('email')?.invalid && (addForm.get('email')?.dirty ||
+                                    addForm.get('email')?.touched)){
+                                    <small class="text-danger">Email invalide</small>
                                     }
                                     <br>
                                     <div class="form-group">
@@ -103,11 +108,13 @@
                                     <div class="form-group mt-20">
                                         <label for="mdp">Photo de profil</label>
                                         <ngx-dropzone (change)="onSelect($event)">
-                                            <ngx-dropzone-label>Click or drag an image here to upload</ngx-dropzone-label>
+                                            <ngx-dropzone-label>Cliquer ou faites glisser une image ici.</ngx-dropzone-label>
                                             @if(files.length>0){
-                                                <ngx-dropzone-image-preview [removable]="true" (removed)="onRemove($event)" [file]="files[0]">
-                                                    <ngx-dropzone-label>{{ files[0].name }} ({{ files[0].type }})</ngx-dropzone-label>
-                                                </ngx-dropzone-image-preview>
+                                            <ngx-dropzone-image-preview [removable]="true" (removed)="onRemove($event)"
+                                                [file]="files[0]">
+                                                <ngx-dropzone-label>{{ files[0].name }} ({{ files[0].type
+                                                    }})</ngx-dropzone-label>
+                                            </ngx-dropzone-image-preview>
                                             }
                                         </ngx-dropzone>
                                     </div>
@@ -116,8 +123,7 @@
                                 <div>
                                     <!-- disable button if form invalid -->
                                     <button [disabled]="addForm.invalid" style="border: 0;">
-                                        <a class="btn btn-danger"
-                                            (click)="$event.preventDefault(); addEmploye()">Créer
+                                        <a class="btn btn-danger" (click)="$event.preventDefault(); addEmploye()">Créer
                                             employé</a>
                                     </button>
                                 </div>
@@ -126,13 +132,17 @@
                                 }
                                 @if(addError()){
 
-                                    <div class="alert alert-danger" role="alert">
-                                        Une erreur s'est produite
-                                    </div>
+                                <div class="alert alert-danger" role="alert">
+                                    Une erreur s'est produite
+                                </div>
                                 }
                             </form>
                         </div>
+
+
                     </div>
+
+
                 </div>
             </div>
         </div>
@@ -149,49 +159,83 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-5 col-sm-12 col-xs-12">
-                        <div class="tab-content quickview-big-img">
-                            <div id="pro-1" class="tab-pane fade show active">
-                                <img src="https://picsum.photos/200" alt="">
+
+                    @if(!updateLoading()){
+                    <div class="single-banner mb-30 col-md-10 offset-md-1">
+                        <h1>Modifier le profil</h1>
+                        <form [formGroup]="updateForm" (ngSubmit)="$event.preventDefault();updateEmploye()">
+                            <div class="form-group">
+                                <label for="cardNumber">Nom</label>
+                                <input type="text" class="form-control" id="nom" formControlName="nom">
                             </div>
+                            <div class="form-group">
+                                <label for="cardNumber">Prenom</label>
+                                <input type="text" class="form-control" id="nom" formControlName="prenom">
+                            </div>
+                            <br>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="expiryDate">Nom d'utilisateur</label>
+                                    <input type="text" class="form-control" formControlName="username" id="username"
+                                        formControlName="username">
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control" id="email" formControlName="email">
+                                </div>
+                                @if( updateForm.get('email')?.invalid && (updateForm.get('email')?.dirty ||
+                                updateForm.get('email')?.touched)){
+                                <small class="text-danger">Email invalide</small>
+                                }
+                                <br>
+                                <!-- <div class="form-group">
+                                    <label for="mdp">Mot de passe</label>
+                                    <input type="text" formControlName="password" class="form-control" id="mdp">
+                                </div> -->
+                                <div class="form-group ">
+                                    <label for="debut">Début service</label>
+                                    <input type="time" formControlName="heure_debut" class="form-control" id="debut">
+                                </div>
+                                <div class="form-group ">
+                                    <label for="fin">Fin service</label>
+                                    <input type="time" formControlName="heure_fin" class="form-control" id="debut">
+                                </div>
+                                <div class="form-group mt-20">
+                                    <label for="pd">Photo de profil</label>
+                                    <ngx-dropzone (change)="onSelectUpdateImage($event)">
+                                        <ngx-dropzone-label>Cliquer ou faites glisser une image ici.</ngx-dropzone-label>
+                                        @if(updateFiles.length>0){
+                                        <ngx-dropzone-image-preview [removable]="true" (removed)="onRemoveUpdateImage($event)"
+                                            [file]="updateFiles[0]">
+                                            <ngx-dropzone-label>{{ updateFiles[0].name }} ({{ updateFiles[0].type
+                                                }})</ngx-dropzone-label>
+                                        </ngx-dropzone-image-preview>
+                                        }
+                                    </ngx-dropzone>
+                                </div>
+                            </div>
+                            <br> <br>
+                            <div>
+                                <!-- disable button if form invalid -->
+                                <button [disabled]="updateForm.invalid" style="border: 0;">
+                                    <a class="btn btn-danger" (click)="$event.preventDefault(); updateEmploye()">Modifier l'employé</a>
+                                </button>
+                            </div>
+                            @if(updateRequestLoading()){
+                            <div class="form-group mt-20 offset-md-2 spinner-border text-info" role="status"></div>
+                            }
+                            @if(addError()){
 
-                        </div>
-                        <!-- Thumbnail Large Image End -->
-                        <!-- Thumbnail Image End -->
-
+                            <div class="alert alert-danger" role="alert">
+                                Une erreur s'est produite
+                            </div>
+                            }
+                        </form>
                     </div>
-                    <div class="col-md-7 col-sm-12 col-xs-12">
-                        <div class="product-details-content quickview-content">
-                            <h2>Employé Détails</h2>
-                            <br>
-                            <div class="form-group ">
-                                <label for="debut">Début service</label>
-                                <input type="time" class="form-control" id="debut">
-                            </div>
-                            <div class="form-group ">
-                                <label for="fin">Fin service</label>
-                                <input type="time" class="form-control" id="debut">
-                            </div>
-                            <br>
-                            <div class="form-group ">
-                                <label for="cvv">Mot de passe</label>
-                                <input type="text" class="form-control" id="email" placeholder="password">
-                            </div>
-                            <br>
-                            <div class="form-group col-md-6 mt-20">
-                                <label for="mdp">Photo de profil</label>
-                                <!-- <dropzone [config]="dropzoneConfig" [message]="'Click or drag images here to upload'" class="dropzone">
-                                </dropzone> -->
-                            </div>
-                            <br><br>
-
-                            <a class="btn btn-danger" data-bs-dismiss="modal">Modifier </a>
-
-
-
-
-                        </div>
-                    </div>
+                    }@else{
+                        <div class="form-group mt-20 offset-md-6 spinner-border text-info" role="status"></div>
+                    }
                 </div>
             </div>
         </div>
@@ -214,7 +258,8 @@
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-bs-dismiss="modal" value="Annuler">
-                    <input type="submit" class="btn btn-danger" value="Supprimer" class="btn btn-default" data-bs-dismiss="modal" (click)="deleteEmploye()">
+                    <input type="submit" class="btn btn-danger" value="Supprimer" class="btn btn-default"
+                        data-bs-dismiss="modal" (click)="deleteEmploye()">
                 </div>
             </form>
         </div>

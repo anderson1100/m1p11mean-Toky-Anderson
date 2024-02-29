@@ -57,7 +57,7 @@ router.post('/services',upload.single('image'),managerController.addService)
 
 router.delete('/services/:id',managerController.deleteService)
 
-router.put('/services/:id',managerController.updateService)
+router.put('/services/:id',upload.single('image'),managerController.updateService)
 
 //CRUD EMPLOYES
 router.get('/employes',managerController.getEmployes)
@@ -66,13 +66,25 @@ router.post('/employes',upload.single('photo'),managerController.addEmploye)
 
 router.delete('/employes/:id',managerController.deleteEmploye);
 
-router.put('/employes/:id',managerController.updateEmploye)
+router.put('/employes/:id',upload.single('photo'),managerController.updateEmploye)
+
+
+//CRUD OFFRE
+router.get('/offres',managerController.getOffres)
+
+router.post('/offres',managerController.addOffre)
+
+router.delete('/offres/:id',managerController.deleteOffre);
+
+router.put('/offres/:id',managerController.updateOffre)
+
 
 //CRUD CATEGORIE
 router.get('/categories',managerController.getAll);
+
 router.post('/categories',managerController.addCategorie);
 
-router.post('/categories',managerController.deleteCategorie);
+router.delete('/categories',managerController.deleteCategorie);
 
 router.put('/categories',managerController.updateCategorie);
 

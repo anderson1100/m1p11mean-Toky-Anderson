@@ -4,6 +4,7 @@ const account = require('../models/account')
 const categorieModel = require('../models/categorie')
 const { userCredentialsSchema } = require('../helpers/validation')
 const managerService = require('../services/manager.service')
+const offreModel = require('../models/offre-speciale');
 
 module.exports = {
 
@@ -80,6 +81,7 @@ module.exports = {
     updateEmploye: async (req, res, next) => {
         //req.body contains user : whole employe object, additional : {password : true/false}
         try {
+            //console.log(req.body);
             const { id } = req.params;
             const { nom, prenom, email,username, password, heure_debut, heure_fin } = req.body;
             let employe = await account.findById(id);
@@ -96,12 +98,12 @@ module.exports = {
             }
             employe.heure_debut = debut;
             employe.heure_fin = fin;
-            //to verify
+            //to verifyc
             if(req.file !== undefined){
                 employe.photo = req.file.originalname;
             }
-            await employe.save();
-            return res.status(200).json("updated");
+            let result = await employe.save();
+            return res.json(result);
         } catch (error) {
             next(error)
         }
@@ -220,6 +222,7 @@ module.exports = {
     updateService : async (req, res, next) => {
         //req.body contains user : whole employe object, additional : {password : true/false}
         try {
+            console.log("update service",req.body);
             const { id } = req.params;
             const {nom, description, id_categorie, prix, duree_minute, commission} = req.body;
             //categorie
@@ -236,12 +239,95 @@ module.exports = {
             if(req.file !== undefined){
                 service.image = req.file.originalname;
             }
-            await service.save();
-            return res.status(200).json("updated");
+            let result = await service.save();
+            return res.json(result);
         } catch (error) {
             next(error)
         }
     },
+
+    //offres speciales 
+
+
+    getOffres: async (req, res, next) => {
+        try {
+            const list = await offreModel.find().sort({ date_fin: -1 });
+            return res.json(list);
+        } catch (error) {
+            next(error)
+        }
+    },
+
+    addOffre: async (req, res, next) => {
+        try {
+            console.log(req.body);
+            const {nom, description, id_services, reduction, date_debut, date_fin} = req.body;
+            let services = [];
+            for(let id of id_services){
+                let service = await serviceModel.findById(id);
+                services.push(service);
+            }
+
+            let listReduction = Array.from({ length: services.length }, () => reduction);
+
+            let offre = new offreModel({nom : nom, description : description, liste_service : services, reduction : listReduction, date_debut : new Date(date_debut), date_fin : new Date(date_fin)});
+            
+            const doesExist = await offreModel.exists({ nom : offre.nom})
+
+            if (doesExist)
+                throw createError.Conflict('offre name already used');
+
+            const saved = await offre.save()
+             return res.status(201).json("created");
+            //console.log(req.body,req.file);
+        } catch (error) {
+            next(error)
+        }
+    },
+
+    deleteOffre: async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            await offreModel.deleteOne({ _id: id });
+            return res.status(200).json("deleted");
+        } catch (error) {
+            next(error)
+        }
+    },
+
+    updateOffre : async (req, res, next) => {
+        //req.body contains user : whole employe object, additional : {password : true/false}
+        try {
+            
+            console.log("update offre",req.body);
+            const { id } = req.params;
+            
+            const {nom, description, id_services, reduction, date_debut, date_fin} = req.body;
+            let services = [];
+            
+            for(let id of id_services){
+                let service = serviceModel.findById(id);
+                services.push(service);
+            }
+
+            let listReduction = Array.from({ length: services.length }, () => reduction);
+           
+            let offre = await offreModel.findById(id);
+            offre.nom = nom;
+            offre.description = description;
+            offre.liste_service = services;
+            offre.reduction = listReduction;
+            offre.date_debut = new Date(date_debut);
+            offre.date_fin = new Date(date_fin);
+            let result = await offre.save();
+            return res.json(result);
+            
+        } catch (error) {
+            next(error)
+        }
+    },
+
+
 
     //stats
 

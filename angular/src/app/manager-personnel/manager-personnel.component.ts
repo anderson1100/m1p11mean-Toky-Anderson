@@ -29,6 +29,8 @@ export class ManagerPersonnelComponent implements OnInit {
 
   addFormData = new FormData();
 
+  updateFormData = new FormData();
+
   addForm: FormGroup = new FormGroup({
     nom: new FormControl("Anderson"),
     prenom: new FormControl("Anderson"),
@@ -39,17 +41,31 @@ export class ManagerPersonnelComponent implements OnInit {
     heure_fin: new FormControl("17:00")
   })
 
-  updateFormData = new FormData();
+  updateForm: FormGroup = new FormGroup({
+    nom: new FormControl(""),
+    prenom: new FormControl(""),
+    username: new FormControl(""),
+    email: new FormControl("", [Validators.required, Validators.email]),
+    password: new FormControl("", [Validators.required, Validators.minLength(8)]),
+    heure_debut: new FormControl(""),
+    heure_fin: new FormControl("")
+  })
 
   addError = signal(false);
 
   addLoading = signal(false);
 
+  updateError = signal(false);
+
+  updateLoading = signal(true);
+
+  updateRequestLoading = signal(false);
+
+  employeToDelete: any = null;
+
   deleteLoading = signal(false);
 
-  updateLoading = signal(false);
-
-  employeToDelete : any = null;
+  employeToUpdate: any = null;
 
   // dropzoneConfig = {
   //   url: 'your-upload-url',
@@ -84,9 +100,9 @@ export class ManagerPersonnelComponent implements OnInit {
   deleteEmploye() {
     //this.addLoading.set(true);
     console.log("delete function")
-    if(this.employeToDelete){
+    if (this.employeToDelete) {
       console.log("employeToDelete exists")
-      this.listEmploye.splice(this.employeToDelete.index,1);
+      this.listEmploye.splice(this.employeToDelete.index, 1);
       this.managerService.deleteEmploye(this.employeToDelete._id).subscribe({
         next: (data: any) => {
           console.log("deleted");
@@ -99,12 +115,33 @@ export class ManagerPersonnelComponent implements OnInit {
     }
   }
 
-  openDeleteModal(index : any){
+  openDeleteModal(index: any) {
+    console.log("on open delete");
     this.employeToDelete = this.listEmploye[index];
     this.employeToDelete.index = index;
   }
 
-  createDateTimeStringFromHours(hours : any) {
+  openUpdateModal(index: any) {
+    console.log("open modal update");
+    this.updateFiles = [];
+    this.updateLoading.set(true);
+    this.employeToUpdate = this.listEmploye[index];
+    this.employeToUpdate.index = index;
+    console.log(this.employeToUpdate);
+    this.updateForm = new FormGroup({
+      nom: new FormControl(this.employeToUpdate.nom),
+      prenom: new FormControl(this.employeToUpdate.prenom),
+      username: new FormControl(this.employeToUpdate.username),
+      email: new FormControl(this.employeToUpdate.email, [Validators.required, Validators.email]),
+      password: new FormControl(this.employeToUpdate.password, [Validators.required, Validators.minLength(8)]),
+      heure_debut: new FormControl("08:00"),
+      heure_fin: new FormControl("18:00")
+    });
+    this.updateLoading.set(false);
+    console.log(this.employeToUpdate);
+  }
+
+  createDateTimeStringFromHours(hours: any) {
     const [hourStr, minuteStr] = hours.split(':');
     const date = new Date();
     const year = date.getFullYear();
@@ -112,6 +149,22 @@ export class ManagerPersonnelComponent implements OnInit {
     const day = String(date.getDate()).padStart(2, '0');
     const dateString = `${year}-${month}-${day}`;
     return `${dateString}T${hourStr}:${minuteStr}:00`;
+  }
+
+
+  files: File[] = [];
+
+  onSelect(event: any) {
+    this.files = [];
+    //console.log(event);
+    this.files.push(...event.addedFiles);
+    this.addFormData.append("photo", this.files[0]);
+  }
+
+  onRemove(event: any) {
+    //console.log(event);
+    this.files.splice(this.files.indexOf(event), 1);
+    this.addFormData.delete("photo");
   }
 
   addEmploye() {
@@ -124,13 +177,14 @@ export class ManagerPersonnelComponent implements OnInit {
       const control = this.addForm.get(controlName);
       if (control) {
         this.addFormData.delete(controlName);
-        if(controlName === "heure_debut" || controlName === "heure_fin"){
+        if (controlName === "heure_debut" || controlName === "heure_fin") {
           this.addFormData.append(controlName, this.createDateTimeStringFromHours(control.value))
-        }else{
+        } else {
           this.addFormData.append(controlName, control.value);
         }
       }
     }
+    //console.log(this.addFormData);
     this.managerService.addEmploye(this.addFormData).subscribe({
       next: (data: any) => {
         this.getListEmploye();
@@ -148,19 +202,53 @@ export class ManagerPersonnelComponent implements OnInit {
     })
   }
 
-  files: File[] = [];
+  updateFiles: File[] = [];
 
-  onSelect(event: any) {
-    this.files = [];
+  onSelectUpdateImage(event: any) {
+    this.updateFiles = [];
     //console.log(event);
-    this.files.push(...event.addedFiles);
-    this.addFormData.append("photo", this.files[0]);
+    this.updateFiles.push(...event.addedFiles);
+    this.updateFormData.append("photo", this.updateFiles[0]);
   }
 
-  onRemove(event: any) {
+  onRemoveUpdateImage(event: any) {
     //console.log(event);
-    this.files.splice(this.files.indexOf(event), 1);
-    this.addFormData.delete("photo");
+    this.updateFiles.splice(this.updateFiles.indexOf(event), 1);
+    this.updateFormData.delete("photo");
+  }
+
+
+  updateEmploye() {
+    //console.log("add employe")
+    this.updateError.set(false);
+    this.updateRequestLoading.set(true);
+    const controlNames = Object.keys(this.updateForm.controls);
+    for (let i = 0; i < controlNames.length; i++) {
+      const controlName = controlNames[i];
+      const control = this.updateForm.get(controlName);
+      if (control) {
+        this.updateFormData.delete(controlName);
+        if (controlName === "heure_debut" || controlName === "heure_fin") {
+          this.updateFormData.append(controlName, this.createDateTimeStringFromHours(control.value))
+        } else {
+          this.updateFormData.append(controlName, control.value);
+        }
+      }
+    }
+    this.managerService.updateEmploye(this.employeToUpdate._id,this.updateFormData).subscribe({
+      next: (data: any) => {
+        let employe = this.employeToUpdate;
+        this.listEmploye[employe.index] = data
+        this.employeToUpdate = data;
+        this.employeToUpdate.index = employe.index;
+        this.updateRequestLoading.set(false);
+      },
+      error: (error) => {
+        console.log(error);
+        this.updateRequestLoading.set(false);
+        this.updateError.set(true);
+      }
+    })
   }
 
 }

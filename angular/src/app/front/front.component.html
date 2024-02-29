@@ -339,7 +339,7 @@
                                                     formControlName="employeId" required>
                                                     @for(employe of listEmploye; track employe.id){
                                                         @if($first){
-                                                            <option [ngValue]="employe._id"><img [src]="baseUrl+'/images/'+employe.photo" width="50" height="50" selected> {{employe.nom+" "+employe.prenom}}
+                                                            <option [ngValue]="employe._id"  selected><img [src]="baseUrl+'/images/'+employe.photo" width="50" height="50"> {{employe.nom+" "+employe.prenom}}
                                                             </option>
                                                         }@else{
                                                             <option [ngValue]="employe._id"><img [src]="baseUrl+'/images/'+employe.photo" width="50" height="50"> {{employe.nom+" "+employe.prenom}}

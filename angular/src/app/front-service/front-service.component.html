@@ -32,9 +32,9 @@
                             <div class="product-img">
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#detailModal"
                                     (click)="getService(service._id)">
-                                    <img class="default-img" [src]="baseUrl+'images/'+service.image" alt="" width="60"
+                                    <img class="default-img" [src]="baseUrl+'images/'+service.image" alt="" width="70"
                                         height="300">
-                                    <img class="hover-img" [src]="baseUrl+'images/'+service.image" alt="" width="60"
+                                    <img class="hover-img" [src]="baseUrl+'images/'+service.image" alt="" width="70"
                                         height="300">
                                 </a>
                                 @if(service.offreSpeciale !== null){
@@ -113,3 +113,35 @@
     </div>
 </div>
 
+<style>
+    /* Basic styling for pagination */
+    .pagination {
+      display: flex;
+      list-style: none;
+      padding: 0;
+      margin: 20px 0;
+    }
+
+    .pagination li {
+      margin-right: 5px;
+    }
+
+    .pagination a {
+      display: block;
+      padding: 8px 12px;
+      text-decoration: none;
+      color: #fff;
+      background-color: #A68A56;
+      border: 2px solid #A68A56;
+      border-radius: 4px;
+    }
+
+    .pagination a:hover {
+      background-color: #D9B36C;
+    }
+
+    .pagination .active {
+      background-color: #D9B36C;
+      color: #D9B36C;
+    }
+  </style>

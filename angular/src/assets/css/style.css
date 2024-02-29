@@ -1869,6 +1869,7 @@ textarea:focus {
   content: "";
   right: 0;
   bottom: 0;
+  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5); /* Adjust the shadow values as needed */
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -2689,7 +2690,7 @@ a.default-btn {
   color: #A68A56;
 }
 .header-right-wrap .same-style.cart-wrap .shopping-cart-content ul li .shopping-cart-delete a:hover {
-  color: #333;
+  color: #A68A56;
 }
 .header-right-wrap .same-style.cart-wrap .shopping-cart-content .shopping-cart-total h4 {
   font-size: 14px;
@@ -2700,6 +2701,8 @@ a.default-btn {
 }
 .header-right-wrap .same-style.cart-wrap .shopping-cart-content .shopping-cart-btn {
   margin-top: 23px;
+  border: #000;
+
 }
 .header-right-wrap .same-style.cart-wrap .shopping-cart-content .shopping-cart-btn a {
   margin-bottom: 20px;
@@ -2707,6 +2710,8 @@ a.default-btn {
   font-weight: 500;
   font-size: 14px;
   display: block;
+  border: #000;
+ 
 }
 .header-right-wrap.header-right-wrap-white {
   margin-top: 40px;
@@ -5423,7 +5428,7 @@ a.default-btn {
 .slider-content-7 h3 {
   font-size: 16px;
   font-weight: 500;
-  color: #313131;
+  color: #D9B36C;
   margin: 0;
   letter-spacing: 0.3px;
   line-height: 1;
@@ -5431,7 +5436,7 @@ a.default-btn {
 .slider-content-7 h1 {
   font-size: 48px;
   font-weight: 500;
-  color: #313131;
+  color: #A68A56;
   margin: 17px 0 37px;
   line-height: 65px;
   letter-spacing: 1px;
@@ -5458,9 +5463,9 @@ a.default-btn {
 }
 .slider-content-7 .slider-btn-9 a {
   font-size: 16px;
-  color: #010101;
+  color: #D9B36C;
   display: inline-block;
-  border: 1px solid #333;
+  border: 1px solid #D9B36C;
   text-transform: uppercase;
   line-height: 1;
   padding: 19px 50px 19px;
@@ -7345,7 +7350,7 @@ a.default-btn {
 }
 .product-tab-list.product-tab-pink2 a.active h4 {
   color: #D9B36C;
-  border-bottom: 2px solid D9B36Ce90042;
+  border-bottom: 5px solid D9B36Ce90042;
 }
 .product-tab-list.product-tab-fashion a {
   margin: 0 23px;
@@ -8245,6 +8250,7 @@ a.default-btn {
 .product-wrap-2 .product-img .default-img {
   -webkit-transition: all 0.5s ease-in-out;
   transition: all 0.5s ease-in-out;
+  box-shadow: 0 0 10px 5px #8C8C8C; /* Adjust the shadow values as needed */
 }
 .product-wrap-2 .product-img .hover-img {
   position: absolute;
@@ -15811,3 +15817,4 @@ h3.cart-page-title {
     margin-bottom: 20px;
   }
 }
+

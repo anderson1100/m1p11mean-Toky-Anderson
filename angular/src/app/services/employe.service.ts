@@ -27,7 +27,7 @@ export class EmployeService {
     return this.http.get('employe/profil');
   }
 
-  gerHistoryRdv(): Observable<any>{
+  getHistoryRdv(): Observable<any>{
     return this.http.get('employe/rdv_history');
   }
 
@@ -37,6 +37,14 @@ export class EmployeService {
 
   getListRdv(): Observable<any>{
     return this.http.get('employe/list_rdv_today');
+  }
+
+  completeRdv(id : string): Observable<any>{
+    return this.http.post(`employe/complete_rdv/${id}`,id);
+  }
+
+  updatePhoto(photo: string): Observable<any>{
+    return this.http.post(`employe/updatePhotoEmploye/${photo}`,photo)
   }
 
 }

@@ -4,6 +4,7 @@ const account = require('../models/account')
 const categorieModel = require('../models/categorie')
 const { userCredentialsSchema } = require('../helpers/validation')
 const managerService = require('../services/manager.service')
+const offreModel = require('../models/offre-speciale');
 
 module.exports = {
 
@@ -31,6 +32,7 @@ module.exports = {
 
     addEmploye: async (req, res, next) => {
         try {
+            console.log(req.body);
             let role = "employe";
             let {nom,prenom,email,username,password,heure_debut,heure_fin} = req.body;
             let userInfo = {nom : nom,prenom : prenom, email: email, username : username, password : password, heure_debut : heure_debut, heure_fin: heure_fin};
@@ -59,7 +61,7 @@ module.exports = {
             await user.bcryptPassword();
             const savedUser = await user.save()
             //console.log(savedUser);
-            return res.sendStatus(201);
+            return res.status(201).json("created");
         } catch (error) {
             if (error.isJoi === true) error.status = 422
             next(error)
@@ -70,7 +72,7 @@ module.exports = {
         try {
             const { id } = req.params;
             await account.deleteOne({ _id: id });
-            return res.sendStatus(200);
+            return res.status(200).json("deleted");
         } catch (error) {
             next(error)
         }
@@ -79,6 +81,7 @@ module.exports = {
     updateEmploye: async (req, res, next) => {
         //req.body contains user : whole employe object, additional : {password : true/false}
         try {
+            //console.log(req.body);
             const { id } = req.params;
             const { nom, prenom, email,username, password, heure_debut, heure_fin } = req.body;
             let employe = await account.findById(id);
@@ -95,12 +98,12 @@ module.exports = {
             }
             employe.heure_debut = debut;
             employe.heure_fin = fin;
-            //to verify
+            //to verifyc
             if(req.file !== undefined){
                 employe.photo = req.file.originalname;
             }
-            await employe.save();
-            return res.sendStatus(200)
+            let result = await employe.save();
+            return res.json(result);
         } catch (error) {
             next(error)
         }
@@ -129,7 +132,7 @@ module.exports = {
                 throw createError.Conflict("Categorie name already exist!");
 
             const saved = await categorie.save();
-            res.sendStatus(201);
+            return res.status(201).json("created");
         }
         catch(error){
             next(error)
@@ -140,7 +143,7 @@ module.exports = {
         try {
             const { id } = req.params;
             await categorieModel.deleteOne({ _id: id });
-            res.sendStatus(200);
+            return res.status(200).json("deleted");
         } catch (error) {
             next(error)
         }
@@ -155,7 +158,7 @@ module.exports = {
             categorie.nom = nom;
             categorie.description = description;
             await categorie.save();
-            res.sendStatus(200);
+            return res.status(200).json("updated");
         } catch (error) {
             next(error)
         }
@@ -199,7 +202,7 @@ module.exports = {
                 throw createError.Conflict('service name already used');
 
             const saved = await service.save()
-             return res.sendStatus(201);
+             return res.status(201).json("created");
             //console.log(req.body,req.file);
         } catch (error) {
             next(error)
@@ -210,7 +213,7 @@ module.exports = {
         try {
             const { id } = req.params;
             await serviceModel.deleteOne({ _id: id });
-            res.sendStatus(200);
+            return res.status(200).json("deleted");
         } catch (error) {
             next(error)
         }
@@ -219,6 +222,7 @@ module.exports = {
     updateService : async (req, res, next) => {
         //req.body contains user : whole employe object, additional : {password : true/false}
         try {
+            console.log("update service",req.body);
             const { id } = req.params;
             const {nom, description, id_categorie, prix, duree_minute, commission} = req.body;
             //categorie
@@ -235,12 +239,95 @@ module.exports = {
             if(req.file !== undefined){
                 service.image = req.file.originalname;
             }
-            await service.save();
-            return res.sendStatus(200);
+            let result = await service.save();
+            return res.json(result);
         } catch (error) {
             next(error)
         }
     },
+
+    //offres speciales 
+
+
+    getOffres: async (req, res, next) => {
+        try {
+            const list = await offreModel.find().sort({ date_fin: -1 });
+            return res.json(list);
+        } catch (error) {
+            next(error)
+        }
+    },
+
+    addOffre: async (req, res, next) => {
+        try {
+            console.log(req.body);
+            const {nom, description, id_services, reduction, date_debut, date_fin} = req.body;
+            let services = [];
+            for(let id of id_services){
+                let service = await serviceModel.findById(id);
+                services.push(service);
+            }
+
+            let listReduction = Array.from({ length: services.length }, () => reduction);
+
+            let offre = new offreModel({nom : nom, description : description, liste_service : services, reduction : listReduction, date_debut : new Date(date_debut), date_fin : new Date(date_fin)});
+            
+            const doesExist = await offreModel.exists({ nom : offre.nom})
+
+            if (doesExist)
+                throw createError.Conflict('offre name already used');
+
+            const saved = await offre.save()
+             return res.status(201).json("created");
+            //console.log(req.body,req.file);
+        } catch (error) {
+            next(error)
+        }
+    },
+
+    deleteOffre: async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            await offreModel.deleteOne({ _id: id });
+            return res.status(200).json("deleted");
+        } catch (error) {
+            next(error)
+        }
+    },
+
+    updateOffre : async (req, res, next) => {
+        //req.body contains user : whole employe object, additional : {password : true/false}
+        try {
+            
+            console.log("update offre",req.body);
+            const { id } = req.params;
+            
+            const {nom, description, id_services, reduction, date_debut, date_fin} = req.body;
+            let services = [];
+            
+            for(let id of id_services){
+                let service = serviceModel.findById(id);
+                services.push(service);
+            }
+
+            let listReduction = Array.from({ length: services.length }, () => reduction);
+           
+            let offre = await offreModel.findById(id);
+            offre.nom = nom;
+            offre.description = description;
+            offre.liste_service = services;
+            offre.reduction = listReduction;
+            offre.date_debut = new Date(date_debut);
+            offre.date_fin = new Date(date_fin);
+            let result = await offre.save();
+            return res.json(result);
+            
+        } catch (error) {
+            next(error)
+        }
+    },
+
+
 
     //stats
 

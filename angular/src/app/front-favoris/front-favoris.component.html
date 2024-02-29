@@ -95,12 +95,12 @@
             <div class="col-lg-4 col-md-6 col-sm-6">
                 <div class="blog-wrap mb-30 scroll-zoom">
                     <div class="blog-img">
-                        <a href="#"><img [src]="baseUrl+'images/'+employe.photo" alt="" width="60" height="300"
+                        <a href="#"><img [src]="baseUrl+'images/'+employe.photo" alt="" 
                                 alt=""></a>
                     </div>
                     <div class="blog-content-wrap">
                         <div class="blog-content text-center">
-                            <h3><a href="blog-details.html">{{employe.nom}} {{employe.prenom}}<br> </a></h3>
+                            <h3><a href="#">{{employe.nom}} {{employe.prenom}}<br> </a></h3>
                             <a tittle="Delete fav" href="#"
                                 (click)="$event.preventDefault(); removeEmployeFromFav($index)"><i
                                     class="fa fa-heart"></i></a>

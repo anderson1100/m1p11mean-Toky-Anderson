@@ -1,82 +1,156 @@
 <div class="slider-banner-area">
     <div class="container">
         <div class="row flex-row-reverse">
+            <div class="jumbotron mb-50">
+                <h1 style="font-weight: bold;
+                color: lightgreen;">Gestion des employés</h1>
+            </div>
             <div class="col-lg-8 col-md-12">
                 <div class="slider-area res-mrg-md-mb">
-                           <h1>Liste employés : </h1>     
-                           <div class="tab-content">
-                            <table class="table w-80 mx-auto table-striped overflow-y:auto">
-                                <thead>
-                                  <tr>
+                    <h2>Liste employés : </h2>
+                    <div class="tab-content">
+                        <table class="table w-80 mx-auto table-striped overflow-y:auto">
+                            <thead>
+                                <tr>
                                     <th scope="col"></th>
+                                    <th scope="col">Photo</th>
                                     <th scope="col">Nom</th>
+                                    <th scope="col">Prenom</th>
                                     <th scope="col">Nom d'utilisateur</th>
                                     <th scope="col">Heure de travail</th>
-                                    <th scope="col">Mot de passe</th>
                                     <th scope="col">Actions</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>DarkZukenberg</td>
-                                    <td>8h - 17h</td>
-                                    <td>password</td>
-                                    <td>         
-                                     <span class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalEmp"><i class="fa fa-pencil"></i></span>
-                                     <span class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalDelEmp"><i class="fa fa-trash"></i></span>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for(employe of listEmploye; track employe._id){
+                                <tr>
+                                    <td scope="row">{{$index+1}}</td>
+                                    <td><img [src]="baseUrl+'images/'+employe.photo" alt="" width="50" height="50"></td>
+                                    <td>{{employe.nom}}</td>
+                                    <td>{{employe.prenom}}</td>
+                                    <td>{{employe.username}}</td>
+                                    <td>{{getTime(employe.heure_debut)}} - {{getTime(employe.heure_fin)}}</td>
+                                    <td>
+                                        <span class="btn btn-warning" data-bs-toggle="modal"
+                                            data-bs-target="#modalEmp" (click)="openUpdateModal($index)"><i class="fa fa-pencil"></i></span>
+                                        <span class="btn btn-danger" data-bs-toggle="modal"
+                                            data-bs-target="#modalDelEmp" (click)="openDeleteModal($index)"><i class="fa fa-trash"></i></span>
 
                                     </td>
 
-                                  </tr>
-                                </tbody>
-                              </table>
-                        </div>
-                   
+                                </tr>
+                                }@empty{
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>en attente...</td>
+                                    <td>en attente...</td>
+                                    <td>en attente...</td>
+                                    <td>
+                                        <span class="btn btn-warning" data-bs-toggle="modal"
+                                            data-bs-target="#modalEmp"><i class="fa fa-pencil"></i></span>
+                                        <span class="btn btn-danger" data-bs-toggle="modal"
+                                            data-bs-target="#modalDelEmp"><i class="fa fa-trash"></i></span>
+
+                                    </td>
+
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
             </div>
             <div class="col-lg-4 col-md-12">
                 <div class="row">
                     <div class="col-lg-12 col-md-6 col-sm-6">
                         <div class="single-banner mb-30">
-                           <h1>Créer nouvel employé</h1>
-                           <div class="form-group">
-                                       
-                            <label for="cardNumber">Nom Complet</label>
-                            <input type="text" class="form-control" id="nom" >
-                          </div>
-                          <br>
-                          <div class="form-row">
-                            <div class="form-group col-md-6">
-                              <label for="expiryDate">Nom d'utilisateur</label>
-                              <input type="text" class="form-control" id="username" >
-                            </div>
-                            <br>
-                            <div class="form-group col-md-6">
-                              <label for="email">Email</label>
-                              <input type="email" class="form-control" id="email">
-                            </div>
-                            <br>
-                            <div class="form-group col-md-6">
-                               <label for="mdp">Mot de passe</label>
-                               <input type="text" class="form-control" id="mdp" >
-                             </div>
-                          </div>
-                         <br>    <br>                
-                          <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalNewEmp">Créer employé</a>
+                            <h2>Créer nouvel employé</h2>
+                            <form [formGroup]="addForm" (ngSubmit)="$event.preventDefault();addEmploye()">
+                                <div class="form-group">
+                                    <label for="cardNumber">Nom</label>
+                                    <input type="text" class="form-control" id="nom" formControlName="nom">
+                                </div>
+                                <div class="form-group">
+                                    <label for="cardNumber">Prenom</label>
+                                    <input type="text" class="form-control" id="nom" formControlName="prenom">
+                                </div>
+                                <br>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="expiryDate">Nom d'utilisateur</label>
+                                        <input type="text" class="form-control" formControlName="username" id="username"
+                                            formControlName="username">
+                                    </div>
+                                    <br>
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input type="email" class="form-control" id="email" formControlName="email">
+                                    </div>
+                                    @if( addForm.get('email')?.invalid && (addForm.get('email')?.dirty ||
+                                    addForm.get('email')?.touched)){
+                                    <small class="text-danger">Email invalide</small>
+                                    }
+                                    <br>
+                                    <div class="form-group">
+                                        <label for="mdp">Mot de passe</label>
+                                        <input type="text" formControlName="password" class="form-control" id="mdp">
+                                    </div>
+                                    <div class="form-group ">
+                                        <label for="debut">Début service</label>
+                                        <input type="time" formControlName="heure_debut" class="form-control"
+                                            id="debut">
+                                    </div>
+                                    <div class="form-group ">
+                                        <label for="fin">Fin service</label>
+                                        <input type="time" formControlName="heure_fin" class="form-control" id="debut">
+                                    </div>
+                                    <div class="form-group mt-20">
+                                        <label for="mdp">Photo de profil</label>
+                                        <ngx-dropzone (change)="onSelect($event)">
+                                            <ngx-dropzone-label>Cliquer ou faites glisser une image ici.</ngx-dropzone-label>
+                                            @if(files.length>0){
+                                            <ngx-dropzone-image-preview [removable]="true" (removed)="onRemove($event)"
+                                                [file]="files[0]">
+                                                <ngx-dropzone-label>{{ files[0].name }} ({{ files[0].type
+                                                    }})</ngx-dropzone-label>
+                                            </ngx-dropzone-image-preview>
+                                            }
+                                        </ngx-dropzone>
+                                    </div>
+                                </div>
+                                <br> <br>
+                                <div>
+                                    <!-- disable button if form invalid -->
+                                    <button [disabled]="addForm.invalid" style="border: 0;">
+                                        <a class="btn btn-danger" (click)="$event.preventDefault(); addEmploye()">Créer
+                                            employé</a>
+                                    </button>
+                                </div>
+                                @if(addLoading()){
+                                <div class="form-group mt-20 offset-md-2 spinner-border text-info" role="status"></div>
+                                }
+                                @if(addError()){
 
-                                                    
+                                <div class="alert alert-danger" role="alert">
+                                    Une erreur s'est produite
+                                </div>
+                                }
+                            </form>
                         </div>
+
+
                     </div>
+
+
                 </div>
             </div>
         </div>
     </div>
-  </div>
+</div>
 
 
-  <!-- Modal modif employé horaire -->
+<!-- Modal modif employé horaire -->
 <div class="modal fade" id="modalEmp" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -85,68 +159,107 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-5 col-sm-12 col-xs-12">
-                        <div class="tab-content quickview-big-img">
-                            <div id="pro-1" class="tab-pane fade show active">
-                                <img src="assets/img/profil.jpg" alt="">
+
+                    @if(!updateLoading()){
+                    <div class="single-banner mb-30 col-md-10 offset-md-1">
+                        <h1>Modifier le profil</h1>
+                        <form [formGroup]="updateForm" (ngSubmit)="$event.preventDefault();updateEmploye()">
+                            <div class="form-group">
+                                <label for="cardNumber">Nom</label>
+                                <input type="text" class="form-control" id="nom" formControlName="nom">
                             </div>
-                            
-                        </div>
-                        <!-- Thumbnail Large Image End -->
-                        <!-- Thumbnail Image End -->
-                       
-                    </div>
-                    <div class="col-md-7 col-sm-12 col-xs-12">
-                        <div class="product-details-content quickview-content">
-                            <h2>Employé Détails</h2>
-                                     <br>
-                                     <div class="form-group col-md-6">
-                                       <label for="debut">Début service</label>
-                                       <input type="time" class="form-control" id="debut" >
-                                     </div>
-                                     <div class="form-group col-md-6">
-                                        <label for="fin">Fin service</label>
-                                        <input type="time" class="form-control" id="debut" >
-                                      </div>
-                                     <br>
-                                     <div class="form-group col-md-6">
-                                        <label for="cvv">Mot de passe</label>
-                                        <input type="text" class="form-control" id="email" placeholder="password">
-                                      </div>
-                                      <br>
-                                
-                                      <br><br>
-                                   
-                                      <a class="btn btn-danger" data-bs-dismiss="modal">Modifier </a>
+                            <div class="form-group">
+                                <label for="cardNumber">Prenom</label>
+                                <input type="text" class="form-control" id="nom" formControlName="prenom">
+                            </div>
+                            <br>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="expiryDate">Nom d'utilisateur</label>
+                                    <input type="text" class="form-control" formControlName="username" id="username"
+                                        formControlName="username">
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control" id="email" formControlName="email">
+                                </div>
+                                @if( updateForm.get('email')?.invalid && (updateForm.get('email')?.dirty ||
+                                updateForm.get('email')?.touched)){
+                                <small class="text-danger">Email invalide</small>
+                                }
+                                <br>
+                                <!-- <div class="form-group">
+                                    <label for="mdp">Mot de passe</label>
+                                    <input type="text" formControlName="password" class="form-control" id="mdp">
+                                </div> -->
+                                <div class="form-group ">
+                                    <label for="debut">Début service</label>
+                                    <input type="time" formControlName="heure_debut" class="form-control" id="debut">
+                                </div>
+                                <div class="form-group ">
+                                    <label for="fin">Fin service</label>
+                                    <input type="time" formControlName="heure_fin" class="form-control" id="debut">
+                                </div>
+                                <div class="form-group mt-20">
+                                    <label for="pd">Photo de profil</label>
+                                    <ngx-dropzone (change)="onSelectUpdateImage($event)">
+                                        <ngx-dropzone-label>Cliquer ou faites glisser une image ici.</ngx-dropzone-label>
+                                        @if(updateFiles.length>0){
+                                        <ngx-dropzone-image-preview [removable]="true" (removed)="onRemoveUpdateImage($event)"
+                                            [file]="updateFiles[0]">
+                                            <ngx-dropzone-label>{{ updateFiles[0].name }} ({{ updateFiles[0].type
+                                                }})</ngx-dropzone-label>
+                                        </ngx-dropzone-image-preview>
+                                        }
+                                    </ngx-dropzone>
+                                </div>
+                            </div>
+                            <br> <br>
+                            <div>
+                                <!-- disable button if form invalid -->
+                                <button [disabled]="updateForm.invalid" style="border: 0;">
+                                    <a class="btn btn-danger" (click)="$event.preventDefault(); updateEmploye()">Modifier l'employé</a>
+                                </button>
+                            </div>
+                            @if(updateRequestLoading()){
+                            <div class="form-group mt-20 offset-md-2 spinner-border text-info" role="status"></div>
+                            }
+                            @if(addError()){
 
-                            
-
-                              
-                        </div>
+                            <div class="alert alert-danger" role="alert">
+                                Une erreur s'est produite
+                            </div>
+                            }
+                        </form>
                     </div>
+                    }@else{
+                        <div class="form-group mt-20 offset-md-6 spinner-border text-info" role="status"></div>
+                    }
                 </div>
             </div>
         </div>
     </div>
-  </div>
-  <!-- Modal end -->
+</div>
+<!-- Modal end -->
 
 <!-- Supprimer Employé -->
 <div class="modal fade" id="modalDelEmp" tabindex="-1" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <form>
-                <div class="modal-header">						
+                <div class="modal-header">
                     <h4 class="modal-title">Supprimer Employé </h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">					
+                <div class="modal-body">
                     <p>Etes-vous sure de vouloir retirer cet Employé du système ?</p>
                     <p class="text-warning"><small>Cette action est irréversible.</small></p>
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-bs-dismiss="modal" value="Annuler">
-                    <input type="submit" class="btn btn-danger" value="Supprimer">
+                    <input type="submit" class="btn btn-danger" value="Supprimer" class="btn btn-default"
+                        data-bs-dismiss="modal" (click)="deleteEmploye()">
                 </div>
             </form>
         </div>
@@ -154,15 +267,15 @@
 </div>
 
 <!-- Créer Employé -->
-<div class="modal fade" id="modalNewEmp" tabindex="-1" role="dialog">
+<!-- <div class="modal fade" id="modalNewEmp" tabindex="-1" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <form>
-                <div class="modal-header">						
+                <div class="modal-header">
                     <h4 class="modal-title">Créer Employé </h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">					
+                <div class="modal-body">
                     <p>Introduire ce nouvel Employé dans le système ?</p>
                     <p class="text-warning"><small></small></p>
                 </div>
@@ -173,22 +286,40 @@
             </form>
         </div>
     </div>
-</div>
+</div> -->
 
 
 
 <style>
+    .dropzone {
+        border: 2px dashed #0087F7;
+        border-radius: 5px;
+        cursor: pointer;
+        text-align: center;
+        min-height: 200px;
+        background-color: transparent;
+        display: flex;
+        /* Use flexbox */
+        align-items: center;
+        /* Center content vertically */
+        justify-content: center;
+        /* Center content horizontally */
+    }
+
     tbody {
-    display:block;
-    max-height:500px;
-    overflow-y:auto;
-}
-thead, tbody tr {
-    display:table;
-    width:100%;
-    table-layout:fixed;
-}
-thead {
-    width: calc( 100% - 1em )
-} 
+        display: block;
+        max-height: 500px;
+        overflow-y: auto;
+    }
+
+    thead,
+    tbody tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    thead {
+        width: calc(100% - 1em)
+    }
 </style>

@@ -123,11 +123,11 @@
 
 <div class="save-money-area pt-100">
     <div class="container">
-        <div class="bg-img pt-100 pb-100" style="background-image:url(assets/img/bg/bg2.jpg);">
+        <div class="bg-img pt-100 pb-100" style="background-image:url(assets/img/accueil/1.jpeg);">
             <div class="save-money-content">
                 <h2>Profitez de nos offres spéciales</h2>
                 <div class="save-money-btn">
-                    <a routerLink="/offresSpeciales">afficher</a>
+                    <a routerLink="/offresSpeciales">Afficher</a>
                 </div>
             </div>
         </div>
@@ -144,7 +144,7 @@
                             <img alt="" src="assets/img/logo/logo.webp">
                         </a>
                     </div>
-                    <p>© 2024 <a href="#">M1</a>.<br> All Rights Reserved</p>
+                    <p>© 2024 <a href="#">M1</a>.<br> Ratsimandisa Toky Ny Aina - Mahosinantenaina Ny Hasina Anderson</p>
                 </div>
             </div>
            
@@ -339,7 +339,7 @@
                                                     formControlName="employeId" required>
                                                     @for(employe of listEmploye; track employe.id){
                                                         @if($first){
-                                                            <option [ngValue]="employe._id"><img [src]="baseUrl+'/images/'+employe.photo" width="50" height="50" selected> {{employe.nom+" "+employe.prenom}}
+                                                            <option [ngValue]="employe._id"  selected><img [src]="baseUrl+'/images/'+employe.photo" width="50" height="50"> {{employe.nom+" "+employe.prenom}}
                                                             </option>
                                                         }@else{
                                                             <option [ngValue]="employe._id"><img [src]="baseUrl+'/images/'+employe.photo" width="50" height="50"> {{employe.nom+" "+employe.prenom}}

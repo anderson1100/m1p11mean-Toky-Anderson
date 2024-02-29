@@ -51,7 +51,7 @@
           }
 
         </td>
-        <td>{{rdv.date_heure}}</td>
+        <td>{{rdv.date_heure | date:'yyyy-MM-dd HH:mm'}}</td>
         <td>{{rdv.totalPrice}} ariary</td>
         <td>{{rdv.totalDuree}} minutes</td>
         <td>{{rdv.employe_id.nom}} {{rdv.employe_id.prenom}}</td>

@@ -1,426 +1,426 @@
-  <!-- reto le select multiple -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.css">
-  <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/js/multi-select-tag.js"></script>
-
-
-
 <div class="slider-banner-area">
     <div class="container">
         <div class="row flex-row-reverse">
-            <div class="col-lg-12 col-md-15">
+            <div class="jumbotron mb-50">
+                <h1 style="font-weight: bold;
+                color: lightgreen;">Gestion des services</h1>
+            </div>
+            <div class="col-lg-8 col-md-12">
                 <div class="slider-area res-mrg-md-mb">
-                           <h1>Gestion Services : </h1>
-                           <span class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalNewServ">Ajouter un service <i class="fa fa-plus"></i></span>
-                           <div class="tab-content">
-                            <br>
+                    <h2>Liste des services : </h2>
+                    <div class="tab-content">
+                        <table class="table w-100 mx-auto table-striped overflow-y:auto">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">Image</th>
+                                    <th scope="col">Nom</th>
+                                    <th scope="col">Durée en minute</th>
+                                    <th scope="col">Categorie</th>
+                                    <th scope="col">prix (ariary)</th>
+                                    <th scope="col">commission</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for(service of listService; track service._id){
+                                <tr>
+                                    <td scope="row">{{$index+1}}</td>
+                                    <td><img [src]="baseUrl+'images/'+service.image" alt="" width="50" height="50"></td>
+                                    <td>{{service.nom}}</td>
+                                    <td>{{service.duree_minute}}</td>
+                                    <td>{{service.categorie.nom}}</td>
+                                    <td>{{service.prix}}</td>
+                                    <td>{{service.commission}} %</td>
+                                    <td>
+                                        <span class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalEmp"
+                                            (click)="openUpdateModal($index)"><i class="fa fa-pencil"></i></span>
+                                        <span class="btn btn-danger" data-bs-toggle="modal"
+                                            data-bs-target="#modalDelEmp"><i class="fa fa-trash"
+                                                (click)="openDeleteModal($index)"></i></span>
 
-                 <table class="table w-100 mx-auto table-secondary table-striped ">
-        <thead>
-          <tr>
-            <th scope="col" width="10px"></th>
-            <th scope="col">Service</th>
-            <th scope="col">Description</th>
-            <th scope="col">Prix</th>
-            <th scope="col">Durée</th>
-            <th scope="col">Commission</th>
-            <th scope="col">Action</th>
+                                    </td>
 
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row" width="10px">1</th>
-            <td>Epilation</td>
-            <td>Manala volon tongotra azjkjbkfaj akjbzkjfbazn janefkjbazjkbfua bkjbakfjbazkjb kjbajkzbfuiabziyfvbay njab ubziudbau aub ujfba</td>
-            <td>15.000</td>
-            <td>30min</td>
-            <td>10</td>
-            <td>
-                <span class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalModifServ"><i class="fa fa-pencil"></i></span>
-                <span class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalDelServ"><i class="fa fa-trash"></i></span>
+                                </tr>
+                                }@empty{
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>en attente...</td>
+                                    <td>en attente...</td>
+                                    <td>en attente...</td>
+                                    <td>
+                                        <span class="btn btn-warning" data-bs-toggle="modal"
+                                            data-bs-target="#modalEmp"><i class="fa fa-pencil"></i></span>
+                                        <span class="btn btn-danger" data-bs-toggle="modal"
+                                            data-bs-target="#modalDelEmp"><i class="fa fa-trash"></i></span>
 
-            </td>
-          
-          </tr>      
-          
-        </tbody>
-      </table>
-    </div>
+                                    </td>
 
-    </div>
-</div>
-<div class="col-lg-12 col-md-15">
-    <div class="slider-area res-mrg-md-mb">
-        <br><br>
-
-               <h1>Offres Spéciales : </h1>
-               <span class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalNewOffre">Ajouter une offre <i class="fa fa-plus"></i></span>
-               <div class="tab-content">
-                <br>
-
-     <table class="table w-100 mx-auto table-secondary table-striped ">
-<thead>
-<tr>
-<th scope="col" width="10px"></th>
-<th scope="col">Nom</th>
-<th scope="col">Description</th>
-<th scope="col">Services concernés</th>
-<th scope="col">Réduction</th>
-<th scope="col">Début</th>
-<th scope="col">Fin</th>
-<th scope="col">Action</th>
-
-</tr>
-</thead>
-<tbody>
-<tr>
-<th scope="row" width="10px">1</th>
-<td>Epilation</td>
-<td>Manala volon tongotra azjkjbkfaj akjbzkjfbazn janefkjbazjkbfua bkjbakfjbazkjb kjbajkzbfuiabziyfvbay njab ubziudbau aub ujfba</td>
-<td>Massage, Corps, Mains</td>
-<td>20%</td>
-<td>10-09-2024</td>
-<td>10-09-2024</td>
-
-<td>
-    <span class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalModifOffre"><i class="fa fa-pencil"></i></span>
-    <span class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalDelOffre"><i class="fa fa-trash"></i></span>
-
-</td>
-
-</tr>      
-
-</tbody>
-</table>
-</div>
-
-</div>
-</div>
-</div>
-</div>
-</div>
-
-<!-- Modal New Offre -->
-<div class="modal fade" id="modalNewOffre" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-5 col-sm-12 col-xs-12">
-                        <div class="tab-content quickview-big-img">
-                            <div id="pro-1" class="tab-pane fade show active">
-                                <img src="assets/img/profil.jpg" alt="">
-                            </div>
-                            
-                        </div>
-                        <!-- Thumbnail Large Image End -->
-                        <!-- Thumbnail Image End -->
-                       
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="col-md-7 col-sm-12 col-xs-12">
-                        <div class="product-details-content quickview-content">
-                            <h2>Créer Offre Spéciale </h2>
-                                     <br>
-                                     <div class="form-group ">
-                                        <label for="nom">Nom</label>
-                                        <input type="text" class="form-control" id="nom" placeholder="Nom">
-                                      </div>
-                                      <div class="form-group ">
-                                         <label for="desc">Description</label>
-                                         <input type="text" class="form-control" id="desc" placeholder="Description">
-                                       </div>  
 
-                                       <div class="form-group ">
-                                        <label for="serv">Services</label>
-                                        <select name="services" id="services" multiple>
-                                            <option value="1">Epilation</option>
-                                            <option value="2">Coiffure</option>
-                                         
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-12">
+                <div class="row">
+                    <div class="col-lg-12 col-md-6 col-sm-6">
+                        <div class="single-banner mb-30">
+                            <h2>Créer un nouveau service</h2>
+                            <form [formGroup]="addForm" (ngSubmit)="$event.preventDefault();addService()">
+                                <div class="form-group">
+                                    <label for="cardNumber">Nom</label>
+                                    <input type="text" class="form-control" id="nom" formControlName="nom">
+                                </div>
+                                <div class="form-group">
+                                    <label for="cardNumber">Description</label>
+                                    <textarea rows="2" cols="50" id="description"
+                                        formControlName="description"></textarea>
+                                </div>
+                                <br>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="categorieSelect" class="form-label">Sélectionner une
+                                            catégorie</label>
+                                        <select class="form-select" id="employeeSelect" formControlName="id_categorie"
+                                            required>
+                                            @for(categorie of listCategorie; track categorie.id){
+                                            @if($first){
+                                            <option [ngValue]="categorie._id" selected>{{categorie.nom}}
+                                            </option>
+                                            }@else{
+                                            <option [ngValue]="categorie._id">{{categorie.nom}}
+                                            </option>
+                                            }
+                                            }
                                         </select>
-                                      </div>   
-                                      
-                                      <script>
-                                        new MultiSelectTag('services') 
-                                    </script>
 
-                                      <br>
-                                      <div class="form-group col-md-6">
-                                         <label for="reductions">Réduction</label>
-                                         <input type="number" class="form-control" id="number" placeholder="10%">
-                                       </div>
-                                       <div class="form-group col-md-6">
-                                         <label for="duuree">Début</label>
-                                         <input type="date" class="form-control" id="number" placeholder="">
-                                       </div>
-                                       <div class="form-group col-md-6">
-                                         <label for="commission">Fin</label>
-                                         <input type="date" class="form-control" id="number" placeholder="0">
-                                       </div>
-                                      <br>
-                                
-                                      <br><br>
-                                   
-                                      <a class="btn btn-danger" data-bs-dismiss="modal">Modifier </a>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="expiryDate">Durée en minute</label>
+                                        <input type="number" min="0" class="form-control" formControlName="duree_minute"
+                                            id="duree_minute">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="expiryDate">Prix</label>
+                                        <input type="number" min="0" class="form-control" formControlName="prix"
+                                            id="prix">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="expiryDate">Prix</label>
+                                        <input type="number" min="0" class="form-control" formControlName="commission"
+                                            id="commission">
+                                    </div>
+                                    <br>
+                                    <div class="form-group mt-20">
+                                        <label for="mdp">Image</label>
+                                        <ngx-dropzone (change)="onSelect($event)">
+                                            <ngx-dropzone-label>Cliquer ou faites glisser une image
+                                                ici.</ngx-dropzone-label>
+                                            @if(files.length>0){
+                                            <ngx-dropzone-image-preview [removable]="true" (removed)="onRemove($event)"
+                                                [file]="files[0]">
+                                                <ngx-dropzone-label>{{ files[0].name }} ({{ files[0].type
+                                                    }})</ngx-dropzone-label>
+                                            </ngx-dropzone-image-preview>
+                                            }
+                                        </ngx-dropzone>
+                                    </div>
+                                </div>
+                                <br> <br>
+                                <div>
+                                    <!-- disable button if form invalid -->
+                                    <button [disabled]="addForm.invalid" style="border: 0;">
+                                        <a class="btn btn-danger" (click)="$event.preventDefault(); addService()">Créer
+                                            le service</a>
+                                    </button>
+                                </div>
+                                @if(addLoading()){
+                                <div class="form-group mt-20 offset-md-2 spinner-border text-info" role="status"></div>
+                                }
+                                @if(addError()){
 
-                            
-
-                              
+                                <div class="alert alert-danger" role="alert">
+                                    Une erreur s'est produite
+                                </div>
+                                }
+                            </form>
                         </div>
+
+
                     </div>
+
+
                 </div>
             </div>
         </div>
-    </div>
-  </div>
-  <!-- Modal end -->
+
+        <hr>
 
 
-
-<!-- Modal New Service -->
-<div class="modal fade" id="modalNewServ" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="row flex-row-reverse">
+            <div class="jumbotron mb-50 mt-50">
+                <h1 style="font-weight: bold;
+                color: lightgreen;">Gestion des offres spéciales</h1>
             </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-5 col-sm-12 col-xs-12">
-                        <div class="tab-content quickview-big-img">
-                            <div id="pro-1" class="tab-pane fade show active">
-                                <img src="assets/img/profil.jpg" alt="">
-                            </div>
-                            
-                        </div>
-                        <!-- Thumbnail Large Image End -->
-                        <!-- Thumbnail Image End -->
-                       
-                    </div>
-                    <div class="col-md-7 col-sm-12 col-xs-12">
-                        <div class="product-details-content quickview-content">
-                            <h2>Créer un nouveau Service</h2>
-                                     <br>
-                                     <div class="form-group ">
-                                       <label for="nom">Nom</label>
-                                       <input type="text" class="form-control" id="nom" placeholder="Nom">
-                                     </div>
-                                     <div class="form-group ">
-                                        <label for="desc">Description</label>
-                                        <input type="text" class="form-control" id="desc" placeholder="Description">
-                                      </div>
-                                     <br>
-                                     <div class="form-group col-md-6">
-                                        <label for="prix">Prix</label>
-                                        <input type="number" class="form-control" id="number" placeholder="10.000">
-                                      </div>
-                                      <div class="form-group col-md-6">
-                                        <label for="duuree">Durée</label>
-                                        <input type="number" class="form-control" id="number" placeholder="10 min">
-                                      </div>
-                                      <div class="form-group col-md-6">
-                                        <label for="commission">Commission</label>
-                                        <input type="number" class="form-control" id="number" placeholder="20">
-                                      </div>
-                                      <br>
-                                
-                                      <br><br>
-                                   
-                                      <a class="btn btn-danger" data-bs-dismiss="modal">Créer </a>
+            <div class="col-lg-8 col-md-12">
+                <div class="slider-area res-mrg-md-mb">
+                    <h2>Liste des offres : </h2>
+                    <div class="tab-content">
+                        <table class="table w-100 mx-auto table-striped overflow-y:auto">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">Nom</th>
+                                    <!-- <th scope="col">Description</th> -->
+                                    <th scope="col">Liste des services</th>
+                                    <th scope="col">réduction</th>
+                                    <th scope="col">Date début</th>
+                                    <th scope="col">Date fin</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for(offre of listOffre; track offre._id){
+                                <tr>
+                                    <td scope="row">{{$index+1}}</td>
+                                    <td>{{offre.nom}}</td>
+                                    <!-- <td>{{offre.description}}</td> -->
+                                    <td [textContent]="getListNameFromListService(offre.liste_service)"></td>
+                                    <td>{{offre.reduction[0]}}</td>
+                                    <td>{{offre.date_debut | date:'yyyy-MM-dd HH:mm'}}</td>
+                                    <td>{{offre.date_fin | date:'yyyy-MM-dd HH:mm'}}</td>
+                                    <td>
+                                        <!-- <span class="btn btn-warning" data-bs-toggle="modal"
+                                            data-bs-target="#modalOffre" (click)="openUpdateOffreModal($index)"><i
+                                                class="fa fa-pencil"></i></span> -->
+                                        <span class="btn btn-danger" data-bs-toggle="modal"
+                                            data-bs-target="#modalDelOffre" (click)="openDeleteOffreModal($index)"><i class="fa fa-trash"></i></span>
 
-                            
+                                    </td>
 
-                              
-                        </div>
+                                </tr>
+                                }@empty{
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>en attente...</td>
+                                    <td>en attente...</td>
+                                    <td>en attente...</td>
+                                    <td>
+                                        <span class="btn btn-warning" data-bs-toggle="modal"
+                                            data-bs-target="#modalEmp"><i class="fa fa-pencil"></i></span>
+                                        <span class="btn btn-danger" data-bs-toggle="modal"
+                                            data-bs-target="#modalDelEmp"><i class="fa fa-trash"></i></span>
+
+                                    </td>
+
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
                     </div>
+
                 </div>
             </div>
-        </div>
-    </div>
-  </div>
-  <!-- Modal end -->
-
-
-<!-- Modal Modif Service -->
-<div class="modal fade" id="modalModifServ" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
+            <div class="col-lg-4 col-md-12">
                 <div class="row">
-                    <div class="col-md-5 col-sm-12 col-xs-12">
-                        <div class="tab-content quickview-big-img">
-                            <div id="pro-1" class="tab-pane fade show active">
-                                <img src="assets/img/profil.jpg" alt="">
-                            </div>
-                            
-                        </div>
-                        <!-- Thumbnail Large Image End -->
-                        <!-- Thumbnail Image End -->
-                       
-                    </div>
-                    <div class="col-md-7 col-sm-12 col-xs-12">
-                        <div class="product-details-content quickview-content">
-                            <h2>Service Détails</h2>
-                                     <br>
-                                     <div class="form-group ">
-                                       <label for="nom">Nom</label>
-                                       <input type="text" class="form-control" id="nom" placeholder="Nom">
-                                     </div>
-                                     <div class="form-group ">
-                                        <label for="desc">Description</label>
-                                        <input type="text" class="form-control" id="desc" placeholder="Description">
-                                      </div>
-                                     <br>
-                                     <div class="form-group col-md-6">
-                                        <label for="prix">Prix</label>
-                                        <input type="number" class="form-control" id="number" placeholder="10.000">
-                                      </div>
-                                      <div class="form-group col-md-6">
-                                        <label for="duuree">Durée</label>
-                                        <input type="number" class="form-control" id="number" placeholder="10 min">
-                                      </div>
-                                      <div class="form-group col-md-6">
-                                        <label for="commission">Commission</label>
-                                        <input type="number" class="form-control" id="number" placeholder="20">
-                                      </div>
-                                      <br>
-                                
-                                      <br><br>
-                                   
-                                      <a class="btn btn-danger" data-bs-dismiss="modal">Modifier </a>
-
-                            
-
-                              
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-  </div>
-  <!-- Modal end -->
-<!-- Modal Modif Offre -->
-<div class="modal fade" id="modalModifOffre" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-5 col-sm-12 col-xs-12">
-                        <div class="tab-content quickview-big-img">
-                            <div id="pro-1" class="tab-pane fade show active">
-                                <img src="assets/img/profil.jpg" alt="">
-                            </div>
-                            
-                        </div>
-                        <!-- Thumbnail Large Image End -->
-                        <!-- Thumbnail Image End -->
-                       
-                    </div>
-                    <div class="col-md-7 col-sm-12 col-xs-12">
-                        <div class="product-details-content quickview-content">
-                            <h2>Offre Spéciale Détails</h2>
-                                     <br>
-                                     <div class="form-group ">
-                                        <label for="nom">Nom</label>
-                                        <input type="text" class="form-control" id="nom" placeholder="Nom">
-                                      </div>
-                                      <div class="form-group ">
-                                         <label for="desc">Description</label>
-                                         <input type="text" class="form-control" id="desc" placeholder="Description">
-                                       </div>  
-
-                                       <div class="form-group ">
-                                        <label for="serv">Services</label>
-                                        <select name="services" id="services" multiple>
-                                            <option value="1">Epilation</option>
-                                            <option value="2">Coiffure</option>
-                                         
+                    <div class="col-lg-12 col-md-6 col-sm-6">
+                        <div class="single-banner mb-30">
+                            <h2>Créer une nouvelle offre spéciale</h2>
+                            <form [formGroup]="addOffreForm" (ngSubmit)="$event.preventDefault();addService()">
+                                <div class="form-group">
+                                    <label for="cardNumber">Nom</label>
+                                    <input type="text" class="form-control" id="nom" formControlName="nom">
+                                </div>
+                                <div class="form-group">
+                                    <label for="cardNumber">Description</label>
+                                    <textarea rows="2" cols="50" id="description"
+                                        formControlName="description"></textarea>
+                                </div>
+                                <br>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="categorieSelect" class="form-label">Sélectionner les services</label>
+                                        <select class="form-select" id="employeeSelect" formControlName="id_services"
+                                            required multiple>
+                                            @for(service of listService; track service.id){
+                                            <option [ngValue]="service._id">{{service.nom}}
+                                            </option>
+                                            }
                                         </select>
-                                      </div>   
-                                      
-                                      <script>
-                                        new MultiSelectTag('services') 
-                                    </script>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="expiryDate">Reduction</label>
+                                        <input type="number" min="0" class="form-control" formControlName="reduction"
+                                            id="reduction">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="expiryDate">Date début</label>
+                                        <input type="datetime-local" formControlName="date_debut">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="expiryDate">Date fin</label>
+                                        <input type="datetime-local" formControlName="date_fin">
+                                    </div>
+                                    <br>
+                                </div>
+                                <br> <br>
+                                <div>
+                                    <!-- disable button if form invalid -->
+                                    <button [disabled]="addOffreForm.invalid" style="border: 0;">
+                                        <a class="btn btn-danger" (click)="$event.preventDefault(); addOffre()">Créer
+                                            l'offre</a>
+                                    </button>
+                                </div>
+                                @if(addOffreLoading()){
+                                <div class="form-group mt-20 offset-md-2 spinner-border text-info" role="status">
+                                </div>
+                                }
+                                @if(addOffreError()){
 
-                                      <br>
-                                      <div class="form-group col-md-6">
-                                         <label for="reductions">Réduction</label>
-                                         <input type="number" class="form-control" id="number" placeholder="10%">
-                                       </div>
-                                       <div class="form-group col-md-6">
-                                         <label for="duuree">Début</label>
-                                         <input type="date" class="form-control" id="number" placeholder="">
-                                       </div>
-                                       <div class="form-group col-md-6">
-                                         <label for="commission">Fin</label>
-                                         <input type="date" class="form-control" id="number" placeholder="0">
-                                       </div>
-                                      <br>
-                                
-                                      <br><br>
-                                   
-                                      <a class="btn btn-danger" data-bs-dismiss="modal">Modifier </a>
-
-                            
-
-                              
+                                <div class="alert alert-danger" role="alert">
+                                    Une erreur s'est produite
+                                </div>
+                                }
+                            </form>
                         </div>
+
+
                     </div>
+
+
                 </div>
             </div>
         </div>
+
+
+
+
+
+
+
+
     </div>
-  </div>
-  <!-- Modal end -->
+</div>
 
 
 
-<!-- Supprimer Service -->
-<div class="modal fade" id="modalDelServ" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
+<!-- Modal modif service horaire -->
+<div class="modal fade" id="modalOffre" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form>
-                <div class="modal-header">						
-                    <h4 class="modal-title">Supprimer Service </h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+
+                    @if(!updateLoading()){
+                    <div class="single-banner mb-30 col-md-10 offset-md-1">
+                        <h1>Modifier l'offre</h1>
+                        <form [formGroup]="updateForm" (ngSubmit)="$event.preventDefault();updateService()">
+                            <div class="form-group">
+                                <label for="cardNumber">Nom</label>
+                                <input type="text" class="form-control" id="nom" formControlName="nom">
+                            </div>
+                            <div class="form-group">
+                                <label for="cardNumber">Description</label>
+                                <textarea rows="2" cols="50" id="description" formControlName="description"></textarea>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="categorieSelect" class="form-label">Sélectionner une catégorie</label>
+                                    <select class="form-select" id="employeeSelect" formControlName="id_categorie"
+                                        required>
+                                        @for(categorie of listCategorie; track categorie.id){
+                                        @if($first){
+                                        <option [ngValue]="categorie._id" selected>{{categorie.nom}}
+                                        </option>
+                                        }@else{
+                                        <option [ngValue]="categorie._id">{{categorie.nom}}
+                                        </option>
+                                        }
+                                        }
+                                    </select>
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="expiryDate">Durée en minute</label>
+                                    <input type="number" min="0" class="form-control" formControlName="duree_minute"
+                                        id="duree_minute">
+                                </div>
+                                <div class="form-group">
+                                    <label for="expiryDate">Prix</label>
+                                    <input type="number" min="0" class="form-control" formControlName="prix" id="prix">
+                                </div>
+                                <div class="form-group">
+                                    <label for="expiryDate">Prix</label>
+                                    <input type="number" min="0" class="form-control" formControlName="commission"
+                                        id="commission">
+                                </div>
+                                <div class="form-group mt-20">
+                                    <label for="mdp">Image</label>
+                                    <ngx-dropzone (change)="onSelectUpdateImage($event)">
+                                        <ngx-dropzone-label>Cliquer ou faites glisser une image
+                                            ici.</ngx-dropzone-label>
+                                        @if(updateFiles.length>0){
+                                        <ngx-dropzone-image-preview [removable]="true"
+                                            (removed)="onRemoveUpdateImage($event)" [file]="updateFiles[0]">
+                                            <ngx-dropzone-label>{{ updateFiles[0].name }} ({{ updateFiles[0].type
+                                                }})</ngx-dropzone-label>
+                                        </ngx-dropzone-image-preview>
+                                        }
+                                    </ngx-dropzone>
+                                </div>
+                            </div>
+                            <br> <br>
+                            <div>
+                                <!-- disable button if form invalid -->
+                                <button [disabled]="addForm.invalid" style="border: 0;">
+                                    <a class="btn btn-danger" (click)="$event.preventDefault(); updateService()">Modifer
+                                        l'offre</a>
+                                </button>
+                            </div>
+                            @if(updateRequestLoading()){
+                            <div class="form-group mt-20 offset-md-2 spinner-border text-info" role="status"></div>
+                            }
+                            @if(updateError()){
+
+                            <div class="alert alert-danger" role="alert">
+                                Une erreur s'est produite
+                            </div>
+                            }
+                        </form>
+                    </div>
+                    }@else{
+                    <div class="form-group mt-20 offset-md-6 spinner-border text-info" role="status"></div>
+                    }
                 </div>
-                <div class="modal-body">					
-                    <p>Etes-vous sure de vouloir retirer ce Service ?</p>
-                    <p class="text-warning"><small>Cette action est irréversible.</small></p>
-                </div>
-                <div class="modal-footer">
-                    <input type="button" class="btn btn-default" data-bs-dismiss="modal" value="Annuler">
-                    <input type="submit" class="btn btn-danger" value="Supprimer">
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
-<!-- Supprimer Offre -->
+<!-- Modal end -->
+
+<!-- Supprimer service -->
 <div class="modal fade" id="modalDelOffre" tabindex="-1" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <form>
-                <div class="modal-header">						
-                    <h4 class="modal-title">Supprimer Offre </h4>
+                <div class="modal-header">
+                    <h4 class="modal-title">Supprimer une offre</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">					
-                    <p>Etes-vous sure de vouloir de supprimer cet Offre Spéciale ?</p>
+                <div class="modal-body">
+                    <p>Etes-vous sure de vouloir retirer cette offre du système ?</p>
                     <p class="text-warning"><small>Cette action est irréversible.</small></p>
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-bs-dismiss="modal" value="Annuler">
-                    <input type="submit" class="btn btn-danger" value="Supprimer">
+                    <input type="submit" class="btn btn-danger" value="Supprimer" class="btn btn-default"
+                        data-bs-dismiss="modal" (click)="deleteOffre()">
                 </div>
             </form>
         </div>
@@ -430,19 +430,180 @@
 
 
 
+<!-- Modal modif service horaire -->
+<div class="modal fade" id="modalEmp" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+
+                    @if(!updateLoading()){
+                    <div class="single-banner mb-30 col-md-10 offset-md-1">
+                        <h1>Modifier l'offre</h1>
+                        <form [formGroup]="updateForm" (ngSubmit)="$event.preventDefault();updateService()">
+                            <div class="form-group">
+                                <label for="cardNumber">Nom</label>
+                                <input type="text" class="form-control" id="nom" formControlName="nom">
+                            </div>
+                            <div class="form-group">
+                                <label for="cardNumber">Description</label>
+                                <textarea rows="2" cols="50" id="description" formControlName="description"></textarea>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="categorieSelect" class="form-label">Sélectionner une catégorie</label>
+                                    <select class="form-select" id="employeeSelect" formControlName="id_categorie"
+                                        required>
+                                        @for(categorie of listCategorie; track categorie.id){
+                                        @if($first){
+                                        <option [ngValue]="categorie._id" selected>{{categorie.nom}}
+                                        </option>
+                                        }@else{
+                                        <option [ngValue]="categorie._id">{{categorie.nom}}
+                                        </option>
+                                        }
+                                        }
+                                    </select>
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="expiryDate">Durée en minute</label>
+                                    <input type="number" min="0" class="form-control" formControlName="duree_minute"
+                                        id="duree_minute">
+                                </div>
+                                <div class="form-group">
+                                    <label for="expiryDate">Prix</label>
+                                    <input type="number" min="0" class="form-control" formControlName="prix" id="prix">
+                                </div>
+                                <div class="form-group">
+                                    <label for="expiryDate">Prix</label>
+                                    <input type="number" min="0" class="form-control" formControlName="commission"
+                                        id="commission">
+                                </div>
+                                <div class="form-group mt-20">
+                                    <label for="mdp">Image</label>
+                                    <ngx-dropzone (change)="onSelectUpdateImage($event)">
+                                        <ngx-dropzone-label>Cliquer ou faites glisser une image
+                                            ici.</ngx-dropzone-label>
+                                        @if(updateFiles.length>0){
+                                        <ngx-dropzone-image-preview [removable]="true"
+                                            (removed)="onRemoveUpdateImage($event)" [file]="updateFiles[0]">
+                                            <ngx-dropzone-label>{{ updateFiles[0].name }} ({{ updateFiles[0].type
+                                                }})</ngx-dropzone-label>
+                                        </ngx-dropzone-image-preview>
+                                        }
+                                    </ngx-dropzone>
+                                </div>
+                            </div>
+                            <br> <br>
+                            <div>
+                                <!-- disable button if form invalid -->
+                                <button [disabled]="addForm.invalid" style="border: 0;">
+                                    <a class="btn btn-danger" (click)="$event.preventDefault(); updateService()">Modifer
+                                        l'offre</a>
+                                </button>
+                            </div>
+                            @if(updateRequestLoading()){
+                            <div class="form-group mt-20 offset-md-2 spinner-border text-info" role="status"></div>
+                            }
+                            @if(updateError()){
+
+                            <div class="alert alert-danger" role="alert">
+                                Une erreur s'est produite
+                            </div>
+                            }
+                        </form>
+                    </div>
+                    }@else{
+                    <div class="form-group mt-20 offset-md-6 spinner-border text-info" role="status"></div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal end -->
+
+<!-- Supprimer service -->
+<div class="modal fade" id="modalDelEmp" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                    <h4 class="modal-title">Supprimer une offre</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Etes-vous sure de vouloir retirer cette offre du système ?</p>
+                    <p class="text-warning"><small>Cette action est irréversible.</small></p>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-bs-dismiss="modal" value="Annuler">
+                    <input type="submit" class="btn btn-danger" value="Supprimer" class="btn btn-default"
+                        data-bs-dismiss="modal" (click)="deleteService()">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Créer Employé -->
+<!-- <div class="modal fade" id="modalNewEmp" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                    <h4 class="modal-title">Créer Employé </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Introduire ce nouvel Employé dans le système ?</p>
+                    <p class="text-warning"><small></small></p>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-bs-dismiss="modal" value="Annuler">
+                    <input type="submit" class="btn btn-danger" value="Valider">
+                </div>
+            </form>
+        </div>
+    </div>
+</div> -->
+
+
 
 <style>
+    .dropzone {
+        border: 2px dashed #0087F7;
+        border-radius: 5px;
+        cursor: pointer;
+        text-align: center;
+        min-height: 200px;
+        background-color: transparent;
+        display: flex;
+        /* Use flexbox */
+        align-items: center;
+        /* Center content vertically */
+        justify-content: center;
+        /* Center content horizontally */
+    }
+
     tbody {
-    display:block;
-    max-height:500px;
-    overflow-y:auto;
-}
-thead, tbody tr {
-    display:table;
-    width:100%;
-    table-layout:fixed;
-}
-thead {
-    width: calc( 100% - 1em )
-} 
+        display: block;
+        max-height: 500px;
+        overflow-y: auto;
+    }
+
+    thead,
+    tbody tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    thead {
+        width: calc(100% - 1em)
+    }
 </style>

@@ -46,51 +46,85 @@ export class ManagerService {
       headers: headers,
     };
 
-    return this.http.post('/manager/total_benef_month', data, options);
+    return this.http.post('manager/total_benef_month', data, options);
   }
 
   logout() {
-    return this.http.get('/logout');
+    return this.http.get('logout');
   }
 
   //crud employes
 
   getEmployes(){
-    return this.http.get('/manager/employes');
+    return this.http.get('manager/employes');
   }
 
-  addEmploye(id : string,formData : FormData){
-    return this.http.post(`/manager/employes/${id}`,formData);
+  addEmploye(formData : FormData){
+    return this.http.post(`manager/employes`,formData);
   }
 
   updateEmploye(id : string,formData : FormData){
-    return this.http.put(`/manager/employes/${id}`,formData);
+    return this.http.put(`manager/employes/${id}`,formData);
   }
 
   deleteEmploye(id : string){
-    return this.http.delete(`/manager/employes/${id}`);
+    return this.http.delete(`manager/employes/${id}`);
   }
 
   //crud services
 
 
   getServices(){
-    return this.http.get('/manager/services');
+    return this.http.get('manager/services');
   }
 
-  addServices(id : string,formData : FormData){
-    return this.http.post(`/manager/services/${id}`,formData);
+  getCategories(){
+    return this.http.get('manager/categories');
   }
 
-  updateServices(id : string,formData : FormData){
-    return this.http.put(`/manager/services/${id}`,formData);
+  addService(formData : FormData){
+    return this.http.post(`manager/services`,formData);
   }
 
-  deleteServices(id : string){
-    return this.http.delete(`/manager/services/${id}`);
+  updateService(id : string,formData : FormData){
+    return this.http.put(`manager/services/${id}`,formData);
+  }
+
+  deleteService(id : string){
+    return this.http.delete(`manager/services/${id}`);
   }
 
 
 
   //crud offre speciales
+
+  getOffres(){
+    return this.http.get('manager/offres');
+  }
+
+  addOffre(formData : object){
+    let headers = new HttpHeaders({
+      'content-Type': 'application/json',
+    })
+
+    let options = {
+      headers: headers,
+    };
+    return this.http.post(`manager/offres`,formData,options);
+  }
+
+  updateOffre(id : string,formData : object){
+    let headers = new HttpHeaders({
+      'content-Type': 'application/json',
+    })
+
+    let options = {
+      headers: headers,
+    };
+    return this.http.put(`manager/offres/${id}`,formData,options);
+  }
+
+  deleteOffre(id : string){
+    return this.http.delete(`manager/offres/${id}`);
+  }
 }

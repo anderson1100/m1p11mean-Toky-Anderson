@@ -40,4 +40,6 @@ router.get('/total_commission_today',employeController.getTotalCommissionToday);
 
 router.get('/list_rdv_today', employeController.getListRdvToday);
 
+router.post('/updatePhotoEmploye/:photo', employeController.updatePhotoEmploye);
+
 module.exports = router;

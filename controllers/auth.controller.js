@@ -152,8 +152,8 @@ const logout = async (req, res, next) => {
   //could not get response when client with different cookie(not valid anymore is trying to access logout
   try {
     const cookies = req.cookies
-    if (!cookies?.jwt) return res.sendStatus(204);
-    if (!cookies?.jwtAccess) return res.sendStatus(204);
+    if (!cookies?.jwt) return res.status(204).json("logout");
+    if (!cookies?.jwtAccess) return res.status(204).json("logout");
     //if (!refreshToken) throw createError.BadRequest()
     const refreshToken = cookies.jwt
     res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
@@ -163,7 +163,7 @@ const logout = async (req, res, next) => {
     //refreshTokenModel.deleteOne({user_id : userId});
     const result = await refreshTokenModel.deleteOne({ user_id: userId });
     //console.log(result); 
-    res.sendStatus(204);
+    return res.status(204).json("logout");
   } catch (error) {
     next(error)
   }
